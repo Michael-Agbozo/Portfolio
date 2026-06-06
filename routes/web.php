@@ -1,0 +1,34 @@
+<?php
+
+use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\Dashboard\DashboardController;
+use App\Http\Controllers\Dashboard\DesignController;
+use App\Http\Controllers\Dashboard\MessageController;
+use App\Http\Controllers\Dashboard\ProjectController;
+use App\Http\Controllers\PortfolioController;
+use Illuminate\Support\Facades\Route;
+
+// Public portfolio
+Route::get('/', [PortfolioController::class, 'home']);
+Route::post('/contact', [PortfolioController::class, 'sendContact'])->name('contact.send');
+
+// Auth
+Route::get('/login', [LoginController::class, 'showLogin'])->name('login')->middleware('guest');
+Route::post('/login', [LoginController::class, 'login'])->middleware('guest');
+Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
+
+// Dashboard (auth required)
+Route::prefix('dashboard')->name('dashboard.')->middleware('auth')->group(function () {
+    Route::get('/', [DashboardController::class, 'index'])->name('');
+
+    Route::resource('projects', ProjectController::class)->except(['show']);
+
+    Route::get('designs', [DesignController::class, 'index'])->name('designs.index');
+    Route::get('designs/create', [DesignController::class, 'create'])->name('designs.create');
+    Route::post('designs', [DesignController::class, 'store'])->name('designs.store');
+    Route::delete('designs/{design}', [DesignController::class, 'destroy'])->name('designs.destroy');
+
+    Route::get('messages', [MessageController::class, 'index'])->name('messages.index');
+    Route::get('messages/{message}', [MessageController::class, 'show'])->name('messages.show');
+    Route::delete('messages/{message}', [MessageController::class, 'destroy'])->name('messages.destroy');
+});
