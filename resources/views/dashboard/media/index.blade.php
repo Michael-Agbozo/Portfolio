@@ -33,27 +33,33 @@
 <div class="card">
 
   {{-- Header --}}
-  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1.25rem">
+  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1.25rem;flex-wrap:wrap;gap:.75rem">
     <div class="card-title" style="margin-bottom:0">
       Media Library
-      @if(!empty($files))
-        <span style="font-size:.72rem;font-weight:400;color:var(--dim)">({{ count($files) }} files — {{ round(array_sum(array_column($files, 'size')) / 1048576, 1) }} MB)</span>
+      @if($counts['all'])
+        <span style="font-size:.72rem;font-weight:400;color:var(--dim)">({{ $counts[$filter] ?? $counts['all'] }} {{ ($counts[$filter] ?? $counts['all']) === 1 ? 'file' : 'files' }} — {{ round($totalSize / 1048576, 1) }} MB)</span>
       @endif
     </div>
     {{-- Filter tabs --}}
-    <div style="display:flex;gap:.4rem">
-      <button class="media-tab active" onclick="filterMedia('all', this)">All <span class="media-count" id="count-all"></span></button>
-      <button class="media-tab" onclick="filterMedia('projects', this)">Used in Projects <span class="media-count" id="count-projects"></span></button>
-      <button class="media-tab" onclick="filterMedia('designs', this)">Used in Designs <span class="media-count" id="count-designs"></span></button>
-      <button class="media-tab" onclick="filterMedia('unused', this)">Unused <span class="media-count" id="count-unused"></span></button>
+    <div style="display:flex;gap:.4rem;flex-wrap:wrap">
+      <a href="{{ route('dashboard.media.index', ['filter' => 'all']) }}" class="media-tab {{ $filter === 'all' ? 'active' : '' }}">All <span class="media-count">{{ $counts['all'] }}</span></a>
+      <a href="{{ route('dashboard.media.index', ['filter' => 'projects']) }}" class="media-tab {{ $filter === 'projects' ? 'active' : '' }}">Used in Projects <span class="media-count">{{ $counts['projects'] }}</span></a>
+      <a href="{{ route('dashboard.media.index', ['filter' => 'designs']) }}" class="media-tab {{ $filter === 'designs' ? 'active' : '' }}">Used in Designs <span class="media-count">{{ $counts['designs'] }}</span></a>
+      <a href="{{ route('dashboard.media.index', ['filter' => 'unused']) }}" class="media-tab {{ $filter === 'unused' ? 'active' : '' }}">Unused <span class="media-count">{{ $counts['unused'] }}</span></a>
     </div>
   </div>
 
-  @if(empty($files))
+  @if($files->isEmpty())
     <div class="empty-state">
       <div class="empty-icon">◈</div>
-      <div class="empty-title">No uploaded files yet</div>
-      <p style="margin-top:.5rem;font-size:.8rem;color:var(--dim)">Upload images above, or through Designs / project entries.</p>
+      <div class="empty-title">{{ $filter === 'all' ? 'No uploaded files yet' : 'No files in this category' }}</div>
+      <p style="margin-top:.5rem;font-size:.8rem;color:var(--dim)">
+        @if($filter === 'all')
+          Upload images above, or through Designs / project entries.
+        @else
+          Try a different filter, or <a href="{{ route('dashboard.media.index') }}">view all files</a>.
+        @endif
+      </p>
     </div>
   @else
     <div class="media-grid" id="media-grid">
@@ -101,30 +107,30 @@
       </div>
       @endforeach
     </div>
+
+    @if($files->hasPages())
+      <div style="display:flex;justify-content:center;align-items:center;gap:.4rem;margin-top:1.5rem;flex-wrap:wrap">
+        @if($files->onFirstPage())
+          <span class="btn btn-secondary btn-sm" style="opacity:.4;cursor:default">&larr; Previous</span>
+        @else
+          <a href="{{ $files->previousPageUrl() }}" class="btn btn-secondary btn-sm">&larr; Previous</a>
+        @endif
+
+        <span style="font-size:.72rem;color:var(--dim);padding:0 .5rem">Page {{ $files->currentPage() }} of {{ $files->lastPage() }}</span>
+
+        @if($files->hasMorePages())
+          <a href="{{ $files->nextPageUrl() }}" class="btn btn-secondary btn-sm">Next &rarr;</a>
+        @else
+          <span class="btn btn-secondary btn-sm" style="opacity:.4;cursor:default">Next &rarr;</span>
+        @endif
+      </div>
+    @endif
   @endif
 
 </div>
 
 @push('scripts')
 <script>
-const items = document.querySelectorAll('.media-item');
-
-function setCounts() {
-  document.getElementById('count-all').textContent      = items.length;
-  document.getElementById('count-designs').textContent  = [...items].filter(i => i.dataset.folder === 'designs').length;
-  document.getElementById('count-projects').textContent = [...items].filter(i => i.dataset.folder === 'projects').length;
-  document.getElementById('count-unused').textContent   = [...items].filter(i => i.dataset.folder === 'unused').length;
-}
-setCounts();
-
-function filterMedia(folder, btn) {
-  document.querySelectorAll('.media-tab').forEach(t => t.classList.remove('active'));
-  btn.classList.add('active');
-  items.forEach(item => {
-    item.style.display = (folder === 'all' || item.dataset.folder === folder) ? '' : 'none';
-  });
-}
-
 function previewMediaUploads(input) {
   const list = document.getElementById('media-upload-list');
   list.innerHTML = '';

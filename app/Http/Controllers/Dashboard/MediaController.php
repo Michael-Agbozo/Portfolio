@@ -7,15 +7,40 @@ use App\Models\Design;
 use App\Models\Media;
 use App\Models\Project;
 use Illuminate\Http\Request;
+use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\Storage;
 
 class MediaController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $files = $this->libraryFiles();
+        $allFiles = $this->libraryFiles();
 
-        return view('dashboard.media.index', compact('files'));
+        $counts = [
+            'all'      => count($allFiles),
+            'projects' => count(array_filter($allFiles, fn ($f) => $f['folder'] === 'projects')),
+            'designs'  => count(array_filter($allFiles, fn ($f) => $f['folder'] === 'designs')),
+            'unused'   => count(array_filter($allFiles, fn ($f) => $f['folder'] === 'unused')),
+        ];
+
+        $filter = $request->query('filter', 'all');
+        $filtered = in_array($filter, ['projects', 'designs', 'unused'], true)
+            ? array_values(array_filter($allFiles, fn ($f) => $f['folder'] === $filter))
+            : $allFiles;
+
+        $totalSize = array_sum(array_column($filtered, 'size'));
+
+        $perPage = 24;
+        $page    = max(1, (int) $request->query('page', 1));
+        $files   = new LengthAwarePaginator(
+            array_slice($filtered, ($page - 1) * $perPage, $perPage),
+            count($filtered),
+            $perPage,
+            $page,
+            ['path' => $request->url(), 'query' => $request->query()]
+        );
+
+        return view('dashboard.media.index', compact('files', 'counts', 'filter', 'totalSize'));
     }
 
     public function store(Request $request)
