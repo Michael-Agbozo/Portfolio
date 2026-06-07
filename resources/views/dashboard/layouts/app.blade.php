@@ -50,6 +50,14 @@
         @endif
       </a>
 
+      <div class="sidebar-section">System</div>
+      <a href="{{ route('dashboard.security.index') }}" class="sidebar-link {{ request()->routeIs('dashboard.security.*') ? 'active' : '' }}">
+        <span class="s-icon">🔒</span> Security
+      </a>
+      <a href="{{ route('dashboard.logs.index') }}" class="sidebar-link {{ request()->routeIs('dashboard.logs.*') ? 'active' : '' }}">
+        <span class="s-icon">⚠</span> Error Logs
+      </a>
+
       <div class="sidebar-section">Site</div>
       <a href="/" target="_blank" class="sidebar-link">
         <span class="s-icon">↗</span> View Site

@@ -1,8 +1,11 @@
 <?php
 
 use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\Auth\TwoFactorChallengeController;
+use App\Http\Controllers\Dashboard\TwoFactorController;
 use App\Http\Controllers\Dashboard\DashboardController;
 use App\Http\Controllers\Dashboard\DesignController;
+use App\Http\Controllers\Dashboard\LogController;
 use App\Http\Controllers\Dashboard\MessageController;
 use App\Http\Controllers\Dashboard\ProjectController;
 use App\Http\Controllers\PortfolioController;
@@ -19,6 +22,11 @@ Route::get('/projects/{project}', [PortfolioController::class, 'project'])->name
 Route::get('/login', [LoginController::class, 'showLogin'])->name('login')->middleware('guest');
 Route::post('/login', [LoginController::class, 'login'])->middleware(['guest', 'throttle:5,1']);
 Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
+
+Route::middleware('guest')->group(function () {
+    Route::get('/two-factor-challenge', [TwoFactorChallengeController::class, 'show'])->name('two-factor.challenge');
+    Route::post('/two-factor-challenge', [TwoFactorChallengeController::class, 'verify'])->name('two-factor.verify');
+});
 
 // Dashboard (auth required)
 Route::prefix('dashboard')->name('dashboard.')->middleware('auth')->group(function () {
@@ -43,4 +51,13 @@ Route::prefix('dashboard')->name('dashboard.')->middleware('auth')->group(functi
     Route::get('messages', [MessageController::class, 'index'])->name('messages.index');
     Route::get('messages/{message}', [MessageController::class, 'show'])->name('messages.show');
     Route::delete('messages/{message}', [MessageController::class, 'destroy'])->name('messages.destroy');
+
+    Route::get('logs', [LogController::class, 'index'])->name('logs.index');
+    Route::delete('logs', [LogController::class, 'clear'])->name('logs.clear');
+
+    Route::get('security', [TwoFactorController::class, 'show'])->name('security.index');
+    Route::post('security/enable', [TwoFactorController::class, 'enable'])->name('security.enable');
+    Route::post('security/confirm', [TwoFactorController::class, 'confirm'])->name('security.confirm');
+    Route::delete('security', [TwoFactorController::class, 'disable'])->name('security.disable');
+    Route::post('security/recovery-codes', [TwoFactorController::class, 'regenerateRecoveryCodes'])->name('security.recovery-codes');
 });

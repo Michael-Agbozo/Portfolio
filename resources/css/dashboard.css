@@ -324,6 +324,21 @@ td.td-main{color:var(--white);font-weight:500}
 .field-error{font-size:.68rem;color:#f87171;margin-top:.25rem}
 .f-input.is-error,.f-textarea.is-error{border-color:#ef4444}
 
+/* LOGS */
+.log-list{display:flex;flex-direction:column;gap:.5rem}
+.log-item{background:var(--bg3);border:1px solid var(--line);border-radius:10px;overflow:hidden}
+.log-summary{display:flex;align-items:center;gap:.7rem;width:100%;padding:.7rem .9rem;background:none;border:0;cursor:pointer;text-align:left;font-family:inherit;color:var(--text)}
+.log-summary:hover{background:var(--bg4)}
+.log-level{flex-shrink:0;font-size:.68rem;font-weight:700;letter-spacing:.04em;padding:.2rem .5rem;border-radius:6px;color:var(--white)}
+.log-level-emergency,.log-level-alert,.log-level-critical,.log-level-error{background:rgba(239,68,68,.18);color:var(--red)}
+.log-level-warning{background:rgba(232,83,26,.18);color:var(--orange)}
+.log-level-notice,.log-level-info{background:rgba(34,197,94,.16);color:var(--green)}
+.log-level-debug{background:rgba(255,255,255,.08);color:var(--muted)}
+.log-time{flex-shrink:0;font-size:.74rem;color:var(--dim);font-variant-numeric:tabular-nums}
+.log-message{flex:1;font-size:.8rem;color:var(--muted);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.log-detail{display:none;margin:0;padding:.9rem;border-top:1px solid var(--line);background:var(--bg);font-size:.74rem;line-height:1.5;color:var(--muted);white-space:pre-wrap;word-break:break-word;max-height:420px;overflow:auto}
+.log-detail.is-open{display:block}
+
 /* EMPTY STATE */
 .empty-state{text-align:center;padding:3.5rem 2rem;color:var(--dim);font-size:.83rem}
 .empty-icon{font-size:2.5rem;margin-bottom:.75rem;opacity:.3}

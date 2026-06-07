@@ -20,12 +20,27 @@ class LoginController extends Controller
             'password' => 'required',
         ]);
 
-        if (Auth::attempt($credentials, $request->boolean('remember'))) {
-            $request->session()->regenerate();
-            return redirect()->intended(route('dashboard.index'));
+        $remember = $request->boolean('remember');
+
+        if (! Auth::attempt($credentials, $remember)) {
+            return back()->withErrors(['email' => 'Invalid email or password.'])->onlyInput('email');
         }
 
-        return back()->withErrors(['email' => 'Invalid email or password.'])->onlyInput('email');
+        $user = Auth::user();
+
+        if ($user->hasTwoFactorEnabled()) {
+            // Don't fully sign them in yet — first they must enter their
+            // authenticator code on the two-factor challenge page.
+            Auth::logout();
+
+            $request->session()->put('2fa_user_id', $user->id);
+            $request->session()->put('2fa_remember', $remember);
+
+            return redirect()->route('two-factor.challenge');
+        }
+
+        $request->session()->regenerate();
+        return redirect()->intended(route('dashboard.index'));
     }
 
     public function logout(Request $request)
