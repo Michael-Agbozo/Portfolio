@@ -65,12 +65,6 @@
       @error('alt')<div class="field-error">{{ $message }}</div>@enderror
     </div>
 
-    {{-- Sort order --}}
-    <div class="form-group">
-      <label class="f-label">Sort Order</label>
-      <input class="f-input" type="number" name="sort_order" value="{{ old('sort_order', $design->sort_order) }}" placeholder="0"/>
-      <div class="f-hint">Lower number = appears first in the gallery</div>
-    </div>
   </form>
 
   <div class="form-actions">

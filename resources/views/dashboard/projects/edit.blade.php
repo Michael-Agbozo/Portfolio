@@ -30,13 +30,6 @@
       </div>
     </div>
 
-    <div class="form-grid-2">
-      <div class="form-group">
-        <label class="f-label">Sort Order</label>
-        <input class="f-input" type="number" name="sort_order" value="{{ old('sort_order', $project->sort_order) }}" placeholder="0"/>
-      </div>
-    </div>
-
     <div class="form-group">
       <label class="f-label">Title *</label>
       <input class="f-input {{ $errors->has('title') ? 'is-error' : '' }}" type="text" name="title" value="{{ old('title', $project->title) }}" placeholder="Project name"/>

@@ -22,10 +22,10 @@ class DatabaseSeeder extends Seeder
 
         if (Project::count() === 0) {
             $projects = [
-                ['num' => '01 — Featured', 'title' => 'La Necar Logistics',  'meta' => 'Brand identity design + website build for a logistics company', 'tags' => ['Brand Identity', 'WordPress', 'Web Design'], 'url' => null,                           'sort_order' => 1],
-                ['num' => '02',            'title' => 'Anha Churches',        'meta' => 'Transformed a small church\'s online presence — anhachurches.org',    'tags' => ['WordPress', 'Web Design'],               'url' => 'https://anhachurches.org',     'sort_order' => 2],
-                ['num' => '03',            'title' => 'Poetic Koncept',        'meta' => 'Creative brand website — poetickoncept.com',                           'tags' => ['WordPress', 'Brand Design'],             'url' => 'https://poetickoncept.com',    'sort_order' => 3],
-                ['num' => '04',            'title' => 'Hotto',                 'meta' => 'UI/UX design — web and mobile concept',                                'tags' => ['UI Design', 'UX', 'Mobile'],             'url' => null,                           'sort_order' => 4],
+                ['num' => '01 — Featured', 'title' => 'La Necar Logistics',  'meta' => 'Brand identity design + website build for a logistics company', 'tags' => ['Brand Identity', 'WordPress', 'Web Design'], 'url' => null],
+                ['num' => '02',            'title' => 'Anha Churches',        'meta' => 'Transformed a small church\'s online presence — anhachurches.org',    'tags' => ['WordPress', 'Web Design'],               'url' => 'https://anhachurches.org'],
+                ['num' => '03',            'title' => 'Poetic Koncept',        'meta' => 'Creative brand website — poetickoncept.com',                           'tags' => ['WordPress', 'Brand Design'],             'url' => 'https://poetickoncept.com'],
+                ['num' => '04',            'title' => 'Hotto',                 'meta' => 'UI/UX design — web and mobile concept',                                'tags' => ['UI Design', 'UX', 'Mobile'],             'url' => null],
             ];
 
             foreach ($projects as $p) {
@@ -57,8 +57,8 @@ class DatabaseSeeder extends Seeder
                 ['src' => $base.'63936a9c5b8327a4e01684af_Conviction.jpg',                             'alt' => 'Conviction'],
             ];
 
-            foreach ($designs as $i => $d) {
-                Design::create(array_merge($d, ['sort_order' => $i + 1]));
+            foreach ($designs as $d) {
+                Design::create($d);
             }
         }
     }

@@ -12,7 +12,7 @@ class DesignController extends Controller
 {
     public function index()
     {
-        $designs = Design::orderBy('sort_order')->orderBy('id')->get();
+        $designs = Design::orderBy('id', 'desc')->get();
         return view('dashboard.designs.index', compact('designs'));
     }
 
@@ -25,10 +25,9 @@ class DesignController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'image'      => 'nullable|image|max:51200',
-            'src'        => 'nullable|url|max:500',
-            'alt'        => 'required|string|max:200',
-            'sort_order' => 'nullable|integer',
+            'image' => 'nullable|image|max:51200',
+            'src'   => 'nullable|url|max:500',
+            'alt'   => 'required|string|max:200',
         ]);
 
         if (!$request->hasFile('image') && !$request->filled('src')) {
@@ -38,9 +37,8 @@ class DesignController extends Controller
         $src = $this->resolveImageSrc($request, null);
 
         Design::create([
-            'src'        => $src,
-            'alt'        => $request->alt,
-            'sort_order' => $request->sort_order ?? Design::max('sort_order') + 1,
+            'src' => $src,
+            'alt' => $request->alt,
         ]);
 
         return redirect()->route('dashboard.designs.index')->with('success', 'Design added.');
@@ -60,18 +58,16 @@ class DesignController extends Controller
     public function update(Request $request, Design $design)
     {
         $request->validate([
-            'image'      => 'nullable|image|max:51200',
-            'src'        => 'nullable|url|max:500',
-            'alt'        => 'required|string|max:200',
-            'sort_order' => 'nullable|integer',
+            'image' => 'nullable|image|max:51200',
+            'src'   => 'nullable|url|max:500',
+            'alt'   => 'required|string|max:200',
         ]);
 
         $src = $this->resolveImageSrc($request, $design);
 
         $design->update([
-            'src'        => $src,
-            'alt'        => $request->alt,
-            'sort_order' => $request->sort_order ?? $design->sort_order,
+            'src' => $src,
+            'alt' => $request->alt,
         ]);
 
         return redirect()->route('dashboard.designs.index')->with('success', 'Design updated.');

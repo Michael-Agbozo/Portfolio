@@ -12,7 +12,7 @@ class ProjectController extends Controller
 {
     public function index()
     {
-        $projects = Project::orderBy('sort_order')->orderBy('id')->get();
+        $projects = Project::orderBy('id', 'desc')->get();
         return view('dashboard.projects.index', compact('projects'));
     }
 
@@ -29,7 +29,6 @@ class ProjectController extends Controller
         $data['tags'] = $this->parseTags($data['tags'] ?? '');
         $data['feature_image'] = $this->resolveFeatureImage($request, null);
         $data['images'] = $this->resolveGalleryImages($request, $data['images'] ?? '');
-        $data['sort_order'] = $data['sort_order'] ?? 0;
 
         Project::create($data);
 
@@ -49,7 +48,6 @@ class ProjectController extends Controller
         $data['tags'] = $this->parseTags($data['tags'] ?? '');
         $data['feature_image'] = $this->resolveFeatureImage($request, $project);
         $data['images'] = $this->resolveGalleryImages($request, $data['images'] ?? '');
-        $data['sort_order'] = $data['sort_order'] ?? $project->sort_order;
 
         $project->update($data);
 
@@ -84,7 +82,6 @@ class ProjectController extends Controller
             'images'            => 'nullable|string',
             'tags'              => 'nullable|string',
             'url'               => 'nullable|url|max:300',
-            'sort_order'        => 'nullable|integer',
         ]);
     }
 

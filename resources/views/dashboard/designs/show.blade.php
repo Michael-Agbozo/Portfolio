@@ -31,10 +31,6 @@
           <div style="font-size:.85rem;color:var(--white)">{{ $design->alt ?: '—' }}</div>
         </div>
         <div>
-          <div style="font-size:.6rem;color:var(--dim);text-transform:uppercase;letter-spacing:.1em;margin-bottom:.25rem">Sort Order</div>
-          <div style="font-size:.85rem;color:var(--white)">{{ $design->sort_order }}</div>
-        </div>
-        <div>
           <div style="font-size:.6rem;color:var(--dim);text-transform:uppercase;letter-spacing:.1em;margin-bottom:.25rem">Source</div>
           <div style="font-size:.72rem;color:var(--muted);word-break:break-all">{{ $design->src }}</div>
         </div>

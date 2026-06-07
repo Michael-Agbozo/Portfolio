@@ -33,7 +33,6 @@
           <th>Description</th>
           <th>Tags</th>
           <th>URL</th>
-          <th>Order</th>
           <th>Status</th>
           <th></th>
         </tr>
@@ -63,7 +62,6 @@
               <span style="color:var(--dim)">—</span>
             @endif
           </td>
-          <td>{{ $project->sort_order }}</td>
           <td>
             <form method="POST" action="{{ route('dashboard.projects.toggle-active', $project) }}">
               @csrf @method('PATCH')

@@ -59,13 +59,6 @@
       @error('alt')<div class="field-error">{{ $message }}</div>@enderror
     </div>
 
-    {{-- Sort order --}}
-    <div class="form-group">
-      <label class="f-label">Sort Order</label>
-      <input class="f-input" type="number" name="sort_order" value="{{ old('sort_order', 0) }}" placeholder="0"/>
-      <div class="f-hint">Lower number = appears first in the gallery</div>
-    </div>
-
     <div class="form-actions">
       <button class="btn btn-primary" type="submit">Add to Gallery</button>
       <a href="{{ route('dashboard.designs.index') }}" class="btn btn-secondary">Cancel</a>

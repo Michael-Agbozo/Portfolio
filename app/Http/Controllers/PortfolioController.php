@@ -11,9 +11,9 @@ class PortfolioController extends Controller
 {
     public function home()
     {
-        $designProjects = Project::where('category', 'design')->where('active', true)->orderBy('sort_order')->orderBy('id')->get();
-        $devProjects    = Project::where('category', 'development')->where('active', true)->orderBy('sort_order')->orderBy('id')->get();
-        $designs        = Design::orderBy('sort_order')->orderBy('id')->get();
+        $designProjects = Project::where('category', 'design')->where('active', true)->orderBy('id', 'desc')->get();
+        $devProjects    = Project::where('category', 'development')->where('active', true)->orderBy('id', 'desc')->get();
+        $designs        = Design::orderBy('id', 'desc')->get();
 
         return view('home', compact('designProjects', 'devProjects', 'designs'));
     }
