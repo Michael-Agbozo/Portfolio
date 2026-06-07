@@ -16,25 +16,17 @@ class ProjectController extends Controller
 
     public function create()
     {
-        return view('dashboard.projects.create');
+        $mediaFiles = MediaController::libraryFiles();
+        return view('dashboard.projects.create', compact('mediaFiles'));
     }
 
     public function store(Request $request)
     {
-        $data = $request->validate([
-            'num'        => 'required|string|max:40',
-            'category'   => 'required|in:design,development',
-            'title'      => 'required|string|max:150',
-            'meta'       => 'nullable|string|max:300',
-            'body'       => 'nullable|string',
-            'images'     => 'nullable|string',
-            'tags'       => 'nullable|string',
-            'url'        => 'nullable|url|max:300',
-            'sort_order' => 'nullable|integer',
-        ]);
+        $data = $this->validateProject($request);
 
         $data['tags'] = $this->parseTags($data['tags'] ?? '');
-        $data['images'] = $this->parseImages($data['images'] ?? '');
+        $data['feature_image'] = $this->resolveFeatureImage($request, null);
+        $data['images'] = $this->resolveGalleryImages($request, $data['images'] ?? '');
         $data['sort_order'] = $data['sort_order'] ?? 0;
 
         Project::create($data);
@@ -44,25 +36,17 @@ class ProjectController extends Controller
 
     public function edit(Project $project)
     {
-        return view('dashboard.projects.edit', compact('project'));
+        $mediaFiles = MediaController::libraryFiles();
+        return view('dashboard.projects.edit', compact('project', 'mediaFiles'));
     }
 
     public function update(Request $request, Project $project)
     {
-        $data = $request->validate([
-            'num'        => 'required|string|max:40',
-            'category'   => 'required|in:design,development',
-            'title'      => 'required|string|max:150',
-            'meta'       => 'nullable|string|max:300',
-            'body'       => 'nullable|string',
-            'images'     => 'nullable|string',
-            'tags'       => 'nullable|string',
-            'url'        => 'nullable|url|max:300',
-            'sort_order' => 'nullable|integer',
-        ]);
+        $data = $this->validateProject($request);
 
         $data['tags'] = $this->parseTags($data['tags'] ?? '');
-        $data['images'] = $this->parseImages($data['images'] ?? '');
+        $data['feature_image'] = $this->resolveFeatureImage($request, $project);
+        $data['images'] = $this->resolveGalleryImages($request, $data['images'] ?? '');
         $data['sort_order'] = $data['sort_order'] ?? $project->sort_order;
 
         $project->update($data);
@@ -76,9 +60,65 @@ class ProjectController extends Controller
         return redirect()->route('dashboard.projects.index')->with('success', 'Project deleted.');
     }
 
+    private function validateProject(Request $request): array
+    {
+        return $request->validate([
+            'num'               => 'required|string|max:40',
+            'category'          => 'required|in:design,development',
+            'title'             => 'required|string|max:150',
+            'meta'              => 'nullable|string|max:300',
+            'body'              => 'nullable|string',
+            'feature_image_file' => 'nullable|image|max:8192',
+            'feature_image_path' => 'nullable|string|max:500',
+            'gallery_files'     => 'nullable|array',
+            'gallery_files.*'   => 'image|max:8192',
+            'images'            => 'nullable|string',
+            'tags'              => 'nullable|string',
+            'url'               => 'nullable|url|max:300',
+            'sort_order'        => 'nullable|integer',
+        ]);
+    }
+
     private function parseTags(string $raw): array
     {
         return array_values(array_filter(array_map('trim', explode(',', $raw))));
+    }
+
+    /**
+     * Feature image can come from a freshly uploaded file, a pasted URL/storage
+     * path, or a path picked from the media library (also arrives as a path).
+     */
+    private function resolveFeatureImage(Request $request, ?Project $existing): ?string
+    {
+        if ($request->hasFile('feature_image_file')) {
+            return '/storage/' . $request->file('feature_image_file')->store('projects', 'public');
+        }
+
+        $path = trim((string) $request->input('feature_image_path'));
+
+        if ($path !== '') {
+            $this->assertValidImagePath('feature_image_path', $path);
+            return $path;
+        }
+
+        return $existing?->feature_image;
+    }
+
+    /**
+     * Gallery is the union of: newly uploaded files, plus whatever lines remain
+     * in the "images" textarea (manually pasted URLs/paths or library picks
+     * appended there by the picker).
+     */
+    private function resolveGalleryImages(Request $request, string $raw): array
+    {
+        $uploaded = [];
+        foreach ($request->file('gallery_files', []) as $file) {
+            $uploaded[] = '/storage/' . $file->store('projects', 'public');
+        }
+
+        $pasted = $this->parseImages($raw);
+
+        return array_values(array_unique(array_merge($pasted, $uploaded)));
     }
 
     private function parseImages(string $raw): array
@@ -86,16 +126,21 @@ class ProjectController extends Controller
         $lines = array_values(array_filter(array_map('trim', explode("\n", $raw))));
 
         foreach ($lines as $line) {
-            $isUrl     = filter_var($line, FILTER_VALIDATE_URL) !== false;
-            $isStorage = (bool) preg_match('#^/storage/[A-Za-z0-9._/-]+$#', $line);
-
-            if (! $isUrl && ! $isStorage) {
-                throw \Illuminate\Validation\ValidationException::withMessages([
-                    'images' => "Invalid image entry: \"{$line}\" — each line must be a full image URL or a /storage/ path.",
-                ]);
-            }
+            $this->assertValidImagePath('images', $line);
         }
 
         return $lines;
+    }
+
+    private function assertValidImagePath(string $field, string $value): void
+    {
+        $isUrl     = filter_var($value, FILTER_VALIDATE_URL) !== false;
+        $isStorage = (bool) preg_match('#^/storage/[A-Za-z0-9._/-]+$#', $value);
+
+        if (! $isUrl && ! $isStorage) {
+            throw \Illuminate\Validation\ValidationException::withMessages([
+                $field => "Invalid image entry: \"{$value}\" — each must be a full image URL or a /storage/ path.",
+            ]);
+        }
     }
 }

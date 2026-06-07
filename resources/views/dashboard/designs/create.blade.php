@@ -18,8 +18,14 @@
     {{-- File upload --}}
     <div class="form-group">
       <label class="f-label">Upload Image File</label>
-      <input class="f-input" type="file" name="image" id="file-input" accept="image/*"
-        onchange="previewFile(this)" style="padding:.5rem .9rem;cursor:pointer"/>
+      <div style="display:flex;gap:.6rem;flex-wrap:wrap;align-items:center">
+        <label class="btn btn-secondary btn-sm" style="cursor:pointer">
+          ↑ Upload Image
+          <input type="file" name="image" id="file-input" accept="image/*"
+            onchange="previewFile(this)" style="display:none"/>
+        </label>
+        <button type="button" class="btn btn-secondary btn-sm" onclick="openMediaPicker('design')">◈ Choose from Library</button>
+      </div>
       @error('image')<div class="field-error">{{ $message }}</div>@enderror
       <div class="f-hint">JPG, PNG, WEBP — max 8 MB</div>
     </div>
@@ -67,6 +73,8 @@
   </form>
 </div>
 
+@include('dashboard.partials._media-picker')
+
 @push('scripts')
 <script>
 function previewFile(input) {
@@ -91,6 +99,12 @@ function previewUrl(url) {
   } else {
     wrap.style.display = 'none';
   }
+}
+
+function setDesignImageFromPath(path) {
+  document.getElementById('file-input').value = '';
+  document.getElementById('src-input').value = path;
+  previewUrl(path);
 }
 </script>
 @endpush

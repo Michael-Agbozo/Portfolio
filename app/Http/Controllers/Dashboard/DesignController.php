@@ -17,7 +17,8 @@ class DesignController extends Controller
 
     public function create()
     {
-        return view('dashboard.designs.create');
+        $mediaFiles = MediaController::libraryFiles();
+        return view('dashboard.designs.create', compact('mediaFiles'));
     }
 
     public function store(Request $request)
@@ -51,7 +52,8 @@ class DesignController extends Controller
 
     public function edit(Design $design)
     {
-        return view('dashboard.designs.edit', compact('design'));
+        $mediaFiles = MediaController::libraryFiles();
+        return view('dashboard.designs.edit', compact('design', 'mediaFiles'));
     }
 
     public function update(Request $request, Design $design)

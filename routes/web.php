@@ -35,6 +35,8 @@ Route::prefix('dashboard')->name('dashboard.')->middleware('auth')->group(functi
     Route::delete('designs/{design}', [DesignController::class, 'destroy'])->name('designs.destroy');
 
     Route::get('media', [\App\Http\Controllers\Dashboard\MediaController::class, 'index'])->name('media.index');
+    Route::post('media', [\App\Http\Controllers\Dashboard\MediaController::class, 'store'])->name('media.store');
+    Route::patch('media/{filename}', [\App\Http\Controllers\Dashboard\MediaController::class, 'update'])->name('media.update')->where('filename', '.*');
     Route::delete('media/{filename}', [\App\Http\Controllers\Dashboard\MediaController::class, 'destroy'])->name('media.destroy')->where('filename', '.*');
 
     Route::get('messages', [MessageController::class, 'index'])->name('messages.index');

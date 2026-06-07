@@ -6,6 +6,13 @@
 
   <a href="/#work" class="text-muted text-[.75rem] uppercase tracking-widest hover:text-orange transition-colors">← Back to Portfolio</a>
 
+  @if($project->feature_image)
+    <div class="mt-8 rounded-2xl overflow-hidden border border-border">
+      <img src="{{ $project->feature_image }}" alt="{{ $project->title }}" loading="lazy"
+           class="w-full h-auto block"/>
+    </div>
+  @endif
+
   <div class="mt-10 pb-10 border-b border-border">
     <div class="inline-flex items-center gap-2 border border-border rounded-full px-3 py-1 text-[.7rem] text-muted uppercase tracking-widest mb-4">
       <span class="w-[5px] h-[5px] rounded-full bg-orange"></span> Project

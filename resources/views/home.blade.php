@@ -229,7 +229,7 @@
 
   <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 reveal" id="work-grid">
     @foreach($allProjects as $project)
-    @php $thumb = $project->images[0] ?? null; @endphp
+    @php $thumb = $project->feature_image ?: ($project->images[0] ?? null); @endphp
     <a href="{{ route('project.show', $project) }}" data-category="{{ $project->category }}"
        class="work-card group bg-bg2 border border-border rounded-2xl overflow-hidden flex flex-col
               hover:border-orange hover:-translate-y-1 hover:shadow-[0_12px_40px_rgba(0,0,0,.5)]

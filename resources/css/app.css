@@ -30,7 +30,7 @@
   --color-white:   #0c0c0c;
 }
 html, body, nav, footer, section, div, a, span, h1, h2, h3, p, button {
-  transition: background-color .35s ease, border-color .35s ease, color .35s ease;
+  transition: background-color .5s ease, border-color .5s ease, color .5s ease;
 }
 
 /* ─── Global image baseline ─────────────────────── */
@@ -44,17 +44,17 @@ img {
 .reveal {
   opacity: 0;
   transform: translateY(20px);
-  transition: opacity .7s ease, transform .7s ease;
+  transition: opacity .9s cubic-bezier(.16,1,.3,1), transform .9s cubic-bezier(.16,1,.3,1);
 }
 .reveal.on { opacity: 1; transform: translateY(0); }
 
 /* ─── Ticker ─────────────────────────────────────── */
-.ticker-track { animation: ticker-scroll 24s linear infinite; }
+.ticker-track { animation: ticker-scroll 36s linear infinite; }
 @keyframes ticker-scroll {
   from { transform: translateX(0); }
   to   { transform: translateX(-50%); }
 }
-.ticker-track-reverse { animation: ticker-scroll-reverse 30s linear infinite; }
+.ticker-track-reverse { animation: ticker-scroll-reverse 44s linear infinite; }
 @keyframes ticker-scroll-reverse {
   from { transform: translateX(-50%); }
   to   { transform: translateX(0); }
@@ -67,7 +67,7 @@ img {
 }
 .hero-line {
   opacity: 0;
-  animation: hero-fade-up .9s cubic-bezier(.16,1,.3,1) forwards;
+  animation: hero-fade-up 1.2s cubic-bezier(.16,1,.3,1) forwards;
 }
 @keyframes hero-pop-in {
   from { opacity: 0; transform: scale(.82); }
@@ -75,19 +75,19 @@ img {
 }
 .hero-pop {
   opacity: 0;
-  animation: hero-pop-in .85s cubic-bezier(.16,1,.3,1) forwards;
+  animation: hero-pop-in 1.15s cubic-bezier(.16,1,.3,1) forwards;
 }
 @keyframes hero-float {
   0%, 100% { transform: translateY(0); }
   50%      { transform: translateY(-14px); }
 }
-.hero-photo-float { animation: hero-float 5.5s ease-in-out infinite; }
+.hero-photo-float { animation: hero-float 7s ease-in-out infinite; }
 
 @keyframes hero-spin {
   to { transform: rotate(360deg); }
 }
-.hero-ring-spin     { animation: hero-spin 50s linear infinite; }
-.hero-ring-spin-rev { animation: hero-spin 70s linear infinite reverse; }
+.hero-ring-spin     { animation: hero-spin 65s linear infinite; }
+.hero-ring-spin-rev { animation: hero-spin 90s linear infinite reverse; }
 
 /* ─── Hero glow ──────────────────────────────────── */
 .hero-glow {
@@ -151,7 +151,7 @@ img {
   visibility: hidden;
   display: flex; align-items: center; justify-content: center;
   padding: 2rem;
-  transition: background .3s ease, visibility .3s;
+  transition: background .5s ease, visibility .5s;
 }
 .lightbox.active {
   background: rgba(0,0,0,.93);
@@ -161,7 +161,7 @@ img {
   display: flex; flex-direction: column; align-items: center; gap: 1rem;
   max-width: min(90vw, 960px); width: 100%;
   opacity: 0; transform: scale(.94) translateY(12px);
-  transition: opacity .35s ease, transform .35s ease;
+  transition: opacity .55s cubic-bezier(.16,1,.3,1), transform .55s cubic-bezier(.16,1,.3,1);
 }
 .lightbox.active .lightbox-inner { opacity: 1; transform: scale(1) translateY(0); }
 .lightbox-inner img {
