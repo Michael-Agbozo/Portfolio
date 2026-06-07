@@ -56,6 +56,13 @@ class ProjectController extends Controller
         return redirect()->route('dashboard.projects.index')->with('success', 'Project updated.');
     }
 
+    public function toggleActive(Project $project)
+    {
+        $project->update(['active' => ! $project->active]);
+
+        return back()->with('success', $project->active ? 'Project marked active.' : 'Project marked inactive.');
+    }
+
     public function destroy(Project $project)
     {
         $project->delete();

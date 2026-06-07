@@ -25,6 +25,7 @@ Route::prefix('dashboard')->name('dashboard.')->middleware('auth')->group(functi
     Route::get('/', [DashboardController::class, 'index'])->name('index');
 
     Route::resource('projects', ProjectController::class)->except(['show']);
+    Route::patch('projects/{project}/toggle-active', [ProjectController::class, 'toggleActive'])->name('projects.toggle-active');
 
     Route::get('designs', [DesignController::class, 'index'])->name('designs.index');
     Route::get('designs/create', [DesignController::class, 'create'])->name('designs.create');

@@ -348,6 +348,17 @@
 </div>
 </section>
 
+{{-- ─── WORK CTA BANNER ──────────────────────────────────── --}}
+<div class="max-w-[1280px] mx-auto px-12 py-12">
+  <div class="reveal flex flex-col sm:flex-row items-center justify-between gap-5 bg-bg2 border border-border rounded-[2rem] px-8 sm:px-10 py-7">
+    <p class="font-display font-extrabold text-white text-[1.15rem] sm:text-[1.3rem]">Lemme Work on your next project</p>
+    <div class="flex flex-wrap items-center gap-3">
+      <a href="tel:0248581824" class="bg-white text-black text-[.85rem] font-medium px-6 py-3 rounded-full hover:scale-[1.04] active:scale-95 transition-all duration-200 whitespace-nowrap">Lets Talk: 0248581824</a>
+      <a href="mailto:agbozomykell8@gmail.com" class="border border-white/40 text-white text-[.85rem] font-medium px-6 py-3 rounded-full hover:border-white hover:scale-[1.04] active:scale-95 transition-all duration-200 whitespace-nowrap">Email me via: agbozomykell8@gmail.com</a>
+    </div>
+  </div>
+</div>
+
 {{-- ─── CONTACT ──────────────────────────────────────────── --}}
 <section class="py-24" id="contact">
 <div class="max-w-[1280px] mx-auto px-12">

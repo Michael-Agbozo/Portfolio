@@ -34,6 +34,7 @@
           <th>Tags</th>
           <th>URL</th>
           <th>Order</th>
+          <th>Status</th>
           <th></th>
         </tr>
       </thead>
@@ -64,13 +65,30 @@
           </td>
           <td>{{ $project->sort_order }}</td>
           <td>
-            <div class="td-actions">
-              <a href="{{ route('project.show', $project) }}" target="_blank" class="btn btn-ghost btn-sm" title="View on site">↗</a>
-              <a href="{{ route('dashboard.projects.edit', $project) }}" class="btn btn-secondary btn-sm">Edit</a>
-              <form method="POST" action="{{ route('dashboard.projects.destroy', $project) }}" onsubmit="return confirm('Delete this project?')">
-                @csrf @method('DELETE')
-                <button class="btn btn-danger btn-sm" type="submit">Delete</button>
-              </form>
+            <form method="POST" action="{{ route('dashboard.projects.toggle-active', $project) }}">
+              @csrf @method('PATCH')
+              <button type="submit" class="status-toggle {{ $project->active ? 'is-active' : 'is-inactive' }}" title="Click to mark {{ $project->active ? 'inactive' : 'active' }}">
+                <span class="dot"></span> {{ $project->active ? 'Active' : 'Inactive' }}
+              </button>
+            </form>
+          </td>
+          <td>
+            <div class="action-menu" data-action-menu>
+              <button type="button" class="action-menu-btn" onclick="toggleActionMenu(this)" aria-label="Actions">⋯</button>
+              <div class="action-menu-dropdown">
+                <a href="{{ route('project.show', $project) }}" target="_blank" class="action-menu-item">
+                  <span class="icon">↗</span> View on site
+                </a>
+                <a href="{{ route('dashboard.projects.edit', $project) }}" class="action-menu-item">
+                  <span class="icon">✎</span> Edit
+                </a>
+                <form method="POST" action="{{ route('dashboard.projects.destroy', $project) }}" onsubmit="return confirm('Delete this project?')">
+                  @csrf @method('DELETE')
+                  <button type="submit" class="action-menu-item is-danger">
+                    <span class="icon">✕</span> Delete
+                  </button>
+                </form>
+              </div>
             </div>
           </td>
         </tr>
@@ -79,5 +97,22 @@
     </table>
   @endif
 </div>
+
+@push('scripts')
+<script>
+function toggleActionMenu(btn) {
+  const menu = btn.closest('[data-action-menu]');
+  const wasOpen = menu.classList.contains('is-open');
+  document.querySelectorAll('[data-action-menu].is-open').forEach(m => m.classList.remove('is-open'));
+  if (!wasOpen) menu.classList.add('is-open');
+}
+
+document.addEventListener('click', function (e) {
+  if (!e.target.closest('[data-action-menu]')) {
+    document.querySelectorAll('[data-action-menu].is-open').forEach(m => m.classList.remove('is-open'));
+  }
+});
+</script>
+@endpush
 
 @endsection
