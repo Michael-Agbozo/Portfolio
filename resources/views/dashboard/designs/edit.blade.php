@@ -14,7 +14,7 @@
 <div class="form-card" style="max-width:740px">
   <div class="form-section-label">Edit Design</div>
 
-  <form method="POST" action="{{ route('dashboard.designs.update', $design) }}" enctype="multipart/form-data">
+  <form id="design-edit-form" method="POST" action="{{ route('dashboard.designs.update', $design) }}" enctype="multipart/form-data">
     @csrf
     @method('PUT')
 
@@ -71,17 +71,17 @@
       <input class="f-input" type="number" name="sort_order" value="{{ old('sort_order', $design->sort_order) }}" placeholder="0"/>
       <div class="f-hint">Lower number = appears first in the gallery</div>
     </div>
-
-    <div class="form-actions">
-      <button class="btn btn-primary" type="submit">Save Changes</button>
-      <a href="{{ route('dashboard.designs.show', $design) }}" class="btn btn-secondary">Cancel</a>
-      <form method="POST" action="{{ route('dashboard.designs.destroy', $design) }}"
-        onsubmit="return confirm('Permanently delete this design?')" style="margin-left:auto">
-        @csrf @method('DELETE')
-        <button class="btn btn-danger" type="submit">Delete</button>
-      </form>
-    </div>
   </form>
+
+  <div class="form-actions">
+    <button class="btn btn-primary" type="submit" form="design-edit-form">Save Changes</button>
+    <a href="{{ route('dashboard.designs.show', $design) }}" class="btn btn-secondary">Cancel</a>
+    <form method="POST" action="{{ route('dashboard.designs.destroy', $design) }}"
+      onsubmit="return confirm('Permanently delete this design?')" style="margin-left:auto">
+      @csrf @method('DELETE')
+      <button class="btn btn-danger" type="submit">Delete</button>
+    </form>
+  </div>
 </div>
 
 @include('dashboard.partials._media-picker')
