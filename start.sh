@@ -4,8 +4,12 @@ chmod -R 777 /app/storage /app/bootstrap/cache
 php artisan migrate --force
 php artisan config:cache
 php artisan route:cache
-find / -name "php-fpm.conf" 2>/dev/null
-php-fpm -y /assets/php-fpm.conf -D
+php-fpm -y /assets/php-fpm.conf -D 2>/tmp/php-fpm-error.log
 sleep 1
-pgrep -x php-fpm > /dev/null && echo "php-fpm is running" || echo "php-fpm FAILED to start"
+if pgrep -x php-fpm > /dev/null; then
+  echo "php-fpm is running"
+else
+  echo "php-fpm FAILED to start -- error output:"
+  cat /tmp/php-fpm-error.log
+fi
 nginx -c /app/nginx.conf
