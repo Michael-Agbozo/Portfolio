@@ -20,6 +20,11 @@ class PortfolioController extends Controller
 
     public function project(Project $project)
     {
+        // The "Active/Inactive" toggle in the dashboard is meant to hide a
+        // project from the public site entirely — without this check, an
+        // "inactive" project would still be reachable by its direct URL.
+        abort_unless($project->active, 404);
+
         return view('project', compact('project'));
     }
 

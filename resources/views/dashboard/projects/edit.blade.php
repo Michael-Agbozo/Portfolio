@@ -112,7 +112,7 @@
   <div class="form-actions">
     <button class="btn btn-primary" type="submit" form="project-edit-form">Update Project</button>
     <a href="{{ route('dashboard.projects.index') }}" class="btn btn-secondary">Cancel</a>
-    <form method="POST" action="{{ route('dashboard.projects.destroy', $project) }}" onsubmit="return confirm('Delete this project?')" style="margin-left:auto">
+    <form method="POST" action="{{ route('dashboard.projects.destroy', $project) }}" onsubmit="return confirmDelete(event, this, 'This project and its images will be permanently removed.', 'Delete this project?')" style="margin-left:auto">
       @csrf @method('DELETE')
       <button class="btn btn-danger" type="submit">Delete Project</button>
     </form>

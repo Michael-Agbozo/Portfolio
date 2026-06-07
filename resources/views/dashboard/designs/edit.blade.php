@@ -51,7 +51,7 @@
     {{-- Or paste a URL --}}
     <div class="form-group">
       <label class="f-label">— or replace with an image URL</label>
-      <input class="f-input {{ $errors->has('src') ? 'is-error' : '' }}" type="url" name="src"
+      <input class="f-input {{ $errors->has('src') ? 'is-error' : '' }}" type="text" name="src"
         value="{{ old('src') }}" placeholder="https://cdn.example.com/image.jpg" id="url-input" oninput="previewUrl(this.value)"/>
       @error('src')<div class="field-error">{{ $message }}</div>@enderror
       <div class="f-hint">Paste a direct image URL. Leave blank to keep the current image.</div>
@@ -71,7 +71,7 @@
     <button class="btn btn-primary" type="submit" form="design-edit-form">Save Changes</button>
     <a href="{{ route('dashboard.designs.show', $design) }}" class="btn btn-secondary">Cancel</a>
     <form method="POST" action="{{ route('dashboard.designs.destroy', $design) }}"
-      onsubmit="return confirm('Permanently delete this design?')" style="margin-left:auto">
+      onsubmit="return confirmDelete(event, this, 'This design and its image will be permanently removed.', 'Delete this design?')" style="margin-left:auto">
       @csrf @method('DELETE')
       <button class="btn btn-danger" type="submit">Delete</button>
     </form>

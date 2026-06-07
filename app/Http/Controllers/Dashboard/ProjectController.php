@@ -144,10 +144,7 @@ class ProjectController extends Controller
 
     private function assertValidImagePath(string $field, string $value): void
     {
-        $isUrl     = filter_var($value, FILTER_VALIDATE_URL) !== false;
-        $isStorage = (bool) preg_match('#^/storage/[A-Za-z0-9._/-]+$#', $value);
-
-        if (! $isUrl && ! $isStorage) {
+        if (! \App\Support\ImagePathValidator::isValid($value)) {
             throw \Illuminate\Validation\ValidationException::withMessages([
                 $field => "Invalid image entry: \"{$value}\" — each must be a full image URL or a /storage/ path.",
             ]);

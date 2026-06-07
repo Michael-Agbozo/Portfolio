@@ -33,7 +33,7 @@
         <div class="design-item-actions">
           <a href="{{ route('dashboard.designs.show', $design) }}" class="btn btn-ghost btn-sm" title="View">View</a>
           <a href="{{ route('dashboard.designs.edit', $design) }}" class="btn btn-secondary btn-sm">Edit</a>
-          <form method="POST" action="{{ route('dashboard.designs.destroy', $design) }}" onsubmit="return confirm('Remove this design?')" style="margin:0">
+          <form method="POST" action="{{ route('dashboard.designs.destroy', $design) }}" onsubmit="return confirmDelete(event, this, 'This design and its image will be permanently removed.', 'Delete this design?')" style="margin:0">
             @csrf @method('DELETE')
             <button class="btn btn-danger btn-sm" type="submit">Delete</button>
           </form>

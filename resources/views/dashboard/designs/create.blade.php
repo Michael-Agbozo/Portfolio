@@ -46,7 +46,7 @@
     {{-- URL input --}}
     <div class="form-group">
       <label class="f-label">Image URL</label>
-      <input class="f-input {{ $errors->has('src') ? 'is-error' : '' }}" type="url" name="src" id="src-input"
+      <input class="f-input {{ $errors->has('src') ? 'is-error' : '' }}" type="text" name="src" id="src-input"
         value="{{ old('src') }}" placeholder="https://cdn.example.com/image.jpg" oninput="previewUrl(this.value)"/>
       @error('src')<div class="field-error">{{ $message }}</div>@enderror
     </div>

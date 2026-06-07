@@ -44,7 +44,7 @@
     <div style="display:flex;flex-direction:column;gap:.5rem">
       <a href="{{ route('dashboard.designs.edit', $design) }}" class="btn btn-primary" style="justify-content:center">Edit Design</a>
       <a href="{{ $design->src }}" target="_blank" rel="noopener" class="btn btn-secondary" style="justify-content:center">Open Full Image ↗</a>
-      <form method="POST" action="{{ route('dashboard.designs.destroy', $design) }}" onsubmit="return confirm('Permanently delete this design?')">
+      <form method="POST" action="{{ route('dashboard.designs.destroy', $design) }}" onsubmit="return confirmDelete(event, this, 'This design and its image will be permanently removed.', 'Delete this design?')">
         @csrf @method('DELETE')
         <button class="btn btn-danger" type="submit" style="width:100%;justify-content:center">Delete</button>
       </form>

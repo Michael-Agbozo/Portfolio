@@ -7,6 +7,10 @@
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+{{-- Paint the dark background immediately, before the stylesheet finishes
+     loading — otherwise the browser shows a plain white page for a moment
+     on every dashboard page load/refresh. --}}
+<style>html,body{background:#0c0c0c}</style>
 @vite(['resources/css/dashboard.css'])
 @stack('head')
 </head>
@@ -94,6 +98,33 @@
   </div>
 
 </div>
+
+@include('dashboard.partials._confirm-modal')
+
+<script>
+  // Stop double-clicking Save/Upload/Delete from sending the same request twice
+  // (e.g. uploading the same photo to a project two times).
+  document.addEventListener('submit', function (e) {
+    const form = e.target;
+
+    // A confirm-modal form fires submit once (prevented, to show the dialog) and
+    // again when actually confirmed — only guard the real, un-prevented attempt.
+    if (e.defaultPrevented) return;
+
+    if (form.dataset.submitGuarded === 'done') {
+      e.preventDefault();
+      return;
+    }
+    form.dataset.submitGuarded = 'done';
+
+    form.querySelectorAll('button[type="submit"]').forEach(function (btn) {
+      btn.disabled = true;
+      btn.dataset.originalText = btn.textContent;
+      btn.textContent = btn.dataset.busyText || 'Please wait…';
+    });
+  });
+</script>
+
 @stack('scripts')
 </body>
 </html>

@@ -41,7 +41,7 @@
   <div class="msg-detail-actions">
     <a href="mailto:{{ $message->email }}?subject=Re: {{ urlencode($message->subject) }}" class="btn btn-primary">Reply via Email</a>
     <a href="{{ route('dashboard.messages.index') }}" class="btn btn-secondary">← Back</a>
-    <form method="POST" action="{{ route('dashboard.messages.destroy', $message) }}" onsubmit="return confirm('Delete this message?')" style="margin-left:auto">
+    <form method="POST" action="{{ route('dashboard.messages.destroy', $message) }}" onsubmit="return confirmDelete(event, this, 'This message will be permanently removed from your inbox.', 'Delete this message?')" style="margin-left:auto">
       @csrf @method('DELETE')
       <button class="btn btn-danger" type="submit">Delete</button>
     </form>

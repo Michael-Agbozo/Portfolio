@@ -26,7 +26,7 @@ class DesignController extends Controller
     {
         $request->validate([
             'image' => 'nullable|image|max:51200',
-            'src'   => 'nullable|url|max:500',
+            'src'   => ['nullable', 'string', 'max:500', $this->validImageSrc()],
             'alt'   => 'required|string|max:200',
         ]);
 
@@ -59,7 +59,7 @@ class DesignController extends Controller
     {
         $request->validate([
             'image' => 'nullable|image|max:51200',
-            'src'   => 'nullable|url|max:500',
+            'src'   => ['nullable', 'string', 'max:500', $this->validImageSrc()],
             'alt'   => 'required|string|max:200',
         ]);
 
@@ -96,6 +96,19 @@ class DesignController extends Controller
         }
 
         return $existing?->src ?? '';
+    }
+
+    /**
+     * "Choose from Library" fills the URL field with a /storage/... path
+     * rather than a full https:// link, so accept either form here.
+     */
+    private function validImageSrc(): \Closure
+    {
+        return function (string $attribute, mixed $value, \Closure $fail) {
+            if (! \App\Support\ImagePathValidator::isValid($value)) {
+                $fail('Please enter a full image URL or pick one from the library.');
+            }
+        };
     }
 
     private function deleteLocalFile(string $src): void

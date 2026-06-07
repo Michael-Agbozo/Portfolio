@@ -80,7 +80,7 @@
                 <a href="{{ route('dashboard.projects.edit', $project) }}" class="action-menu-item">
                   <span class="icon">✎</span> Edit
                 </a>
-                <form method="POST" action="{{ route('dashboard.projects.destroy', $project) }}" onsubmit="return confirm('Delete this project?')">
+                <form method="POST" action="{{ route('dashboard.projects.destroy', $project) }}" onsubmit="return confirmDelete(event, this, 'This project and its images will be permanently removed.', 'Delete this project?')">
                   @csrf @method('DELETE')
                   <button type="submit" class="action-menu-item is-danger">
                     <span class="icon">✕</span> Delete

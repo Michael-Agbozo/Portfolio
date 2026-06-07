@@ -314,7 +314,7 @@
     <div class="design-item overflow-hidden rounded-[10px] relative cursor-pointer bg-bg3 group"
          data-page="{{ intdiv($loop->index, $perPage) + 1 }}"
          onclick="openLightbox('{{ $design->src }}', '{{ addslashes($design->alt) }}')">
-      <img src="{{ $design->src }}" alt="{{ $design->alt }}" loading="lazy"
+      <img src="{{ $design->src }}" alt="{{ $design->alt }}" loading="lazy" decoding="async"
            class="transition-transform duration-500 group-hover:scale-[1.08]"/>
       <div class="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300
                   flex items-center justify-center"
@@ -350,11 +350,31 @@
 
 {{-- ─── WORK CTA BANNER ──────────────────────────────────── --}}
 <div class="max-w-[1280px] mx-auto px-12 py-12">
-  <div class="reveal flex flex-col sm:flex-row items-center justify-between gap-5 bg-bg2 border border-border rounded-[2rem] px-8 sm:px-10 py-7">
-    <p class="font-display font-extrabold text-white text-[1.15rem] sm:text-[1.3rem]">Lemme Work on your next project</p>
-    <div class="flex flex-wrap items-center gap-3">
-      <a href="tel:0248581824" class="bg-white text-black text-[.85rem] font-medium px-6 py-3 rounded-full hover:scale-[1.04] active:scale-95 transition-all duration-200 whitespace-nowrap">Lets Talk: 0248581824</a>
-      <a href="mailto:agbozomykell8@gmail.com" class="border border-white/40 text-white text-[.85rem] font-medium px-6 py-3 rounded-full hover:border-white hover:scale-[1.04] active:scale-95 transition-all duration-200 whitespace-nowrap">Email me via: agbozomykell8@gmail.com</a>
+  <div class="reveal relative overflow-hidden flex flex-col lg:flex-row items-center justify-between gap-7 bg-bg2 border border-border rounded-[2rem] px-8 sm:px-12 py-10">
+    <div class="absolute -top-24 -right-16 w-72 h-72 bg-orange/10 rounded-full blur-[100px] pointer-events-none"></div>
+
+    <div class="relative text-center lg:text-left">
+      <p class="inline-flex items-center gap-2 text-orange text-[.7rem] font-semibold uppercase tracking-[0.2em] mb-3">
+        <span class="w-1.5 h-1.5 rounded-full bg-orange"></span> Open for new work
+      </p>
+      <p class="font-display font-extrabold text-white text-[1.5rem] sm:text-[1.9rem] leading-[1.2]">Lemme work on your next project</p>
+    </div>
+
+    <div class="relative flex flex-col sm:flex-row flex-wrap items-center justify-center gap-3">
+      <a href="tel:0248581824"
+         class="inline-flex items-center gap-2.5 bg-white text-black text-[.85rem] font-semibold px-6 py-3.5 rounded-full hover:scale-[1.04] active:scale-95 transition-all duration-200 whitespace-nowrap">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.36 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"/>
+        </svg>
+        Lets Talk: 0248581824
+      </a>
+      <a href="mailto:agbozomykell8@gmail.com"
+         class="inline-flex items-center gap-2.5 border border-white/30 text-white text-[.85rem] font-semibold px-6 py-3.5 rounded-full hover:border-white hover:bg-white/5 hover:scale-[1.04] active:scale-95 transition-all duration-200 whitespace-nowrap">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-10 5L2 7"/>
+        </svg>
+        Email me via: agbozomykell8@gmail.com
+      </a>
     </div>
   </div>
 </div>

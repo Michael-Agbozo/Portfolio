@@ -72,7 +72,7 @@
             <button class="media-action-btn media-copy-btn" title="Copy link" onclick="copyUrl('{{ $file['url'] }}', this)">⎘</button>
             <button type="button" class="media-action-btn" title="Rename / edit alt text" onclick="toggleMediaEdit('{{ $loop->index }}')">✎</button>
             <form method="POST" action="{{ route('dashboard.media.destroy', ltrim($file['path'], '/')) }}"
-              onsubmit="return confirm('Delete {{ $file['name'] }}? This cannot be undone.')" style="margin:0">
+              onsubmit="return confirmDelete(event, this, 'This file will be permanently removed and can\'t be recovered.', 'Delete this file?')" style="margin:0">
               @csrf @method('DELETE')
               <button class="media-action-btn media-delete-btn" type="submit" title="Delete">✕</button>
             </form>

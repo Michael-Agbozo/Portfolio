@@ -41,7 +41,7 @@ class ImageCompressor
         // PHP-FPM resets ini_set() changes back to their configured values at
         // the end of every request, and trying to restore it here ourselves
         // raises a "can't lower limit below current usage" error instead.
-        ini_set('memory_limit', '512M');
+        ini_set('memory_limit', '1024M');
 
         $source = match ($type) {
             IMAGETYPE_JPEG => @imagecreatefromjpeg($absolutePath),

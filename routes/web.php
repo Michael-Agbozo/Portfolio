@@ -10,14 +10,14 @@ use Illuminate\Support\Facades\Route;
 
 // Public portfolio
 Route::get('/', [PortfolioController::class, 'home']);
-Route::post('/contact', [PortfolioController::class, 'sendContact'])->name('contact.send');
+Route::post('/contact', [PortfolioController::class, 'sendContact'])->middleware('throttle:5,1')->name('contact.send');
 
 // Public project detail
 Route::get('/projects/{project}', [PortfolioController::class, 'project'])->name('project.show');
 
 // Auth
 Route::get('/login', [LoginController::class, 'showLogin'])->name('login')->middleware('guest');
-Route::post('/login', [LoginController::class, 'login'])->middleware('guest');
+Route::post('/login', [LoginController::class, 'login'])->middleware(['guest', 'throttle:5,1']);
 Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 
 // Dashboard (auth required)
