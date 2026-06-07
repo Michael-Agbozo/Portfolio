@@ -27,7 +27,7 @@
         <button type="button" class="btn btn-secondary btn-sm" onclick="openMediaPicker('design')">◈ Choose from Library</button>
       </div>
       @error('image')<div class="field-error">{{ $message }}</div>@enderror
-      <div class="f-hint">JPG, PNG, WEBP — max 8 MB</div>
+      <div class="f-hint">JPG, PNG, WEBP — max 25 MB</div>
     </div>
 
     {{-- Preview --}}
