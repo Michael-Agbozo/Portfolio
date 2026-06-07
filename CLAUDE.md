@@ -104,6 +104,7 @@ The user has **no background in software development or IT**. Always:
 ## Rules Claude Must Follow
 
 ### Safety
+- **Never delete the `main` or `dev` branches, locally or on GitHub** — these are the project's permanent working branches. Don't run `git branch -d`/`-D` or `git push origin --delete` on them, under any circumstances, even if asked to "clean up" branches.
 - **Never delete database migrations** — they are the history of the database structure.
 - **Never run `php artisan migrate:fresh` or `migrate:reset`** without explicitly confirming with the user first. These wipe all data.
 - **Never commit `.env`** — it contains passwords and secret keys.
@@ -117,6 +118,8 @@ The user has **no background in software development or IT**. Always:
 
 ### Git
 - Commit often with short, clear messages describing what changed in plain English.
+- **Day-to-day work happens on `dev`, not `main`.** Make commits and changes on `dev`.
+- **Nothing merges into `main` directly — only `dev` may be merged into `main`.** Never commit straight to `main`, never merge a feature/other branch into `main`, and never merge `main` into anything else as a way of bringing changes in. The only path into `main` is merging `dev` into it (when the user asks for that).
 - Never force-push to `main`.
 - Never commit files from `vendor/`, `node_modules/`, or `.env`.
 

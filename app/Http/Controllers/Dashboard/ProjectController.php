@@ -29,6 +29,7 @@ class ProjectController extends Controller
         $data['tags'] = $this->parseTags($data['tags'] ?? '');
         $data['feature_image'] = $this->resolveFeatureImage($request, null);
         $data['images'] = $this->resolveGalleryImages($request, $data['images'] ?? '');
+        $data['slug'] = $this->uniqueSlug($data['title'], null);
 
         Project::create($data);
 
@@ -48,6 +49,10 @@ class ProjectController extends Controller
         $data['tags'] = $this->parseTags($data['tags'] ?? '');
         $data['feature_image'] = $this->resolveFeatureImage($request, $project);
         $data['images'] = $this->resolveGalleryImages($request, $data['images'] ?? '');
+
+        if ($data['title'] !== $project->title) {
+            $data['slug'] = $this->uniqueSlug($data['title'], $project);
+        }
 
         $project->update($data);
 
@@ -83,6 +88,27 @@ class ProjectController extends Controller
             'tags'              => 'nullable|string',
             'url'               => 'nullable|url|max:300',
         ]);
+    }
+
+    /**
+     * Build a URL-friendly slug from the title (e.g. "Emefs Foods" -> "emefs-foods"),
+     * adding "-2", "-3", etc. if another project already uses that slug.
+     */
+    private function uniqueSlug(string $title, ?Project $ignore): string
+    {
+        $base = \Illuminate\Support\Str::slug($title) ?: 'project';
+        $slug = $base;
+        $suffix = 2;
+
+        while (
+            Project::where('slug', $slug)
+                ->when($ignore, fn ($query) => $query->whereKeyNot($ignore->id))
+                ->exists()
+        ) {
+            $slug = $base.'-'.$suffix++;
+        }
+
+        return $slug;
     }
 
     private function parseTags(string $raw): array

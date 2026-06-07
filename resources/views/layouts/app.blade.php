@@ -40,7 +40,7 @@
 
     <div class="flex items-center gap-3">
       <button id="theme-toggle" type="button" aria-label="Toggle light/dark mode"
-              class="inline-flex items-center gap-2 h-9 pl-3 pr-3.5 rounded-full border border-border bg-bg2 text-muted text-[.74rem] font-medium tracking-wide hover:border-white hover:text-white hover:bg-bg3 active:scale-95 transition-all duration-200">
+              class="cursor-pointer w-9 h-9 flex items-center justify-center rounded-full border border-border bg-bg2 text-muted hover:border-white hover:text-white hover:bg-bg3 active:scale-95 transition-all duration-200">
         <svg id="theme-icon-moon" width="15" height="15" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
           <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
         </svg>
@@ -48,7 +48,6 @@
           <circle cx="12" cy="12" r="4"/>
           <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/>
         </svg>
-        <span id="theme-toggle-label">Dark</span>
       </button>
       <a href="/cv/michael-agbozo-cv.pdf" download
          class="hidden md:inline-flex border border-border text-muted text-[.76rem] font-medium tracking-wide px-4 py-2 rounded-full hover:border-white hover:text-white transition-all">
@@ -161,14 +160,12 @@
     [document.getElementById('theme-icon-moon'),        document.getElementById('theme-icon-sun')],
     [document.getElementById('theme-icon-moon-mobile'), document.getElementById('theme-icon-sun-mobile')],
   ];
-  const themeLabel = document.getElementById('theme-toggle-label');
   function syncThemeIcons() {
     const isLight = document.documentElement.classList.contains('light');
     themeIcons.forEach(([moon, sun]) => {
       moon.classList.toggle('hidden', isLight);
       sun.classList.toggle('hidden', !isLight);
     });
-    if (themeLabel) themeLabel.textContent = isLight ? 'Light' : 'Dark';
   }
   function toggleTheme() {
     document.documentElement.classList.toggle('light');

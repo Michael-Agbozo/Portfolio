@@ -1,4 +1,7 @@
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+/* Show a hand cursor on anything clickable, so it's obvious at a glance */
+a,button,[role="button"],summary,label[for]{cursor:pointer}
+button:disabled,[role="button"][aria-disabled="true"]{cursor:not-allowed}
 :root{
   --bg:#0c0c0c;
   --bg2:#141414;
@@ -180,7 +183,7 @@ td.td-main{color:var(--white);font-weight:500}
 }
 .action-menu-btn:hover,.action-menu.is-open .action-menu-btn{color:var(--white);border-color:var(--muted)}
 .action-menu-dropdown{
-  display:none;position:absolute;top:calc(100% + .4rem);right:0;z-index:40;
+  display:none;position:fixed;z-index:9999;
   min-width:160px;background:var(--bg3);border:1px solid var(--line);border-radius:10px;
   box-shadow:0 12px 32px rgba(0,0,0,.45);overflow:hidden;padding:.35rem;
 }

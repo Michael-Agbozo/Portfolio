@@ -2,6 +2,14 @@
 
 @source '../../resources/views/**/*.blade.php';
 
+/* Show a hand cursor on anything clickable, so it's obvious at a glance */
+a, button, [role="button"], summary, label[for] {
+  cursor: pointer;
+}
+button:disabled, [role="button"][aria-disabled="true"] {
+  cursor: not-allowed;
+}
+
 @theme {
   --color-bg:      #0c0c0c;
   --color-bg2:     #141414;

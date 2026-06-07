@@ -98,18 +98,38 @@
 
 @push('scripts')
 <script>
+function closeActionMenus() {
+  document.querySelectorAll('[data-action-menu].is-open').forEach(m => m.classList.remove('is-open'));
+}
+
 function toggleActionMenu(btn) {
   const menu = btn.closest('[data-action-menu]');
+  const dropdown = menu.querySelector('.action-menu-dropdown');
   const wasOpen = menu.classList.contains('is-open');
-  document.querySelectorAll('[data-action-menu].is-open').forEach(m => m.classList.remove('is-open'));
-  if (!wasOpen) menu.classList.add('is-open');
+
+  closeActionMenus();
+  if (wasOpen) return;
+
+  menu.classList.add('is-open');
+
+  // Position the menu relative to the button itself (not the table row),
+  // so it floats above the table instead of overlapping the rows below it.
+  const rect = btn.getBoundingClientRect();
+  const dropdownHeight = dropdown.offsetHeight;
+  const opensUpward = (window.innerHeight - rect.bottom) < (dropdownHeight + 12) && rect.top > dropdownHeight;
+
+  dropdown.style.top = opensUpward
+    ? (rect.top - dropdownHeight - 6) + 'px'
+    : (rect.bottom + 6) + 'px';
+  dropdown.style.right = (window.innerWidth - rect.right) + 'px';
+  dropdown.style.left = 'auto';
 }
 
 document.addEventListener('click', function (e) {
-  if (!e.target.closest('[data-action-menu]')) {
-    document.querySelectorAll('[data-action-menu].is-open').forEach(m => m.classList.remove('is-open'));
-  }
+  if (!e.target.closest('[data-action-menu]')) closeActionMenus();
 });
+window.addEventListener('scroll', closeActionMenus, true);
+window.addEventListener('resize', closeActionMenus);
 </script>
 @endpush
 
