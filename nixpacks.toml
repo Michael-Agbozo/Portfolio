@@ -1,2 +1,6 @@
 [phases.setup]
 cmds = ["mkdir -p /var/log/nginx"]
+
+[variables]
+IS_LARAVEL = ""
+NIXPACKS_PHP_FALLBACK_PATH = ""
