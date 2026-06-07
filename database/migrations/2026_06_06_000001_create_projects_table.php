@@ -13,7 +13,7 @@ return new class extends Migration
             $table->string('num')->default('');
             $table->string('title');
             $table->string('meta')->default('');
-            $table->json('tags')->default('[]');
+            $table->json('tags')->nullable();
             $table->string('url')->nullable();
             $table->integer('sort_order')->default(0);
             $table->timestamps();
