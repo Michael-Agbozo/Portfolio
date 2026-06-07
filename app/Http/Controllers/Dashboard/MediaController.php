@@ -39,7 +39,7 @@ class MediaController extends Controller
     {
         $path = ltrim($filename, '/');
 
-        if (!str_starts_with($path, 'designs/') && !str_starts_with($path, 'projects/')) {
+        if (str_contains($path, '..') || !preg_match('#^(designs|projects)/[A-Za-z0-9._-]+$#', $path)) {
             abort(403);
         }
 

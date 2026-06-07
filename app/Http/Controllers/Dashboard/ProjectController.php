@@ -34,7 +34,7 @@ class ProjectController extends Controller
         ]);
 
         $data['tags'] = $this->parseTags($data['tags'] ?? '');
-        $data['images'] = $this->parseLines($data['images'] ?? '');
+        $data['images'] = $this->parseImages($data['images'] ?? '');
         $data['sort_order'] = $data['sort_order'] ?? 0;
 
         Project::create($data);
@@ -62,7 +62,7 @@ class ProjectController extends Controller
         ]);
 
         $data['tags'] = $this->parseTags($data['tags'] ?? '');
-        $data['images'] = $this->parseLines($data['images'] ?? '');
+        $data['images'] = $this->parseImages($data['images'] ?? '');
         $data['sort_order'] = $data['sort_order'] ?? $project->sort_order;
 
         $project->update($data);
@@ -81,8 +81,21 @@ class ProjectController extends Controller
         return array_values(array_filter(array_map('trim', explode(',', $raw))));
     }
 
-    private function parseLines(string $raw): array
+    private function parseImages(string $raw): array
     {
-        return array_values(array_filter(array_map('trim', explode("\n", $raw))));
+        $lines = array_values(array_filter(array_map('trim', explode("\n", $raw))));
+
+        foreach ($lines as $line) {
+            $isUrl     = filter_var($line, FILTER_VALIDATE_URL) !== false;
+            $isStorage = (bool) preg_match('#^/storage/[A-Za-z0-9._/-]+$#', $line);
+
+            if (! $isUrl && ! $isStorage) {
+                throw \Illuminate\Validation\ValidationException::withMessages([
+                    'images' => "Invalid image entry: \"{$line}\" — each line must be a full image URL or a /storage/ path.",
+                ]);
+            }
+        }
+
+        return $lines;
     }
 }
