@@ -4,7 +4,9 @@ namespace App\Http\Controllers\Dashboard;
 
 use App\Http\Controllers\Controller;
 use App\Models\Project;
+use App\Support\ImageCompressor;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class ProjectController extends Controller
 {
@@ -91,7 +93,9 @@ class ProjectController extends Controller
     private function resolveFeatureImage(Request $request, ?Project $existing): ?string
     {
         if ($request->hasFile('feature_image_file')) {
-            return '/storage/' . $request->file('feature_image_file')->store('projects', 'public');
+            $path = $request->file('feature_image_file')->store('projects', 'public');
+            ImageCompressor::compress(Storage::disk('public')->path($path));
+            return '/storage/' . $path;
         }
 
         $path = trim((string) $request->input('feature_image_path'));
@@ -113,7 +117,9 @@ class ProjectController extends Controller
     {
         $uploaded = [];
         foreach ($request->file('gallery_files', []) as $file) {
-            $uploaded[] = '/storage/' . $file->store('projects', 'public');
+            $path = $file->store('projects', 'public');
+            ImageCompressor::compress(Storage::disk('public')->path($path));
+            $uploaded[] = '/storage/' . $path;
         }
 
         $pasted = $this->parseImages($raw);

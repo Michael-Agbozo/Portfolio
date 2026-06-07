@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Dashboard;
 
 use App\Http\Controllers\Controller;
 use App\Models\Design;
+use App\Support\ImageCompressor;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
@@ -90,6 +91,7 @@ class DesignController extends Controller
                 $this->deleteLocalFile($existing->src);
             }
             $path = $request->file('image')->store('designs', 'public');
+            ImageCompressor::compress(Storage::disk('public')->path($path));
             return '/storage/' . $path;
         }
 

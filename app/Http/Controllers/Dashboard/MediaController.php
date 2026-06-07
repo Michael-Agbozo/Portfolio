@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Design;
 use App\Models\Media;
 use App\Models\Project;
+use App\Support\ImageCompressor;
 use Illuminate\Http\Request;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\Storage;
@@ -51,7 +52,8 @@ class MediaController extends Controller
         ]);
 
         foreach ($request->file('files') as $file) {
-            $file->store('media', 'public');
+            $path = $file->store('media', 'public');
+            ImageCompressor::compress(Storage::disk('public')->path($path));
         }
 
         $count = count($request->file('files'));
