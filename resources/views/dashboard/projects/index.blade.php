@@ -29,6 +29,7 @@
         <tr>
           <th>#</th>
           <th>Title</th>
+          <th>Category</th>
           <th>Description</th>
           <th>Tags</th>
           <th>URL</th>
@@ -41,6 +42,13 @@
         <tr>
           <td style="color:var(--orange);font-size:.72rem;font-family:'Syne',sans-serif;font-weight:700;white-space:nowrap">{{ $project->num }}</td>
           <td class="td-main">{{ $project->title }}</td>
+          <td>
+            @if($project->category === 'design')
+              <span class="tag" style="color:var(--orange);border-color:rgba(232,83,26,.3)">Design</span>
+            @else
+              <span class="tag" style="color:#60a5fa;border-color:rgba(96,165,250,.3)">Dev</span>
+            @endif
+          </td>
           <td style="max-width:260px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ $project->meta }}</td>
           <td>
             @foreach($project->tags ?? [] as $tag)
@@ -57,6 +65,7 @@
           <td>{{ $project->sort_order }}</td>
           <td>
             <div class="td-actions">
+              <a href="{{ route('project.show', $project) }}" target="_blank" class="btn btn-ghost btn-sm" title="View on site">↗</a>
               <a href="{{ route('dashboard.projects.edit', $project) }}" class="btn btn-secondary btn-sm">Edit</a>
               <form method="POST" action="{{ route('dashboard.projects.destroy', $project) }}" onsubmit="return confirm('Delete this project?')">
                 @csrf @method('DELETE')

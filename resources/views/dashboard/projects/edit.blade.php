@@ -22,6 +22,16 @@
         @error('num')<div class="field-error">{{ $message }}</div>@enderror
       </div>
       <div class="form-group">
+        <label class="f-label">Category *</label>
+        <select class="f-select" name="category">
+          <option value="design"      {{ old('category', $project->category) === 'design'      ? 'selected' : '' }}>Design & Branding</option>
+          <option value="development" {{ old('category', $project->category) === 'development'  ? 'selected' : '' }}>Development</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="form-grid-2">
+      <div class="form-group">
         <label class="f-label">Sort Order</label>
         <input class="f-input" type="number" name="sort_order" value="{{ old('sort_order', $project->sort_order) }}" placeholder="0"/>
       </div>
@@ -39,9 +49,21 @@
     </div>
 
     <div class="form-group">
+      <label class="f-label">Full Description</label>
+      <textarea class="f-textarea" name="body" placeholder="Write a detailed description of this project…" style="min-height:200px">{{ old('body', $project->body) }}</textarea>
+      <div class="f-hint">This appears on the project's detail page when someone clicks to read more</div>
+    </div>
+
+    <div class="form-group">
       <label class="f-label">Tags</label>
       <input class="f-input" type="text" name="tags" value="{{ old('tags', implode(', ', $project->tags ?? [])) }}" placeholder="Brand Identity, WordPress"/>
       <div class="f-hint">Separate tags with commas</div>
+    </div>
+
+    <div class="form-group">
+      <label class="f-label">Project Images</label>
+      <textarea class="f-textarea" name="images" placeholder="/storage/projects/my-image.jpg" style="min-height:100px">{{ old('images', implode("\n", $project->images ?? [])) }}</textarea>
+      <div class="f-hint">One image path per line. These show as a gallery on the project detail page.</div>
     </div>
 
     <div class="form-group">

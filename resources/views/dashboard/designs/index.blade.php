@@ -27,11 +27,15 @@
     <div class="design-grid-mgmt">
       @foreach($designs as $design)
       <div class="design-mgmt-item">
-        <img src="{{ $design->src }}" alt="{{ $design->alt }}" loading="lazy"/>
-        <div class="design-item-overlay">
-          <form method="POST" action="{{ route('dashboard.designs.destroy', $design) }}" onsubmit="return confirm('Remove this design?')">
+        <a href="{{ route('dashboard.designs.show', $design) }}">
+          <img src="{{ $design->src }}" alt="{{ $design->alt }}" loading="lazy"/>
+        </a>
+        <div class="design-item-actions">
+          <a href="{{ route('dashboard.designs.show', $design) }}" class="btn btn-ghost btn-sm" title="View">View</a>
+          <a href="{{ route('dashboard.designs.edit', $design) }}" class="btn btn-secondary btn-sm">Edit</a>
+          <form method="POST" action="{{ route('dashboard.designs.destroy', $design) }}" onsubmit="return confirm('Remove this design?')" style="margin:0">
             @csrf @method('DELETE')
-            <button class="btn btn-danger btn-sm" type="submit">Remove</button>
+            <button class="btn btn-danger btn-sm" type="submit">Delete</button>
           </form>
         </div>
         <div class="design-item-alt">{{ $design->alt ?: '—' }}</div>

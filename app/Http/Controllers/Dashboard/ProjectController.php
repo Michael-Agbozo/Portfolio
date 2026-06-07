@@ -23,14 +23,18 @@ class ProjectController extends Controller
     {
         $data = $request->validate([
             'num'        => 'required|string|max:40',
+            'category'   => 'required|in:design,development',
             'title'      => 'required|string|max:150',
             'meta'       => 'nullable|string|max:300',
+            'body'       => 'nullable|string',
+            'images'     => 'nullable|string',
             'tags'       => 'nullable|string',
             'url'        => 'nullable|url|max:300',
             'sort_order' => 'nullable|integer',
         ]);
 
         $data['tags'] = $this->parseTags($data['tags'] ?? '');
+        $data['images'] = $this->parseLines($data['images'] ?? '');
         $data['sort_order'] = $data['sort_order'] ?? 0;
 
         Project::create($data);
@@ -47,14 +51,18 @@ class ProjectController extends Controller
     {
         $data = $request->validate([
             'num'        => 'required|string|max:40',
+            'category'   => 'required|in:design,development',
             'title'      => 'required|string|max:150',
             'meta'       => 'nullable|string|max:300',
+            'body'       => 'nullable|string',
+            'images'     => 'nullable|string',
             'tags'       => 'nullable|string',
             'url'        => 'nullable|url|max:300',
             'sort_order' => 'nullable|integer',
         ]);
 
         $data['tags'] = $this->parseTags($data['tags'] ?? '');
+        $data['images'] = $this->parseLines($data['images'] ?? '');
         $data['sort_order'] = $data['sort_order'] ?? $project->sort_order;
 
         $project->update($data);
@@ -71,5 +79,10 @@ class ProjectController extends Controller
     private function parseTags(string $raw): array
     {
         return array_values(array_filter(array_map('trim', explode(',', $raw))));
+    }
+
+    private function parseLines(string $raw): array
+    {
+        return array_values(array_filter(array_map('trim', explode("\n", $raw))));
     }
 }

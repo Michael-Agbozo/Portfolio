@@ -22,7 +22,7 @@
 
     <nav class="sidebar-nav">
       <div class="sidebar-section">Main</div>
-      <a href="{{ route('dashboard') }}" class="sidebar-link {{ request()->routeIs('dashboard') ? 'active' : '' }}">
+      <a href="{{ route('dashboard.index') }}" class="sidebar-link {{ request()->routeIs('dashboard.index') ? 'active' : '' }}">
         <span class="s-icon">◈</span> Overview
       </a>
 
@@ -32,6 +32,10 @@
       </a>
       <a href="{{ route('dashboard.designs.index') }}" class="sidebar-link {{ request()->routeIs('dashboard.designs.*') ? 'active' : '' }}">
         <span class="s-icon">◈</span> Designs
+      </a>
+
+      <a href="{{ route('dashboard.media.index') }}" class="sidebar-link {{ request()->routeIs('dashboard.media.*') ? 'active' : '' }}">
+        <span class="s-icon">◨</span> Media
       </a>
 
       <div class="sidebar-section">Inbox</div>
@@ -70,7 +74,7 @@
         <div class="dash-page-title">@yield('page-title', 'Dashboard')</div>
         @hasSection('breadcrumb')
         <div class="dash-breadcrumb">
-          <a href="{{ route('dashboard') }}">Home</a>
+          <a href="{{ route('dashboard.index') }}">Home</a>
           <span class="dash-breadcrumb-sep">/</span>
           @yield('breadcrumb')
         </div>

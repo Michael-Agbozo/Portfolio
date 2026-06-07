@@ -12,6 +12,9 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', [PortfolioController::class, 'home']);
 Route::post('/contact', [PortfolioController::class, 'sendContact'])->name('contact.send');
 
+// Public project detail
+Route::get('/projects/{project}', [PortfolioController::class, 'project'])->name('project.show');
+
 // Auth
 Route::get('/login', [LoginController::class, 'showLogin'])->name('login')->middleware('guest');
 Route::post('/login', [LoginController::class, 'login'])->middleware('guest');
@@ -19,14 +22,20 @@ Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 
 // Dashboard (auth required)
 Route::prefix('dashboard')->name('dashboard.')->middleware('auth')->group(function () {
-    Route::get('/', [DashboardController::class, 'index'])->name('');
+    Route::get('/', [DashboardController::class, 'index'])->name('index');
 
     Route::resource('projects', ProjectController::class)->except(['show']);
 
     Route::get('designs', [DesignController::class, 'index'])->name('designs.index');
     Route::get('designs/create', [DesignController::class, 'create'])->name('designs.create');
     Route::post('designs', [DesignController::class, 'store'])->name('designs.store');
+    Route::get('designs/{design}', [DesignController::class, 'show'])->name('designs.show');
+    Route::get('designs/{design}/edit', [DesignController::class, 'edit'])->name('designs.edit');
+    Route::post('designs/{design}', [DesignController::class, 'update'])->name('designs.update');
     Route::delete('designs/{design}', [DesignController::class, 'destroy'])->name('designs.destroy');
+
+    Route::get('media', [\App\Http\Controllers\Dashboard\MediaController::class, 'index'])->name('media.index');
+    Route::delete('media/{filename}', [\App\Http\Controllers\Dashboard\MediaController::class, 'destroy'])->name('media.destroy')->where('filename', '.*');
 
     Route::get('messages', [MessageController::class, 'index'])->name('messages.index');
     Route::get('messages/{message}', [MessageController::class, 'show'])->name('messages.show');

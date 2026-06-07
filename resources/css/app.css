@@ -1,9 +1,171 @@
 @import 'tailwindcss';
 
-@source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
-@source '../../storage/framework/views/*.php';
+@source '../../resources/views/**/*.blade.php';
 
 @theme {
-    --font-sans: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
-        'Segoe UI Symbol', 'Noto Color Emoji';
+  --color-bg:      #0c0c0c;
+  --color-bg2:     #141414;
+  --color-bg3:     #1a1a1a;
+  --color-bg4:     #222222;
+  --color-border:  #2a2a2a;
+  --color-muted:   #888888;
+  --color-dim:     #555555;
+  --color-orange:  #e8531a;
+  --color-orange2: #ff6b35;
+  --color-white:   #ffffff;
+
+  --font-sans:    'Inter', ui-sans-serif, system-ui, sans-serif;
+  --font-display: 'Syne', ui-sans-serif, system-ui, sans-serif;
+}
+
+/* ─── Light mode override ────────────────────────── */
+:root.light {
+  --color-bg:      #ffffff;
+  --color-bg2:     #f6f6f7;
+  --color-bg3:     #ececee;
+  --color-bg4:     #e1e1e4;
+  --color-border:  #e2e2e5;
+  --color-muted:   #6b6b70;
+  --color-dim:     #a3a3a8;
+  --color-white:   #0c0c0c;
+}
+html, body, nav, footer, section, div, a, span, h1, h2, h3, p, button {
+  transition: background-color .35s ease, border-color .35s ease, color .35s ease;
+}
+
+/* ─── Global image baseline ─────────────────────── */
+img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+/* ─── Scroll reveal ─────────────────────────────── */
+.reveal {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity .7s ease, transform .7s ease;
+}
+.reveal.on { opacity: 1; transform: translateY(0); }
+
+/* ─── Ticker ─────────────────────────────────────── */
+.ticker-track { animation: ticker-scroll 24s linear infinite; }
+@keyframes ticker-scroll {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+.ticker-track-reverse { animation: ticker-scroll-reverse 30s linear infinite; }
+@keyframes ticker-scroll-reverse {
+  from { transform: translateX(-50%); }
+  to   { transform: translateX(0); }
+}
+
+/* ─── Hero entrance animations ───────────────────── */
+@keyframes hero-fade-up {
+  from { opacity: 0; transform: translateY(28px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.hero-line {
+  opacity: 0;
+  animation: hero-fade-up .9s cubic-bezier(.16,1,.3,1) forwards;
+}
+@keyframes hero-pop-in {
+  from { opacity: 0; transform: scale(.82); }
+  to   { opacity: 1; transform: scale(1); }
+}
+.hero-pop {
+  opacity: 0;
+  animation: hero-pop-in .85s cubic-bezier(.16,1,.3,1) forwards;
+}
+@keyframes hero-float {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(-14px); }
+}
+.hero-photo-float { animation: hero-float 5.5s ease-in-out infinite; }
+
+@keyframes hero-spin {
+  to { transform: rotate(360deg); }
+}
+.hero-ring-spin     { animation: hero-spin 50s linear infinite; }
+.hero-ring-spin-rev { animation: hero-spin 70s linear infinite reverse; }
+
+/* ─── Hero glow ──────────────────────────────────── */
+.hero-glow {
+  position: absolute; inset: 0;
+  background:
+    radial-gradient(ellipse 60% 50% at 50% 35%, rgba(232,83,26,.22), transparent 70%),
+    radial-gradient(circle at 85% 85%, rgba(255,255,255,.05), transparent 50%);
+  pointer-events: none;
+}
+.hero-grid-pattern {
+  position: absolute; inset: 0;
+  background-image:
+    linear-gradient(rgba(255,255,255,.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,.04) 1px, transparent 1px);
+  background-size: 42px 42px;
+  -webkit-mask-image: radial-gradient(ellipse 70% 70% at 50% 40%, #000 40%, transparent 75%);
+          mask-image: radial-gradient(ellipse 70% 70% at 50% 40%, #000 40%, transparent 75%);
+  pointer-events: none;
+}
+
+/* ─── Design grid — masonry, natural image ratios ── */
+.design-grid {
+  columns: 4;
+  column-gap: .5rem;
+}
+.design-item {
+  break-inside: avoid;
+  display: inline-block; /* fixes overflow-hidden + columns clipping bug */
+  width: 100%;
+  margin-bottom: .5rem;
+}
+.design-item img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+@media (max-width: 900px)  { .design-grid { columns: 3; } }
+@media (max-width: 600px)  { .design-grid { columns: 2; column-gap: .3rem; } }
+@media (max-width: 600px)  { .design-item { margin-bottom: .3rem; } }
+
+/* ─── Work filter buttons ────────────────────────── */
+.work-filter-btn {
+  background: transparent;
+  border-color: var(--color-border);
+  color: var(--color-muted);
+}
+.work-filter-btn:hover {
+  border-color: var(--color-white);
+  color: var(--color-white);
+}
+.work-filter-btn.active {
+  background: var(--color-orange);
+  border-color: var(--color-orange);
+  color: #fff;
+}
+
+/* ─── Lightbox ───────────────────────────────────── */
+.lightbox {
+  position: fixed; inset: 0; z-index: 9999;
+  background: rgba(0,0,0,0);
+  visibility: hidden;
+  display: flex; align-items: center; justify-content: center;
+  padding: 2rem;
+  transition: background .3s ease, visibility .3s;
+}
+.lightbox.active {
+  background: rgba(0,0,0,.93);
+  visibility: visible;
+}
+.lightbox-inner {
+  display: flex; flex-direction: column; align-items: center; gap: 1rem;
+  max-width: min(90vw, 960px); width: 100%;
+  opacity: 0; transform: scale(.94) translateY(12px);
+  transition: opacity .35s ease, transform .35s ease;
+}
+.lightbox.active .lightbox-inner { opacity: 1; transform: scale(1) translateY(0); }
+.lightbox-inner img {
+  max-width: 100%; max-height: 80vh;
+  object-fit: contain; border-radius: 10px; display: block;
+  box-shadow: 0 30px 80px rgba(0,0,0,.7), 0 0 0 1px rgba(255,255,255,.06);
 }

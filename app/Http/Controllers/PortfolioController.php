@@ -11,10 +11,16 @@ class PortfolioController extends Controller
 {
     public function home()
     {
-        $projects = Project::orderBy('sort_order')->orderBy('id')->get();
-        $designs  = Design::orderBy('sort_order')->orderBy('id')->get();
+        $designProjects = Project::where('category', 'design')->orderBy('sort_order')->orderBy('id')->get();
+        $devProjects    = Project::where('category', 'development')->orderBy('sort_order')->orderBy('id')->get();
+        $designs        = Design::orderBy('sort_order')->orderBy('id')->get();
 
-        return view('home', compact('projects', 'designs'));
+        return view('home', compact('designProjects', 'devProjects', 'designs'));
+    }
+
+    public function project(Project $project)
+    {
+        return view('project', compact('project'));
     }
 
     public function sendContact(Request $request)
