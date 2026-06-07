@@ -19,7 +19,7 @@
              onchange="previewMediaUploads(this)" style="padding:.5rem .9rem;cursor:pointer"/>
       @error('files')<div class="field-error">{{ $message }}</div>@enderror
       @error('files.*')<div class="field-error">{{ $message }}</div>@enderror
-      <div class="f-hint">Select multiple — JPG, PNG, WEBP, GIF — max 25 MB each. Once uploaded, pick them from the library anywhere — on a Project or a Design.</div>
+      <div class="f-hint">Select multiple — JPG, PNG, WEBP, GIF — max 50 MB each. Once uploaded, pick them from the library anywhere — on a Project or a Design.</div>
     </div>
 
     <div id="media-upload-list" style="margin-bottom:1rem"></div>

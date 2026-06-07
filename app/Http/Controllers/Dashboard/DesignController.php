@@ -25,7 +25,7 @@ class DesignController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'image'      => 'nullable|image|max:25600',
+            'image'      => 'nullable|image|max:51200',
             'src'        => 'nullable|url|max:500',
             'alt'        => 'required|string|max:200',
             'sort_order' => 'nullable|integer',
@@ -60,7 +60,7 @@ class DesignController extends Controller
     public function update(Request $request, Design $design)
     {
         $request->validate([
-            'image'      => 'nullable|image|max:25600',
+            'image'      => 'nullable|image|max:51200',
             'src'        => 'nullable|url|max:500',
             'alt'        => 'required|string|max:200',
             'sort_order' => 'nullable|integer',

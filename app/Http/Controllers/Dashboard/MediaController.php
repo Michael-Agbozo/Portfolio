@@ -48,7 +48,7 @@ class MediaController extends Controller
     {
         $request->validate([
             'files'     => 'required|array|min:1',
-            'files.*'   => 'image|max:25600',
+            'files.*'   => 'image|max:51200',
         ]);
 
         foreach ($request->file('files') as $file) {
