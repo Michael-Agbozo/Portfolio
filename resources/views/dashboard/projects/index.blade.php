@@ -40,29 +40,31 @@
       <tbody>
         @foreach($projects as $project)
         <tr>
-          <td style="color:var(--orange);font-size:.72rem;font-family:'Syne',sans-serif;font-weight:700;white-space:nowrap">{{ $project->num }}</td>
-          <td class="td-main">{{ $project->title }}</td>
-          <td>
+          <td data-label="#" style="color:var(--orange);font-size:.72rem;font-family:'Syne',sans-serif;font-weight:700;white-space:nowrap">{{ $project->num }}</td>
+          <td data-label="Title" class="td-main">{{ $project->title }}</td>
+          <td data-label="Category">
             @if($project->category === 'design')
               <span class="tag" style="color:var(--orange);border-color:rgba(232,83,26,.3)">Design</span>
             @else
               <span class="tag" style="color:#60a5fa;border-color:rgba(96,165,250,.3)">Dev</span>
             @endif
           </td>
-          <td style="max-width:260px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ $project->meta }}</td>
-          <td>
-            @foreach($project->tags ?? [] as $tag)
-              <span class="tag">{{ $tag }}</span>
-            @endforeach
+          <td data-label="Description" class="td-truncate">{{ $project->meta }}</td>
+          <td data-label="Tags">
+            <span class="td-tags">
+              @foreach($project->tags ?? [] as $tag)
+                <span class="tag">{{ $tag }}</span>
+              @endforeach
+            </span>
           </td>
-          <td>
+          <td data-label="URL">
             @if($project->url)
               <a href="{{ $project->url }}" target="_blank" style="color:var(--orange);font-size:.75rem">↗ link</a>
             @else
               <span style="color:var(--dim)">—</span>
             @endif
           </td>
-          <td>
+          <td data-label="Status">
             <form method="POST" action="{{ route('dashboard.projects.toggle-active', $project) }}">
               @csrf @method('PATCH')
               <button type="submit" class="status-toggle {{ $project->active ? 'is-active' : 'is-inactive' }}" title="Click to mark {{ $project->active ? 'inactive' : 'active' }}">
@@ -70,7 +72,7 @@
               </button>
             </form>
           </td>
-          <td>
+          <td data-label="">
             <div class="action-menu" data-action-menu>
               <button type="button" class="action-menu-btn" onclick="toggleActionMenu(this)" aria-label="Actions">⋯</button>
               <div class="action-menu-dropdown">

@@ -118,6 +118,7 @@ a{text-decoration:none;color:inherit}
 
 /* STATS */
 .stat-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1rem;margin-bottom:2rem}
+.overview-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.25rem}
 .stat-card{
   background:var(--bg2);border:1px solid var(--line);border-radius:12px;
   padding:1.4rem;transition:border-color .4s;
@@ -170,6 +171,8 @@ tr:last-child td{border-bottom:none}
 tbody tr{transition:background .25s}
 tbody tr:hover{background:rgba(255,255,255,.02)}
 td.td-main{color:var(--white);font-weight:500}
+td.td-truncate{max-width:260px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.td-tags{display:inline-flex;flex-wrap:wrap;gap:.1rem;justify-content:flex-end}
 .tag{
   display:inline-block;
   font-size:.62rem;background:var(--bg4);border:1px solid var(--line);
@@ -228,6 +231,18 @@ td.td-main{color:var(--white);font-weight:500}
   margin-bottom:1.25rem;padding-bottom:.65rem;border-bottom:1px solid var(--line);
   font-weight:500;
 }
+/* SETTINGS TABS — sub-navigation between the Settings pages (Profile, Security) */
+.settings-tabs{display:flex;gap:.3rem;margin-bottom:1.5rem;border-bottom:1px solid var(--line)}
+.settings-tab{
+  display:inline-flex;align-items:center;gap:.5rem;
+  padding:.7rem 1.15rem;font-size:.78rem;font-weight:500;color:var(--muted);
+  border-bottom:2px solid transparent;margin-bottom:-1px;transition:color .25s,border-color .25s;
+}
+.settings-tab span{opacity:.7;font-size:.85rem}
+.settings-tab:hover{color:var(--white)}
+.settings-tab.active{color:var(--white);border-color:var(--orange)}
+.settings-tab.active span{opacity:1}
+
 .form-grid-2{display:grid;grid-template-columns:1fr 1fr;gap:1.1rem}
 .form-group{display:flex;flex-direction:column;gap:.35rem;margin-bottom:1rem}
 .form-group:last-child{margin-bottom:0}
@@ -503,10 +518,38 @@ td.td-main{color:var(--white);font-weight:500}
   .dash-content{padding:1.25rem}
 
   .stat-grid{grid-template-columns:repeat(2,1fr)}
+  .overview-grid{grid-template-columns:1fr}
   .form-grid-2{grid-template-columns:1fr}
 
-  .table-wrap{overflow-x:auto}
-  table{min-width:560px}
+  /* Tables become a stack of cards instead of scrolling sideways — each row
+     turns into its own card, and each cell prints its column header as a label
+     (via the data-label attribute) so the data still reads clearly. */
+  .table-wrap{overflow-x:visible}
+  table,thead,tbody,th,tr,td{display:block;width:auto}
+  thead{position:absolute;left:-9999px;top:-9999px}
+
+  .table-wrap table{padding:.9rem}
+  tbody tr{
+    background:var(--bg3);border:1px solid var(--line);border-radius:10px;
+    padding:.4rem 1rem;margin-bottom:.8rem;
+  }
+  tbody tr:last-child{margin-bottom:0}
+  tbody tr:hover{background:var(--bg3)}
+
+  td{
+    display:flex;align-items:center;justify-content:space-between;gap:1rem;
+    padding:.6rem 0;border-bottom:1px solid var(--line);text-align:right;
+  }
+  tr td:last-child{border-bottom:none}
+  td::before{
+    content:attr(data-label);
+    font-size:.62rem;color:var(--dim);text-transform:uppercase;letter-spacing:.1em;
+    font-weight:500;flex-shrink:0;text-align:left;
+  }
+  td[data-label=""]{justify-content:flex-end}
+  td[data-label=""]::before{content:none}
+  td.td-truncate{max-width:none;white-space:normal;overflow:visible;text-overflow:clip;text-align:right}
+  td .action-menu{margin-left:auto}
 
   .msg-item{grid-template-columns:10px 1fr;align-items:start}
   .msg-meta{grid-column:2;text-align:left;display:flex;align-items:center;gap:.6rem;margin-top:.35rem}

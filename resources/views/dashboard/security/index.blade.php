@@ -1,10 +1,16 @@
 @extends('dashboard.layouts.app')
 
-@section('title', 'Security')
-@section('page-title', 'Security')
-@section('breadcrumb') Security @endsection
+@section('title', 'Settings — Security')
+@section('page-title', 'Settings')
+@section('breadcrumb')
+  <a href="{{ route('dashboard.profile.show') }}">Settings</a>
+  <span class="dash-breadcrumb-sep">/</span>
+  Security
+@endsection
 
 @section('content')
+
+@include('dashboard.settings._tabs')
 
 <div class="card" style="max-width:640px">
   <h3 style="font-family:'Syne',sans-serif;font-size:1rem;margin:0 0 .4rem">Two-factor authentication</h3>

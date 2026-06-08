@@ -32,7 +32,7 @@
   </div>
 </div>
 
-<div style="display:grid;grid-template-columns:1fr 1fr;gap:1.25rem">
+<div class="overview-grid">
 
   <!-- Recent Messages -->
   <div class="card">

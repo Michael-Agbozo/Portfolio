@@ -58,11 +58,8 @@
       </a>
 
       <div class="sidebar-section">System</div>
-      <a href="{{ route('dashboard.profile.show') }}" class="sidebar-link {{ request()->routeIs('dashboard.profile.*') ? 'active' : '' }}">
-        <span class="s-icon">◌</span> Profile
-      </a>
-      <a href="{{ route('dashboard.security.index') }}" class="sidebar-link {{ request()->routeIs('dashboard.security.*') ? 'active' : '' }}">
-        <span class="s-icon">🔒</span> Security
+      <a href="{{ route('dashboard.profile.show') }}" class="sidebar-link {{ request()->routeIs('dashboard.profile.*', 'dashboard.security.*') ? 'active' : '' }}">
+        <span class="s-icon">⚙</span> Settings
       </a>
       <a href="{{ route('dashboard.logs.index') }}" class="sidebar-link {{ request()->routeIs('dashboard.logs.*') ? 'active' : '' }}">
         <span class="s-icon">⚠</span> Error Logs
