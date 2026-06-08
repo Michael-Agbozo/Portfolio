@@ -19,6 +19,12 @@ class MessageController extends Controller
         return view('dashboard.messages.show', compact('message'));
     }
 
+    public function markUnread(Message $message)
+    {
+        $message->markUnread();
+        return redirect()->route('dashboard.messages.index')->with('success', 'Message marked as unread.');
+    }
+
     public function destroy(Message $message)
     {
         $message->delete();

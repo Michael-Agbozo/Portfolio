@@ -7,6 +7,7 @@ use App\Http\Controllers\Dashboard\DashboardController;
 use App\Http\Controllers\Dashboard\DesignController;
 use App\Http\Controllers\Dashboard\LogController;
 use App\Http\Controllers\Dashboard\MessageController;
+use App\Http\Controllers\Dashboard\ProfileController;
 use App\Http\Controllers\Dashboard\ProjectController;
 use App\Http\Controllers\PortfolioController;
 use Illuminate\Support\Facades\Route;
@@ -50,7 +51,13 @@ Route::prefix('dashboard')->name('dashboard.')->middleware('auth')->group(functi
 
     Route::get('messages', [MessageController::class, 'index'])->name('messages.index');
     Route::get('messages/{message}', [MessageController::class, 'show'])->name('messages.show');
+    Route::patch('messages/{message}/mark-unread', [MessageController::class, 'markUnread'])->name('messages.mark-unread');
     Route::delete('messages/{message}', [MessageController::class, 'destroy'])->name('messages.destroy');
+
+    Route::get('profile', [ProfileController::class, 'show'])->name('profile.show');
+    Route::post('profile/photo', [ProfileController::class, 'updatePhoto'])->name('profile.photo.update');
+    Route::delete('profile/photo', [ProfileController::class, 'destroyPhoto'])->name('profile.photo.destroy');
+    Route::put('profile/password', [ProfileController::class, 'updatePassword'])->name('profile.password.update');
 
     Route::get('logs', [LogController::class, 'index'])->name('logs.index');
     Route::delete('logs', [LogController::class, 'clear'])->name('logs.clear');

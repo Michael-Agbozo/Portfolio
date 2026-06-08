@@ -40,6 +40,12 @@
 
   <div class="msg-detail-actions">
     <a href="mailto:{{ $message->email }}?subject=Re: {{ urlencode($message->subject) }}" class="btn btn-primary">Reply via Email</a>
+    @unless($message->isUnread())
+      <form method="POST" action="{{ route('dashboard.messages.mark-unread', $message) }}">
+        @csrf @method('PATCH')
+        <button class="btn btn-secondary" type="submit">Mark as unread</button>
+      </form>
+    @endunless
     <a href="{{ route('dashboard.messages.index') }}" class="btn btn-secondary">← Back</a>
     <form method="POST" action="{{ route('dashboard.messages.destroy', $message) }}" onsubmit="return confirmDelete(event, this, 'This message will be permanently removed from your inbox.', 'Delete this message?')" style="margin-left:auto">
       @csrf @method('DELETE')

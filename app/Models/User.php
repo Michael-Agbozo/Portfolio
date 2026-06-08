@@ -10,7 +10,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
-#[Fillable(['name', 'email', 'password'])]
+#[Fillable(['name', 'email', 'password', 'avatar'])]
 #[Hidden(['password', 'remember_token', 'two_factor_secret', 'two_factor_recovery_codes'])]
 class User extends Authenticatable
 {
@@ -36,5 +36,17 @@ class User extends Authenticatable
     public function hasTwoFactorEnabled(): bool
     {
         return ! is_null($this->two_factor_confirmed_at);
+    }
+
+    public function avatarUrl(): ?string
+    {
+        return $this->avatar ? '/storage/'.$this->avatar : null;
+    }
+
+    public function initials(): string
+    {
+        $words = preg_split('/\s+/', trim($this->name));
+
+        return strtoupper(substr($words[0] ?? '', 0, 1).substr($words[1] ?? '', 0, 1));
     }
 }
