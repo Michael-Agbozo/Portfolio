@@ -41,12 +41,12 @@
         <img src="{{ asset('images/michael-hero.png') }}" alt="Michael Agbozo"
              class="w-full h-full object-cover object-top select-none"/>
       </div>
-      <div class="absolute -bottom-1.5 -right-3 flex items-center gap-1.5 bg-bg2 border border-border rounded-full pl-2 pr-3.5 py-1.5 shadow-[0_8px_24px_rgba(0,0,0,.4)]">
-        <span class="relative flex h-2 w-2">
+      <div class="absolute -bottom-1 -right-1 sm:-bottom-1.5 sm:-right-3 flex items-center gap-1 sm:gap-1.5 bg-bg2 border border-border rounded-full pl-1.5 pr-2.5 py-1 sm:pl-2 sm:pr-3.5 sm:py-1.5 shadow-[0_8px_24px_rgba(0,0,0,.4)]">
+        <span class="relative flex h-2 w-2 shrink-0">
           <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-orange opacity-60"></span>
           <span class="relative inline-flex rounded-full h-2 w-2 bg-orange"></span>
         </span>
-        <span class="text-[.68rem] text-white font-medium whitespace-nowrap">Open to work</span>
+        <span class="text-[.6rem] sm:text-[.68rem] text-white font-medium whitespace-nowrap">Open to work</span>
       </div>
     </div>
 
@@ -212,17 +212,17 @@
   @endphp
 
   @if($allProjects->isNotEmpty())
-  <div class="flex gap-2 mb-8 reveal" id="work-filters">
+  <div class="flex flex-wrap gap-2 mb-8 reveal" id="work-filters">
     <button type="button" data-filter="all"
-            class="work-filter-btn active text-[.78rem] font-semibold uppercase tracking-widest px-5 py-2 rounded-full border transition-all">
+            class="work-filter-btn active text-[.7rem] sm:text-[.78rem] font-semibold uppercase tracking-widest px-3.5 sm:px-5 py-1.5 sm:py-2 rounded-full border transition-all">
       All
     </button>
     <button type="button" data-filter="design"
-            class="work-filter-btn text-[.78rem] font-semibold uppercase tracking-widest px-5 py-2 rounded-full border transition-all">
+            class="work-filter-btn text-[.7rem] sm:text-[.78rem] font-semibold uppercase tracking-widest px-3.5 sm:px-5 py-1.5 sm:py-2 rounded-full border transition-all">
       Design / Branding
     </button>
     <button type="button" data-filter="development"
-            class="work-filter-btn text-[.78rem] font-semibold uppercase tracking-widest px-5 py-2 rounded-full border transition-all">
+            class="work-filter-btn text-[.7rem] sm:text-[.78rem] font-semibold uppercase tracking-widest px-3.5 sm:px-5 py-1.5 sm:py-2 rounded-full border transition-all">
       Development
     </button>
   </div>
@@ -362,15 +362,15 @@
 
     <div class="relative flex flex-col sm:flex-row flex-wrap items-center justify-center gap-3">
       <a href="tel:0248581824"
-         class="inline-flex items-center gap-2.5 bg-white text-black text-[.85rem] font-semibold px-6 py-3.5 rounded-full hover:scale-[1.04] active:scale-95 transition-all duration-200 whitespace-nowrap">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+         class="inline-flex items-center gap-2 sm:gap-2.5 bg-white text-black text-[.76rem] sm:text-[.85rem] font-semibold px-5 sm:px-6 py-3 sm:py-3.5 rounded-full hover:scale-[1.04] active:scale-95 transition-all duration-200 whitespace-nowrap">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" class="shrink-0">
           <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.36 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"/>
         </svg>
         Lets Talk: 0248581824
       </a>
       <a href="mailto:agbozomykell8@gmail.com"
-         class="inline-flex items-center gap-2.5 border border-white/30 text-white text-[.85rem] font-semibold px-6 py-3.5 rounded-full hover:border-white hover:bg-white/5 hover:scale-[1.04] active:scale-95 transition-all duration-200 whitespace-nowrap">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+         class="inline-flex items-center gap-2 sm:gap-2.5 border border-white/30 text-white text-[.76rem] sm:text-[.85rem] font-semibold px-5 sm:px-6 py-3 sm:py-3.5 rounded-full hover:border-white hover:bg-white/5 hover:scale-[1.04] active:scale-95 transition-all duration-200 whitespace-normal sm:whitespace-nowrap text-center">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" class="shrink-0">
           <rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-10 5L2 7"/>
         </svg>
         Email me via: agbozomykell8@gmail.com

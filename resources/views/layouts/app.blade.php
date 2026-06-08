@@ -23,8 +23,8 @@
 
 <!-- NAV -->
 <nav id="nav" class="fixed top-0 left-0 right-0 z-50 border-b border-transparent transition-all duration-300">
-  <div class="max-w-[1280px] mx-auto px-12 flex justify-between items-center py-5">
-    <a href="/" class="font-display font-extrabold text-[1.1rem] tracking-wide text-white">Michael Agbozo<span class="text-orange">.</span></a>
+  <div class="max-w-[1280px] mx-auto px-5 sm:px-8 md:px-12 flex justify-between items-center py-4 md:py-5 gap-3">
+    <a href="/" class="font-display font-extrabold text-[.92rem] sm:text-[1.1rem] tracking-wide text-white whitespace-nowrap shrink-0">Michael Agbozo<span class="text-orange">.</span></a>
 
     <ul class="hidden md:flex gap-10 list-none">
       @if(request()->is('/'))
@@ -38,9 +38,9 @@
       @endif
     </ul>
 
-    <div class="flex items-center gap-3">
+    <div class="flex items-center gap-2 sm:gap-3 shrink-0">
       <button id="theme-toggle" type="button" aria-label="Toggle light/dark mode"
-              class="cursor-pointer w-9 h-9 flex items-center justify-center rounded-full border border-border bg-bg2 text-muted hover:border-white hover:text-white hover:bg-bg3 active:scale-95 transition-all duration-200">
+              class="cursor-pointer w-9 h-9 flex items-center justify-center rounded-full border border-border bg-bg2 text-muted hover:border-white hover:text-white hover:bg-bg3 active:scale-95 transition-all duration-200 shrink-0">
         <svg id="theme-icon-moon" width="15" height="15" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
           <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
         </svg>
@@ -54,7 +54,7 @@
         CV ↓
       </a>
       <a href="{{ request()->is('/') ? '#contact' : '/#contact' }}"
-         class="bg-orange text-white text-[.8rem] font-semibold uppercase tracking-wide px-5 py-2 rounded-full hover:bg-orange2 transition-colors">
+         class="bg-orange text-white text-[.7rem] sm:text-[.8rem] font-semibold uppercase tracking-wide px-3.5 sm:px-5 py-2 rounded-full hover:bg-orange2 transition-colors whitespace-nowrap shrink-0">
         Let's Talk
       </a>
     </div>
