@@ -1,10 +1,16 @@
 @extends('dashboard.layouts.app')
 
-@section('title', 'Profile')
-@section('page-title', 'Profile')
-@section('breadcrumb') Profile @endsection
+@section('title', 'Settings — Profile')
+@section('page-title', 'Settings')
+@section('breadcrumb')
+  <a href="{{ route('dashboard.profile.show') }}">Settings</a>
+  <span class="dash-breadcrumb-sep">/</span>
+  Profile
+@endsection
 
 @section('content')
+
+@include('dashboard.settings._tabs')
 
 <div style="display:flex;flex-direction:column;gap:1.5rem;max-width:680px">
 
