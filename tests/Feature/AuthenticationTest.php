@@ -4,6 +4,7 @@ namespace Tests\Feature;
 
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Route;
 use Tests\TestCase;
 
 class AuthenticationTest extends TestCase
@@ -61,5 +62,14 @@ class AuthenticationTest extends TestCase
         $response = $this->actingAs($user)->get('/dashboard');
 
         $response->assertStatus(200);
+    }
+
+    public function test_two_factor_verification_route_is_rate_limited(): void
+    {
+        $middleware = Route::getRoutes()
+            ->getByName('two-factor.verify')
+            ->gatherMiddleware();
+
+        $this->assertContains('throttle:5,1', $middleware);
     }
 }

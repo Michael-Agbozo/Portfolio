@@ -39,7 +39,7 @@
   <div class="msg-detail-body">{{ $message->message }}</div>
 
   <div class="msg-detail-actions">
-    <a href="mailto:{{ $message->email }}?subject=Re: {{ urlencode($message->subject) }}" class="btn btn-primary">Reply via Email</a>
+    <a href="mailto:{{ $message->email }}?subject={{ rawurlencode('Re: '.$message->subject) }}" class="btn btn-primary">Reply via Email</a>
     @unless($message->isUnread())
       <form method="POST" action="{{ route('dashboard.messages.mark-unread', $message) }}">
         @csrf @method('PATCH')

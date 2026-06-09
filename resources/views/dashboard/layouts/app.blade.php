@@ -4,6 +4,8 @@
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
 <title>@yield('title', 'Dashboard') — Michael Agbozo</title>
+<link rel="icon" type="image/png" href="{{ asset('favicon.png') }}"/>
+<link rel="apple-touch-icon" href="{{ asset('apple-touch-icon.png') }}"/>
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet"/>
@@ -58,7 +60,7 @@
       </a>
 
       <div class="sidebar-section">System</div>
-      <a href="{{ route('dashboard.profile.show') }}" class="sidebar-link {{ request()->routeIs('dashboard.profile.*', 'dashboard.security.*') ? 'active' : '' }}">
+      <a href="{{ route('dashboard.profile.show') }}" class="sidebar-link {{ request()->routeIs('dashboard.profile.*', 'dashboard.security.*', 'dashboard.cv.*') ? 'active' : '' }}">
         <span class="s-icon">⚙</span> Settings
       </a>
       <a href="{{ route('dashboard.logs.index') }}" class="sidebar-link {{ request()->routeIs('dashboard.logs.*') ? 'active' : '' }}">
@@ -66,7 +68,7 @@
       </a>
 
       <div class="sidebar-section">Site</div>
-      <a href="/" target="_blank" class="sidebar-link">
+      <a href="/" target="_blank" rel="noopener" class="sidebar-link">
         <span class="s-icon">↗</span> View Site
       </a>
     </nav>

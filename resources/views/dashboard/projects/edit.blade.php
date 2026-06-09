@@ -17,7 +17,7 @@
 
     <div class="form-grid-2">
       <div class="form-group">
-        <label class="f-label">Label / Number *</label>
+        <label class="f-label">Label / Number</label>
         <input class="f-input {{ $errors->has('num') ? 'is-error' : '' }}" type="text" name="num" value="{{ old('num', $project->num) }}" placeholder="e.g. 01 — Featured"/>
         @error('num')<div class="field-error">{{ $message }}</div>@enderror
       </div>

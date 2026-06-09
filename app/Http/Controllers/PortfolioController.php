@@ -2,10 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\ContactMessageConfirmation;
+use App\Mail\ContactMessageReceived;
 use App\Models\Design;
 use App\Models\Message;
 use App\Models\Project;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Mail;
+use Throwable;
 
 class PortfolioController extends Controller
 {
@@ -37,7 +42,17 @@ class PortfolioController extends Controller
             'message' => 'required|string|max:2000',
         ]);
 
-        Message::create($validated);
+        $message = Message::create($validated);
+
+        try {
+            Mail::to(config('mail.contact_recipient'))->send(new ContactMessageReceived($message));
+            Mail::to($message->email)->send(new ContactMessageConfirmation($message));
+        } catch (Throwable $exception) {
+            Log::warning('Contact message saved, but email delivery failed.', [
+                'message_id' => $message->id,
+                'error' => $exception->getMessage(),
+            ]);
+        }
 
         return back()->with('success', 'Message sent! I\'ll get back to you soon.');
     }

@@ -17,8 +17,9 @@
 
     <div class="form-grid-2">
       <div class="form-group">
-        <label class="f-label">Label / Number *</label>
-        <input class="f-input {{ $errors->has('num') ? 'is-error' : '' }}" type="text" name="num" value="{{ old('num') }}" placeholder="e.g. 01 — Featured"/>
+        <label class="f-label">Label / Number</label>
+        <input class="f-input {{ $errors->has('num') ? 'is-error' : '' }}" type="text" name="num" value="{{ old('num', $suggestedNum) }}" readonly/>
+        <div class="f-hint">Automatically set when the project is saved</div>
         @error('num')<div class="field-error">{{ $message }}</div>@enderror
       </div>
       <div class="form-group">

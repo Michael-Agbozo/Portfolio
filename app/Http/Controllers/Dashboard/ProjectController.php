@@ -19,7 +19,9 @@ class ProjectController extends Controller
     public function create()
     {
         $mediaFiles = MediaController::libraryFiles();
-        return view('dashboard.projects.create', compact('mediaFiles'));
+        $suggestedNum = $this->nextProjectNumber();
+
+        return view('dashboard.projects.create', compact('mediaFiles', 'suggestedNum'));
     }
 
     public function store(Request $request)
@@ -30,6 +32,7 @@ class ProjectController extends Controller
         $data['feature_image'] = $this->resolveFeatureImage($request, null);
         $data['images'] = $this->resolveGalleryImages($request, $data['images'] ?? '');
         $data['slug'] = $this->uniqueSlug($data['title'], null);
+        $data['num'] = $this->nextProjectNumber();
 
         Project::create($data);
 
@@ -75,7 +78,7 @@ class ProjectController extends Controller
     private function validateProject(Request $request): array
     {
         return $request->validate([
-            'num'               => 'required|string|max:40',
+            'num'               => 'nullable|string|max:40',
             'category'          => 'required|in:design,development',
             'title'             => 'required|string|max:150',
             'meta'              => 'nullable|string|max:300',
@@ -88,6 +91,21 @@ class ProjectController extends Controller
             'tags'              => 'nullable|string',
             'url'               => 'nullable|url|max:300',
         ]);
+    }
+
+    private function nextProjectNumber(): string
+    {
+        $highest = Project::withTrashed()
+            ->pluck('num')
+            ->reduce(function (int $highest, string $num): int {
+                if (preg_match('/^\s*(\d+)/', $num, $matches)) {
+                    return max($highest, (int) $matches[1]);
+                }
+
+                return $highest;
+            }, 0);
+
+        return str_pad((string) ($highest + 1), 2, '0', STR_PAD_LEFT);
     }
 
     /**

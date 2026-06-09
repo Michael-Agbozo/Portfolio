@@ -4,22 +4,12 @@ namespace Database\Seeders;
 
 use App\Models\Design;
 use App\Models\Project;
-use App\Models\User;
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\Hash;
 
 class DatabaseSeeder extends Seeder
 {
     public function run(): void
     {
-        User::updateOrCreate(
-            ['email' => 'agbozomykell8@gmail.com'],
-            [
-                'name'     => 'Michael Agbozo',
-                'password' => Hash::make('password'),
-            ]
-        );
-
         if (Project::count() === 0) {
             $projects = [
                 ['num' => '01 — Featured', 'title' => 'La Necar Logistics',  'meta' => 'Brand identity design + website build for a logistics company', 'tags' => ['Brand Identity', 'WordPress', 'Web Design'], 'url' => null],

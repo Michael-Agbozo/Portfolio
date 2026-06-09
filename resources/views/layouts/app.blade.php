@@ -4,6 +4,8 @@
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>@yield('title', 'Michael Agbozo — Portfolio')</title>
+<link rel="icon" type="image/png" href="{{ asset('favicon.png') }}"/>
+<link rel="apple-touch-icon" href="{{ asset('apple-touch-icon.png') }}"/>
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Inter:wght@300;400;500&display=swap" rel="stylesheet"/>
@@ -134,7 +136,10 @@
 </footer>
 
 {{-- FLOATING WHATSAPP BUTTON --}}
-<a href="https://wa.me/233248581824?text=Hi%20Michael%2C%20I%20found%20your%20portfolio%20and%20I%27d%20like%20to%20chat!"
+@php
+  $whatsappText = "Hi Michael, I found your portfolio and I'd like to reach out.\n\nName:\nEmail:\nHow can you help me:";
+@endphp
+<a href="https://wa.me/233248581824?text={{ rawurlencode($whatsappText) }}"
    target="_blank" rel="noopener" aria-label="Message me on WhatsApp"
    class="fixed right-5 z-40 w-14 h-14 rounded-full flex items-center justify-center
           bottom-[92px] md:bottom-6
