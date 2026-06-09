@@ -140,68 +140,195 @@
   </div>
 </div>
 
+{{-- File manager modal: shown when multiple files are selected and the total is too large.
+     Lets the user remove individual files until the total is within the limit. --}}
+<div id="file-manager-overlay" class="confirm-overlay">
+  <div class="confirm-box" style="max-width:520px;width:calc(100% - 2rem)">
+    <div class="confirm-icon">!</div>
+    <div class="confirm-title">Files too large</div>
+    <p class="confirm-message" id="fm-desc"></p>
+    <div id="fm-list" style="max-height:260px;overflow-y:auto;margin:.75rem 0;border-top:1px solid var(--line)"></div>
+    <div id="fm-total" style="font-size:.8rem;font-weight:600;margin-bottom:1.1rem;text-align:right"></div>
+    <div class="confirm-actions">
+      <button type="button" class="btn btn-secondary btn-sm" onclick="cancelFileManager()">Cancel</button>
+      <button type="button" class="btn btn-primary btn-sm" id="fm-confirm" onclick="confirmFileManager()">Upload selected</button>
+    </div>
+  </div>
+</div>
+
 <script>
-  const maxFileBytes  = 50 * 1024 * 1024;  // 50 MB per file — matches server validation
-  const maxTotalBytes = 60 * 1024 * 1024;  // 60 MB total per request — safely under nginx 64 MB limit
+  const maxFileBytes  = 50 * 1024 * 1024;
+  const maxTotalBytes = 60 * 1024 * 1024;
 
   function formatFileSize(bytes) {
     return (bytes / 1024 / 1024).toFixed(1).replace(/\.0$/, '') + ' MB';
   }
 
+  // ── Simple single-file error modal ──────────────────────────────────────────
   function showFileSizeModal(message) {
     document.getElementById('file-size-message').textContent = message;
     document.getElementById('file-size-overlay').classList.add('is-open');
   }
-
   function closeFileSizeModal() {
     document.getElementById('file-size-overlay').classList.remove('is-open');
   }
 
-  // Returns an error message string if any file is too large or the combined total is too large.
-  // Returns null if everything is fine.
-  function checkFileSizes(fileArrays) {
-    let total = 0;
-    for (const files of fileArrays) {
-      for (const file of files) {
-        if (file.size > maxFileBytes) {
-          return '"' + file.name + '" is ' + formatFileSize(file.size) +
-            '. The limit is 50 MB per file. Please choose a smaller file and try again.';
-        }
-        total += file.size;
-      }
-    }
-    if (total > maxTotalBytes) {
-      return 'Your selected files add up to ' + formatFileSize(total) +
-        '. The total upload limit is 60 MB. Please select fewer or smaller files.';
-    }
-    return null;
+  // ── File-manager modal ──────────────────────────────────────────────────────
+  // Lets the user remove individual files from a multi-file selection until
+  // the total is within the 60 MB limit, then uploads the remaining ones.
+  let fmState = null;
+
+  function openFileManager(input, form, files) {
+    fmState = {
+      input,
+      form,
+      entries: files.map(function (f) { return { file: f, keep: true }; })
+    };
+    renderFileManager();
+    document.getElementById('file-manager-overlay').classList.add('is-open');
   }
 
+  function renderFileManager() {
+    var entries  = fmState.entries;
+    var kept     = entries.filter(function (e) { return e.keep; });
+    var total    = kept.reduce(function (s, e) { return s + e.file.size; }, 0);
+    var overTotal  = total > maxTotalBytes;
+    var hasPerFile = kept.some(function (e) { return e.file.size > maxFileBytes; });
+    var canUpload  = !overTotal && !hasPerFile && kept.length > 0;
+
+    document.getElementById('fm-desc').textContent =
+      'Your files are ' + formatFileSize(total) + ' total — over the 60 MB upload limit. ' +
+      'Click Remove next to files you want to leave out, then click Upload.';
+
+    var list = document.getElementById('fm-list');
+    list.innerHTML = '';
+
+    entries.forEach(function (entry, i) {
+      var overFile = entry.file.size > maxFileBytes;
+
+      var row = document.createElement('div');
+      row.style.cssText = 'display:flex;align-items:center;gap:.75rem;padding:.45rem 0;' +
+        'border-bottom:1px solid var(--line);opacity:' + (entry.keep ? '1' : '.4');
+
+      var info = document.createElement('div');
+      info.style.cssText = 'flex:1;min-width:0';
+
+      var name = document.createElement('div');
+      name.style.cssText = 'font-size:.8rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;' +
+        (entry.keep ? '' : 'text-decoration:line-through;color:var(--dim)');
+      name.textContent = entry.file.name;
+      name.title = entry.file.name;
+
+      var meta = document.createElement('div');
+      meta.style.cssText = 'font-size:.7rem;color:' +
+        (overFile && entry.keep ? '#e55' : 'var(--dim)');
+      meta.textContent = formatFileSize(entry.file.size) +
+        (overFile ? ' — over 50 MB limit' : '');
+
+      info.appendChild(name);
+      info.appendChild(meta);
+
+      var btn = document.createElement('button');
+      btn.type = 'button';
+      btn.style.cssText = 'flex-shrink:0;padding:.2rem .6rem;font-size:.72rem;border-radius:4px;' +
+        'border:1px solid var(--line);background:var(--bg2);color:var(--fg);cursor:pointer';
+      btn.textContent = entry.keep ? 'Remove' : 'Keep';
+      btn.onclick = (function (idx) {
+        return function () {
+          fmState.entries[idx].keep = !fmState.entries[idx].keep;
+          renderFileManager();
+        };
+      })(i);
+
+      row.appendChild(info);
+      row.appendChild(btn);
+      list.appendChild(row);
+    });
+
+    var totalEl = document.getElementById('fm-total');
+    totalEl.textContent = 'Total: ' + formatFileSize(total) + ' / 60 MB';
+    totalEl.style.color = (overTotal || hasPerFile) ? '#e55' : '#4a4';
+
+    document.getElementById('fm-confirm').disabled = !canUpload;
+  }
+
+  function cancelFileManager() {
+    if (fmState) fmState.input.value = '';
+    fmState = null;
+    document.getElementById('file-manager-overlay').classList.remove('is-open');
+  }
+
+  function confirmFileManager() {
+    var input   = fmState.input;
+    var form    = fmState.form;
+    var entries = fmState.entries;
+    var dt = new DataTransfer();
+    entries.filter(function (e) { return e.keep; })
+           .forEach(function (e) { dt.items.add(e.file); });
+    input.files = dt.files;
+    fmState = null;
+    document.getElementById('file-manager-overlay').classList.remove('is-open');
+    if (form) {
+      delete form.dataset.submitGuarded;
+      form.requestSubmit();
+    }
+  }
+
+  // ── Size-check helper ───────────────────────────────────────────────────────
+  function hasFileSizeError(fileArrays) {
+    var total = 0;
+    for (var ai = 0; ai < fileArrays.length; ai++) {
+      var files = fileArrays[ai];
+      for (var fi = 0; fi < files.length; fi++) {
+        if (files[fi].size > maxFileBytes) return true;
+        total += files[fi].size;
+      }
+    }
+    return total > maxTotalBytes;
+  }
+
+  // ── Event listeners ─────────────────────────────────────────────────────────
   document.addEventListener('change', function (e) {
-    const input = e.target;
+    var input = e.target;
     if (!(input instanceof HTMLInputElement) || input.type !== 'file') return;
+    var files = Array.from(input.files || []);
+    if (!files.length || !hasFileSizeError([files])) return;
 
-    const error = checkFileSizes([input.files || []]);
-    if (!error) return;
-
-    input.value = '';
     e.preventDefault();
     e.stopImmediatePropagation();
-    showFileSizeModal(error);
+
+    if (files.length > 1) {
+      openFileManager(input, null, files);
+    } else {
+      input.value = '';
+      showFileSizeModal('"' + files[0].name + '" is ' + formatFileSize(files[0].size) +
+        '. The limit is 50 MB per file. Please choose a smaller file and try again.');
+    }
   }, true);
 
-  // Stop double-clicking Save/Upload/Delete from sending the same request twice
-  // (e.g. uploading the same photo to a project two times).
+  // Stop double-clicking Save/Upload/Delete from sending the same request twice.
   document.addEventListener('submit', function (e) {
-    const form = e.target;
+    var form   = e.target;
+    var inputs = Array.from(form.querySelectorAll('input[type="file"]'));
 
-    const inputs = Array.from(form.querySelectorAll('input[type="file"]'));
-    const error = checkFileSizes(inputs.map(i => i.files || []));
-
-    if (error) {
-      inputs.forEach(i => { i.value = ''; });
+    if (hasFileSizeError(inputs.map(function (i) { return i.files || []; }))) {
       e.preventDefault();
-      showFileSizeModal(error);
+      var multiInput = inputs.find(function (i) {
+        return i.multiple && Array.from(i.files || []).length > 1;
+      });
+      if (multiInput) {
+        openFileManager(multiInput, form, Array.from(multiInput.files));
+      } else {
+        for (var ii = 0; ii < inputs.length; ii++) {
+          var bad = Array.from(inputs[ii].files || []).find(function (f) { return f.size > maxFileBytes; });
+          if (bad) {
+            inputs[ii].value = '';
+            showFileSizeModal('"' + bad.name + '" is ' + formatFileSize(bad.size) +
+              '. The limit is 50 MB per file. Please choose a smaller file and try again.');
+            break;
+          }
+        }
+      }
       return;
     }
 
@@ -222,8 +349,7 @@
     });
   });
 
-  // Mobile sidebar drawer — open/close via the hamburger button, the backdrop, or by
-  // picking a link (so the menu doesn't stay open after navigating on a small screen).
+  // Mobile sidebar drawer — open/close via hamburger, backdrop, or nav link.
   (function () {
     const sidebar  = document.getElementById('sidebar');
     const backdrop = document.getElementById('sidebar-backdrop');
@@ -247,8 +373,7 @@
     });
   })();
 
-  // Light / dark mode toggle — mirrors the public site's toggle, stored separately
-  // so visitors and the admin can each have their own preference.
+  // Light / dark mode toggle.
   (function () {
     const root = document.documentElement;
     const moon = document.getElementById('theme-icon-moon');
@@ -267,8 +392,11 @@
     syncIcons();
   })();
 
-  document.getElementById('file-size-overlay').addEventListener('click', (e) => {
+  document.getElementById('file-size-overlay').addEventListener('click', function (e) {
     if (e.target.id === 'file-size-overlay') closeFileSizeModal();
+  });
+  document.getElementById('file-manager-overlay').addEventListener('click', function (e) {
+    if (e.target.id === 'file-manager-overlay') cancelFileManager();
   });
 </script>
 
