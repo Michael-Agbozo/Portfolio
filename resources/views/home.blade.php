@@ -313,7 +313,7 @@
     @foreach($designs as $design)
     <div class="design-item overflow-hidden rounded-[10px] relative cursor-pointer bg-bg3 group"
          data-page="{{ intdiv($loop->index, $perPage) + 1 }}"
-         onclick="openLightbox('{{ $design->src }}', '{{ addslashes($design->alt) }}')">
+         onclick="openLightbox(@js($design->src), @js($design->alt))">
       <img src="{{ $design->src }}" alt="{{ $design->alt }}" loading="lazy" decoding="async"
            class="transition-transform duration-500 group-hover:scale-[1.08]"/>
       <div class="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300

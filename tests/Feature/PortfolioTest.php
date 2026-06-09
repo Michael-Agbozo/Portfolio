@@ -7,6 +7,7 @@ use App\Mail\ContactMessageReceived;
 use App\Models\Message;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Mail;
+use RuntimeException;
 use Tests\TestCase;
 
 class PortfolioTest extends TestCase
@@ -74,6 +75,24 @@ class PortfolioTest extends TestCase
                 && $mail->contactMessage->name === 'Jane Visitor'
                 && $mail->contactMessage->subject === 'Project enquiry';
         });
+    }
+
+    public function test_contact_form_still_succeeds_if_email_delivery_fails(): void
+    {
+        Mail::shouldReceive('to')->once()->andThrow(new RuntimeException('SMTP is unavailable.'));
+
+        $response = $this->post('/contact', [
+            'name' => 'Jane Visitor',
+            'email' => 'jane@example.com',
+            'subject' => 'Project enquiry',
+            'message' => 'Hi, I would like to discuss a project with you.',
+        ]);
+
+        $response->assertSessionHas('success');
+        $this->assertDatabaseHas('messages', [
+            'email' => 'jane@example.com',
+            'subject' => 'Project enquiry',
+        ]);
     }
 
     public function test_contact_form_rejects_invalid_input(): void

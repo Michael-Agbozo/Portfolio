@@ -86,7 +86,7 @@
           <div style="font-size:.72rem;color:var(--dim)">Read contact form messages</div>
         </div>
       </a>
-      <a href="/" target="_blank" style="display:flex;align-items:center;gap:.85rem;padding:1rem 1.1rem;background:var(--bg3);border:1px solid var(--line);border-radius:8px;transition:border-color .15s" onmouseover="this.style.borderColor='var(--orange)'" onmouseout="this.style.borderColor='var(--line)'">
+      <a href="/" target="_blank" rel="noopener" style="display:flex;align-items:center;gap:.85rem;padding:1rem 1.1rem;background:var(--bg3);border:1px solid var(--line);border-radius:8px;transition:border-color .15s" onmouseover="this.style.borderColor='var(--orange)'" onmouseout="this.style.borderColor='var(--line)'">
         <span style="font-size:1.1rem;opacity:.7">↗</span>
         <div>
           <div style="font-size:.82rem;font-weight:600;color:var(--white)">View Live Site</div>

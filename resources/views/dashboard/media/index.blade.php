@@ -68,7 +68,7 @@
         <div class="media-thumb">
           <img src="{{ $file['url'] }}" alt="{{ $file['alt'] ?: $file['name'] }}" loading="lazy"/>
           <div class="media-overlay">
-            <a href="{{ $file['url'] }}" target="_blank" class="media-action-btn" title="View full size">↗</a>
+            <a href="{{ $file['url'] }}" target="_blank" rel="noopener" class="media-action-btn" title="View full size">↗</a>
             <button class="media-action-btn media-copy-btn" title="Copy link" onclick="copyUrl('{{ $file['url'] }}', this)">⎘</button>
             <button type="button" class="media-action-btn" title="Rename / edit alt text" onclick="toggleMediaEdit('{{ $loop->index }}')">✎</button>
             <form method="POST" action="{{ route('dashboard.media.destroy', ltrim($file['path'], '/')) }}"

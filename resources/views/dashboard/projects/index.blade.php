@@ -59,7 +59,7 @@
           </td>
           <td data-label="URL">
             @if($project->url)
-              <a href="{{ $project->url }}" target="_blank" style="color:var(--orange);font-size:.75rem">↗ link</a>
+              <a href="{{ $project->url }}" target="_blank" rel="noopener" style="color:var(--orange);font-size:.75rem">↗ link</a>
             @else
               <span style="color:var(--dim)">—</span>
             @endif
@@ -76,7 +76,7 @@
             <div class="action-menu" data-action-menu>
               <button type="button" class="action-menu-btn" onclick="toggleActionMenu(this)" aria-label="Actions">⋯</button>
               <div class="action-menu-dropdown">
-                <a href="{{ route('project.show', $project) }}" target="_blank" class="action-menu-item">
+                <a href="{{ route('project.show', $project) }}" target="_blank" rel="noopener" class="action-menu-item">
                   <span class="icon">↗</span> View on site
                 </a>
                 <a href="{{ route('dashboard.projects.edit', $project) }}" class="action-menu-item">

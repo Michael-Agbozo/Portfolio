@@ -11,8 +11,12 @@ class ImagePathValidator
 {
     public static function isValid(string $value): bool
     {
-        $isUrl     = filter_var($value, FILTER_VALIDATE_URL) !== false;
-        $isStorage = (bool) preg_match('#^/storage/[A-Za-z0-9._/-]+$#', $value);
+        $scheme = parse_url($value, PHP_URL_SCHEME);
+        $isUrl = filter_var($value, FILTER_VALIDATE_URL) !== false
+            && in_array($scheme, ['http', 'https'], true);
+
+        $isStorage = ! str_contains($value, '..')
+            && (bool) preg_match('#^/storage/[A-Za-z0-9._/-]+$#', $value);
 
         return $isUrl || $isStorage;
     }

@@ -68,7 +68,7 @@
       </a>
 
       <div class="sidebar-section">Site</div>
-      <a href="/" target="_blank" class="sidebar-link">
+      <a href="/" target="_blank" rel="noopener" class="sidebar-link">
         <span class="s-icon">↗</span> View Site
       </a>
     </nav>
