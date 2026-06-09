@@ -64,6 +64,25 @@ Laravel upload limits are:
 
 If a live upload shows `413 Request Entity Too Large`, Nginx is blocking the file before Laravel receives it.
 
+If the error page says `nginx/1.18.0 (Ubuntu)`, check the front server's Nginx config too. On a VPS this is usually in:
+
+```text
+/etc/nginx/sites-available/
+```
+
+Add this inside the matching `server { ... }` block:
+
+```nginx
+client_max_body_size 64M;
+```
+
+Then test and reload Nginx:
+
+```bash
+sudo nginx -t
+sudo systemctl reload nginx
+```
+
 ## Public Files
 
 Important public files:
