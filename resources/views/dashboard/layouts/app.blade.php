@@ -141,16 +141,15 @@
 </div>
 
 <script>
-  const maxUploadBytes = 64 * 1024 * 1024;
+  const maxFileBytes  = 50 * 1024 * 1024;  // 50 MB per file — matches server validation
+  const maxTotalBytes = 60 * 1024 * 1024;  // 60 MB total per request — safely under nginx 64 MB limit
 
   function formatFileSize(bytes) {
     return (bytes / 1024 / 1024).toFixed(1).replace(/\.0$/, '') + ' MB';
   }
 
-  function showFileSizeModal(file) {
-    document.getElementById('file-size-message').textContent =
-      '"' + file.name + '" is ' + formatFileSize(file.size) +
-      '. The upload limit is 64 MB. Please make the file smaller and try again.';
+  function showFileSizeModal(message) {
+    document.getElementById('file-size-message').textContent = message;
     document.getElementById('file-size-overlay').classList.add('is-open');
   }
 
@@ -158,21 +157,37 @@
     document.getElementById('file-size-overlay').classList.remove('is-open');
   }
 
-  function hasOversizedFile(input) {
-    return Array.from(input.files || []).find(file => file.size > maxUploadBytes) || null;
+  // Returns an error message string if any file is too large or the combined total is too large.
+  // Returns null if everything is fine.
+  function checkFileSizes(fileArrays) {
+    let total = 0;
+    for (const files of fileArrays) {
+      for (const file of files) {
+        if (file.size > maxFileBytes) {
+          return '"' + file.name + '" is ' + formatFileSize(file.size) +
+            '. The limit is 50 MB per file. Please choose a smaller file and try again.';
+        }
+        total += file.size;
+      }
+    }
+    if (total > maxTotalBytes) {
+      return 'Your selected files add up to ' + formatFileSize(total) +
+        '. The total upload limit is 60 MB. Please select fewer or smaller files.';
+    }
+    return null;
   }
 
   document.addEventListener('change', function (e) {
     const input = e.target;
     if (!(input instanceof HTMLInputElement) || input.type !== 'file') return;
 
-    const oversized = hasOversizedFile(input);
-    if (!oversized) return;
+    const error = checkFileSizes([input.files || []]);
+    if (!error) return;
 
     input.value = '';
     e.preventDefault();
     e.stopImmediatePropagation();
-    showFileSizeModal(oversized);
+    showFileSizeModal(error);
   }, true);
 
   // Stop double-clicking Save/Upload/Delete from sending the same request twice
@@ -180,14 +195,13 @@
   document.addEventListener('submit', function (e) {
     const form = e.target;
 
-    const oversizedInput = Array.from(form.querySelectorAll('input[type="file"]'))
-      .find(input => hasOversizedFile(input));
+    const inputs = Array.from(form.querySelectorAll('input[type="file"]'));
+    const error = checkFileSizes(inputs.map(i => i.files || []));
 
-    if (oversizedInput) {
-      const oversized = hasOversizedFile(oversizedInput);
-      oversizedInput.value = '';
+    if (error) {
+      inputs.forEach(i => { i.value = ''; });
       e.preventDefault();
-      showFileSizeModal(oversized);
+      showFileSizeModal(error);
       return;
     }
 
