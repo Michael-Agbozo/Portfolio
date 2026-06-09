@@ -127,11 +127,69 @@
 
 @include('dashboard.partials._confirm-modal')
 
+<div id="file-size-overlay" class="confirm-overlay">
+  <div class="confirm-box">
+    <div class="confirm-icon">!</div>
+    <div class="confirm-title">File too large</div>
+    <p class="confirm-message" id="file-size-message">
+      This file is too large to upload. Please make it smaller and try again.
+    </p>
+    <div class="confirm-actions">
+      <button type="button" class="btn btn-primary btn-sm" onclick="closeFileSizeModal()">OK</button>
+    </div>
+  </div>
+</div>
+
 <script>
+  const maxUploadBytes = 64 * 1024 * 1024;
+
+  function formatFileSize(bytes) {
+    return (bytes / 1024 / 1024).toFixed(1).replace(/\.0$/, '') + ' MB';
+  }
+
+  function showFileSizeModal(file) {
+    document.getElementById('file-size-message').textContent =
+      '"' + file.name + '" is ' + formatFileSize(file.size) +
+      '. The upload limit is 64 MB. Please make the file smaller and try again.';
+    document.getElementById('file-size-overlay').classList.add('is-open');
+  }
+
+  function closeFileSizeModal() {
+    document.getElementById('file-size-overlay').classList.remove('is-open');
+  }
+
+  function hasOversizedFile(input) {
+    return Array.from(input.files || []).find(file => file.size > maxUploadBytes) || null;
+  }
+
+  document.addEventListener('change', function (e) {
+    const input = e.target;
+    if (!(input instanceof HTMLInputElement) || input.type !== 'file') return;
+
+    const oversized = hasOversizedFile(input);
+    if (!oversized) return;
+
+    input.value = '';
+    e.preventDefault();
+    e.stopImmediatePropagation();
+    showFileSizeModal(oversized);
+  }, true);
+
   // Stop double-clicking Save/Upload/Delete from sending the same request twice
   // (e.g. uploading the same photo to a project two times).
   document.addEventListener('submit', function (e) {
     const form = e.target;
+
+    const oversizedInput = Array.from(form.querySelectorAll('input[type="file"]'))
+      .find(input => hasOversizedFile(input));
+
+    if (oversizedInput) {
+      const oversized = hasOversizedFile(oversizedInput);
+      oversizedInput.value = '';
+      e.preventDefault();
+      showFileSizeModal(oversized);
+      return;
+    }
 
     // A confirm-modal form fires submit once (prevented, to show the dialog) and
     // again when actually confirmed — only guard the real, un-prevented attempt.
@@ -194,6 +252,10 @@
     });
     syncIcons();
   })();
+
+  document.getElementById('file-size-overlay').addEventListener('click', (e) => {
+    if (e.target.id === 'file-size-overlay') closeFileSizeModal();
+  });
 </script>
 
 @stack('scripts')
