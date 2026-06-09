@@ -2,8 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Design;
+use App\Mail\ContactMessageConfirmation;
 use App\Mail\ContactMessageReceived;
+use App\Models\Design;
 use App\Models\Message;
 use App\Models\Project;
 use Illuminate\Http\Request;
@@ -42,6 +43,7 @@ class PortfolioController extends Controller
         $message = Message::create($validated);
 
         Mail::to(config('mail.contact_recipient'))->send(new ContactMessageReceived($message));
+        Mail::to($message->email)->send(new ContactMessageConfirmation($message));
 
         return back()->with('success', 'Message sent! I\'ll get back to you soon.');
     }
