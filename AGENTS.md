@@ -1,4 +1,4 @@
-# Portfolio — Project Rules for Claude
+# Portfolio — Project Rules for Codex
 
 ## What This Project Is
 

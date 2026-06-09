@@ -1,58 +1,235 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Michael Agbozo Portfolio
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+This is Michael Agbozo's personal portfolio website built with Laravel.
 
-## About Laravel
+The site has two main areas:
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+- **Public portfolio**: projects, designs, contact form, WhatsApp shortcut, and CV download.
+- **Admin dashboard**: private area for managing projects, design uploads, media files, messages, profile photo, security, logs, and the public CV.
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## Local Setup
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
-
-## Learning Laravel
-
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
-
-In addition, [Laracasts](https://laracasts.com) contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
-
-You can also watch bite-sized lessons with real-world projects on [Laravel Learn](https://laravel.com/learn), where you will be guided through building a Laravel application from scratch while learning PHP fundamentals.
-
-## Agentic Development
-
-Laravel's predictable structure and conventions make it ideal for AI coding agents like Claude Code, Cursor, and GitHub Copilot. Install [Laravel Boost](https://laravel.com/docs/ai) to supercharge your AI workflow:
+Start the project locally:
 
 ```bash
-composer require laravel/boost --dev
-
-php artisan boost:install
+composer run dev
 ```
 
-Boost provides your agent 15+ tools and skills that help agents build Laravel applications while following best practices.
+The site opens at:
 
-## Contributing
+```text
+http://localhost:8000
+```
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+First-time setup:
 
-## Code of Conduct
+```bash
+composer run setup
+```
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+Run feature tests:
 
-## Security Vulnerabilities
+```bash
+php artisan test tests/Feature
+```
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+The default `php artisan test` command may complain if `tests/Unit` does not exist, so use the feature-test command above.
 
-## License
+## Tech Stack
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+| Tool | Purpose |
+|---|---|
+| Laravel | Backend framework |
+| Blade | HTML templates |
+| SQLite | Local database at `database/database.sqlite` |
+| Vite | CSS and JavaScript bundling |
+| Composer | PHP package manager |
+| npm | JavaScript package manager |
+| Nginx | Production web server |
+
+## Important URLs
+
+| Area | URL |
+|---|---|
+| Public site | `/` |
+| Project detail | `/projects/{project-slug}` |
+| Login | `/login` |
+| Dashboard | `/dashboard` |
+| Projects | `/dashboard/projects` |
+| Designs | `/dashboard/designs` |
+| Media library | `/dashboard/media` |
+| Messages | `/dashboard/messages` |
+| Settings | `/dashboard/profile` |
+| CV upload | `/dashboard/cv` |
+| Logs | `/dashboard/logs` |
+| Security | `/dashboard/security` |
+
+## Current Features
+
+- Public project sections for design and development work.
+- Project detail pages use slugs, such as `/projects/project-name`.
+- Projects can be marked active or inactive; inactive projects are hidden from the public site.
+- New projects are numbered automatically.
+- Design and project image uploads are compressed after upload.
+- Media library supports reusable uploaded images.
+- Contact form saves messages in the dashboard.
+- Contact form sends a copy to `michaelsogagbozo@gmail.com`.
+- Contact form sends an automatic confirmation email to the visitor.
+- Dashboard message reply links open email with a clean subject line.
+- Floating WhatsApp button opens with a pre-filled intro:
+
+```text
+Hi Michael, I found your portfolio and I'd like to reach out.
+
+Name:
+Email:
+How can you help me:
+```
+
+- Public CV download points to `/cv/michael-agbozo-cv.pdf`.
+- Dashboard CV page lets the admin upload a new PDF CV.
+- Hero profile image is used as the favicon and Apple touch icon.
+- Two-factor authentication is available from dashboard security settings.
+- Dashboard has profile photo upload and password update.
+- Dashboard has an error-log viewer.
+
+## Uploads
+
+Image uploads are validated in Laravel and compressed with `App\Support\ImageCompressor`.
+
+Current upload limits:
+
+- Project images: up to 50 MB each.
+- Design images: up to 50 MB each.
+- Media library images: up to 50 MB each.
+- Profile photo: up to 5 MB.
+- CV upload: PDF only, up to 10 MB.
+
+Production Nginx is configured in `start.sh` to allow larger uploads with:
+
+```nginx
+client_max_body_size 64M;
+```
+
+## Email
+
+The contact form sends two emails:
+
+- One copy to the site owner.
+- One confirmation email to the visitor.
+
+The owner recipient defaults to:
+
+```text
+michaelsogagbozo@gmail.com
+```
+
+It can be changed with:
+
+```env
+CONTACT_MESSAGE_RECIPIENT="michaelsogagbozo@gmail.com"
+```
+
+For live email delivery, the server must have real mail settings. The default `.env.example` uses log mail, which writes emails to logs instead of sending them.
+
+## Project Map
+
+```text
+app/
+  Http/Controllers/
+    Auth/                         Login and logout
+    Dashboard/                    Admin dashboard actions
+      CvController.php            CV upload page
+      MediaController.php         Media library uploads
+      ProjectController.php       Project create/edit/delete
+      DesignController.php        Design create/edit/delete
+      MessageController.php       Contact messages
+      ProfileController.php       Profile photo and password
+      TwoFactorController.php     Two-factor authentication
+    PortfolioController.php       Public site and contact form
+  Mail/
+    ContactMessageReceived.php    Email copy to Michael
+    ContactMessageConfirmation.php Auto reply to visitor
+  Models/
+    Project.php
+    Design.php
+    Message.php
+    Media.php
+    User.php
+  Support/
+    ImageCompressor.php
+    ImagePathValidator.php
+
+resources/
+  views/
+    home.blade.php
+    project.blade.php
+    emails/
+    dashboard/
+  css/
+    app.css
+    portfolio.css
+    dashboard.css
+
+routes/
+  web.php
+
+public/
+  images/michael-hero.png
+  favicon.png
+  apple-touch-icon.png
+  cv/michael-agbozo-cv.pdf
+
+database/
+  migrations/
+  seeders/
+
+tests/
+  Feature/
+```
+
+## Database
+
+The local database is SQLite:
+
+```text
+database/database.sqlite
+```
+
+Important tables:
+
+- `users`
+- `projects`
+- `designs`
+- `messages`
+- `media`
+- `cache`
+- `jobs`
+
+To apply pending database changes:
+
+```bash
+php artisan migrate
+```
+
+Do not run destructive database reset commands unless you are intentionally wiping local data.
+
+## Deployment Notes
+
+The production start script is `start.sh`.
+
+It:
+
+- Prepares storage and cache folders.
+- Runs migrations with `php artisan migrate --force`.
+- Caches config and routes.
+- Ensures the storage link exists.
+- Starts PHP-FPM and Nginx.
+- Adds Laravel routing if missing.
+- Adds the larger Nginx upload limit if missing.
+
+## Git Workflow
+
+Day-to-day work happens on `dev`.
+
+`main` should only receive changes by merging `dev` into `main` when the owner asks for it.
