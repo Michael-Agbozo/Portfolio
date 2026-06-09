@@ -3,9 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Models\Design;
+use App\Mail\ContactMessageReceived;
 use App\Models\Message;
 use App\Models\Project;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
 
 class PortfolioController extends Controller
 {
@@ -37,7 +39,9 @@ class PortfolioController extends Controller
             'message' => 'required|string|max:2000',
         ]);
 
-        Message::create($validated);
+        $message = Message::create($validated);
+
+        Mail::to(config('mail.contact_recipient'))->send(new ContactMessageReceived($message));
 
         return back()->with('success', 'Message sent! I\'ll get back to you soon.');
     }
