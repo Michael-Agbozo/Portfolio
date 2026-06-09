@@ -60,7 +60,7 @@
       </a>
 
       <div class="sidebar-section">System</div>
-      <a href="{{ route('dashboard.profile.show') }}" class="sidebar-link {{ request()->routeIs('dashboard.profile.*', 'dashboard.security.*') ? 'active' : '' }}">
+      <a href="{{ route('dashboard.profile.show') }}" class="sidebar-link {{ request()->routeIs('dashboard.profile.*', 'dashboard.security.*', 'dashboard.cv.*') ? 'active' : '' }}">
         <span class="s-icon">⚙</span> Settings
       </a>
       <a href="{{ route('dashboard.logs.index') }}" class="sidebar-link {{ request()->routeIs('dashboard.logs.*') ? 'active' : '' }}">
