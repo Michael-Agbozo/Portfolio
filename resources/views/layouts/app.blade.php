@@ -135,7 +135,7 @@
 
 {{-- FLOATING WHATSAPP BUTTON --}}
 @php
-  $whatsappText = "Hi Michael, I found your portfolio and I'd like to discuss a project.\n\nProject type:\nTimeline:\nBudget range:\nWebsite/social link:\nA short description:";
+  $whatsappText = "Hi Michael, I found your portfolio and I'd like to reach out.\n\nName:\nEmail:\nHow can you help me:";
 @endphp
 <a href="https://wa.me/233248581824?text={{ rawurlencode($whatsappText) }}"
    target="_blank" rel="noopener" aria-label="Message me on WhatsApp"
