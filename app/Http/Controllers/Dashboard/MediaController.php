@@ -44,6 +44,14 @@ class MediaController extends Controller
         return view('dashboard.media.index', compact('files', 'counts', 'filter', 'totalSize'));
     }
 
+    public function storeTemp(Request $request): \Illuminate\Http\JsonResponse
+    {
+        $request->validate(['file' => 'required|image|max:51200']);
+        $path = $request->file('file')->store('media', 'public');
+        ImageCompressor::compress(Storage::disk('public')->path($path));
+        return response()->json(['path' => '/storage/' . $path]);
+    }
+
     public function store(Request $request)
     {
         $request->validate([

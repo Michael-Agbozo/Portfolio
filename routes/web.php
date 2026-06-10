@@ -45,6 +45,8 @@ Route::prefix('dashboard')->name('dashboard.')->middleware('auth')->group(functi
     Route::post('designs/{design}', [DesignController::class, 'update'])->name('designs.update');
     Route::delete('designs/{design}', [DesignController::class, 'destroy'])->name('designs.destroy');
 
+    Route::post('upload-temp', [\App\Http\Controllers\Dashboard\MediaController::class, 'storeTemp'])->name('upload.temp');
+
     Route::get('media', [\App\Http\Controllers\Dashboard\MediaController::class, 'index'])->name('media.index');
     Route::post('media', [\App\Http\Controllers\Dashboard\MediaController::class, 'store'])->name('media.store');
     Route::patch('media/{filename}', [\App\Http\Controllers\Dashboard\MediaController::class, 'update'])->name('media.update')->where('filename', '.*');

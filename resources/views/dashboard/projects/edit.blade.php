@@ -134,13 +134,28 @@ function clearFeatureImage() {
   document.getElementById('feature-preview-wrap').style.display = 'none';
 }
 
-function previewFeatureFile(input) {
+async function previewFeatureFile(input) {
   const file = input.files[0];
   if (!file) return;
-  document.getElementById('feature-image-path').value = '';
+  const label = input.closest('label');
+  label.style.opacity = '0.6';
+  label.style.pointerEvents = 'none';
   const reader = new FileReader();
   reader.onload = e => showFeaturePreview(e.target.result);
   reader.readAsDataURL(file);
+  try {
+    const path = await instantUpload(file);
+    document.getElementById('feature-image-path').value = path;
+    input.value = '';
+    showFeaturePreview(path);
+  } catch (err) {
+    alert('Upload failed: ' + err.message);
+    input.value = '';
+    document.getElementById('feature-preview-wrap').style.display = 'none';
+  } finally {
+    label.style.opacity = '';
+    label.style.pointerEvents = '';
+  }
 }
 
 function setFeatureImageFromPath(path) {
@@ -149,15 +164,29 @@ function setFeatureImageFromPath(path) {
   showFeaturePreview(path);
 }
 
-function previewGalleryFiles(input) {
+async function previewGalleryFiles(input) {
+  const files = [...input.files];
+  if (!files.length) return;
   const list = document.getElementById('gallery-file-list');
   list.innerHTML = '';
-  [...input.files].forEach(file => {
+  const rows = files.map(file => {
     const row = document.createElement('div');
-    row.textContent = '✓ ' + file.name;
+    row.textContent = '⟳ ' + file.name + ' — uploading…';
     row.style.cssText = 'font-size:.72rem;color:var(--muted);padding:.15rem 0';
     list.appendChild(row);
+    return row;
   });
+  const results = await Promise.allSettled(files.map(f => instantUpload(f)));
+  results.forEach((result, i) => {
+    if (result.status === 'fulfilled') {
+      rows[i].textContent = '✓ ' + files[i].name;
+      appendGalleryPaths([result.value]);
+    } else {
+      rows[i].textContent = '✕ ' + files[i].name + ' — failed';
+      rows[i].style.color = '#e55';
+    }
+  });
+  input.value = '';
 }
 
 function appendGalleryPaths(paths) {

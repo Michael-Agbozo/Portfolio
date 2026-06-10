@@ -400,6 +400,20 @@
   });
 </script>
 
+<script>
+  async function instantUpload(file) {
+    const data = new FormData();
+    data.append('file', file);
+    data.append('_token', '{{ csrf_token() }}');
+    const res = await fetch('/dashboard/upload-temp', { method: 'POST', body: data });
+    if (!res.ok) {
+      const body = await res.json().catch(() => ({}));
+      throw new Error(body.errors?.file?.[0] ?? 'Upload failed');
+    }
+    return (await res.json()).path;
+  }
+</script>
+
 @stack('scripts')
 </body>
 </html>
