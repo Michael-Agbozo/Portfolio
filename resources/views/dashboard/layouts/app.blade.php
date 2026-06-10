@@ -157,8 +157,8 @@
 </div>
 
 <script>
-  const maxFileBytes  = 50 * 1024 * 1024;
-  const maxTotalBytes = 60 * 1024 * 1024;
+  const maxFileBytes  = 100 * 1024 * 1024;
+  const maxTotalBytes = 150 * 1024 * 1024;
 
   function formatFileSize(bytes) {
     return (bytes / 1024 / 1024).toFixed(1).replace(/\.0$/, '') + ' MB';
@@ -175,7 +175,7 @@
 
   // ── File-manager modal ──────────────────────────────────────────────────────
   // Lets the user remove individual files from a multi-file selection until
-  // the total is within the 60 MB limit, then uploads the remaining ones.
+  // the total is within the 150 MB limit, then uploads the remaining ones.
   let fmState = null;
 
   function openFileManager(input, form, files) {
@@ -197,7 +197,7 @@
     var canUpload  = !overTotal && !hasPerFile && kept.length > 0;
 
     document.getElementById('fm-desc').textContent =
-      'Your files are ' + formatFileSize(total) + ' total — over the 60 MB upload limit. ' +
+      'Your files are ' + formatFileSize(total) + ' total — over the 150 MB upload limit. ' +
       'Click Remove next to files you want to leave out, then click Upload.';
 
     var list = document.getElementById('fm-list');
@@ -223,7 +223,7 @@
       meta.style.cssText = 'font-size:.7rem;color:' +
         (overFile && entry.keep ? '#e55' : 'var(--dim)');
       meta.textContent = formatFileSize(entry.file.size) +
-        (overFile ? ' — over 50 MB limit' : '');
+        (overFile ? ' — over 100 MB limit' : '');
 
       info.appendChild(name);
       info.appendChild(meta);
@@ -246,7 +246,7 @@
     });
 
     var totalEl = document.getElementById('fm-total');
-    totalEl.textContent = 'Total: ' + formatFileSize(total) + ' / 60 MB';
+    totalEl.textContent = 'Total: ' + formatFileSize(total) + ' / 150 MB';
     totalEl.style.color = (overTotal || hasPerFile) ? '#e55' : '#4a4';
 
     document.getElementById('fm-confirm').disabled = !canUpload;
@@ -302,7 +302,7 @@
     } else {
       input.value = '';
       showFileSizeModal('"' + files[0].name + '" is ' + formatFileSize(files[0].size) +
-        '. The limit is 50 MB per file. Please choose a smaller file and try again.');
+        '. The limit is 100 MB per file. Please choose a smaller file and try again.');
     }
   }, true);
 
@@ -324,7 +324,7 @@
           if (bad) {
             inputs[ii].value = '';
             showFileSizeModal('"' + bad.name + '" is ' + formatFileSize(bad.size) +
-              '. The limit is 50 MB per file. Please choose a smaller file and try again.');
+              '. The limit is 100 MB per file. Please choose a smaller file and try again.');
             break;
           }
         }

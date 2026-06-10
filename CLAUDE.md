@@ -160,11 +160,11 @@ The user has **no background in software development or IT**. Always:
 
 ## Upload Rules
 
-- Project, design, and media image uploads allow up to 50 MB each.
+- Project, design, and media image uploads allow up to 100 MB each (150 MB total for multi-file uploads).
 - Profile photo upload allows up to 5 MB.
 - CV upload allows PDF files up to 10 MB.
 - Image uploads should go through `ImageCompressor` when they are saved.
-- Nginx upload size is handled in `start.sh` with `client_max_body_size 64M;`.
+- Nginx upload size is handled in `start.sh` with `client_max_body_size 170M;`.
 
 ## Email Rules
 

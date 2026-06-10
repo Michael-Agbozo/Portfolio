@@ -25,7 +25,7 @@ class DesignController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'image' => 'nullable|mimes:jpg,jpeg,png,webp,gif|max:51200',
+            'image' => 'nullable|mimes:jpg,jpeg,png,webp,gif|max:102400',
             'src'   => ['nullable', 'string', 'max:500', $this->validImageSrc()],
             'alt'   => 'required|string|max:200',
         ]);
@@ -58,7 +58,7 @@ class DesignController extends Controller
     public function update(Request $request, Design $design)
     {
         $request->validate([
-            'image' => 'nullable|mimes:jpg,jpeg,png,webp,gif|max:51200',
+            'image' => 'nullable|mimes:jpg,jpeg,png,webp,gif|max:102400',
             'src'   => ['nullable', 'string', 'max:500', $this->validImageSrc()],
             'alt'   => 'required|string|max:200',
         ]);
