@@ -99,16 +99,16 @@ Image uploads are validated in Laravel and compressed with `App\Support\ImageCom
 
 Current upload limits:
 
-- Project images: up to 50 MB each.
-- Design images: up to 50 MB each.
-- Media library images: up to 50 MB each.
+- Project images: up to 100 MB each (150 MB total for multi-file uploads).
+- Design images: up to 100 MB each.
+- Media library images: up to 100 MB each (150 MB total for multi-file uploads).
 - Profile photo: up to 5 MB.
 - CV upload: PDF only, up to 10 MB.
 
 Production Nginx is configured in `start.sh` to allow larger uploads with:
 
 ```nginx
-client_max_body_size 64M;
+client_max_body_size 170M;
 ```
 
 ## Email

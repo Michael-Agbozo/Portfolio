@@ -51,14 +51,14 @@ Large image uploads need Nginx to allow bigger request bodies.
 The project startup script adds:
 
 ```nginx
-client_max_body_size 64M;
+client_max_body_size 170M;
 ```
 
 Laravel upload limits are:
 
-- Project images: 50 MB.
-- Design images: 50 MB.
-- Media images: 50 MB.
+- Project images: 100 MB (150 MB total for multi-file gallery uploads).
+- Design images: 100 MB.
+- Media images: 100 MB (150 MB total for multi-file uploads).
 - Profile photo: 5 MB.
 - CV PDF: 10 MB.
 
@@ -73,7 +73,7 @@ If the error page says `nginx/1.18.0 (Ubuntu)`, check the front server's Nginx c
 Add this inside the matching `server { ... }` block:
 
 ```nginx
-client_max_body_size 64M;
+client_max_body_size 170M;
 ```
 
 Then test and reload Nginx:
