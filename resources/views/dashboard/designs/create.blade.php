@@ -70,7 +70,7 @@
 
 @push('scripts')
 <script>
-function previewFile(input) {
+async function previewFile(input) {
   const file = input.files[0];
   if (!file) return;
   const reader = new FileReader();
@@ -80,6 +80,16 @@ function previewFile(input) {
     document.getElementById('src-input').value = '';
   };
   reader.readAsDataURL(file);
+  try {
+    const path = await instantUpload(file);
+    document.getElementById('src-input').value = path;
+    document.getElementById('preview-img').src = path;
+    input.value = '';
+  } catch (err) {
+    alert('Upload failed: ' + err.message);
+    input.value = '';
+    document.getElementById('img-preview').style.display = 'none';
+  }
 }
 
 function previewUrl(url) {

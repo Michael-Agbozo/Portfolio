@@ -131,15 +131,34 @@
 
 @push('scripts')
 <script>
-function previewMediaUploads(input) {
+async function previewMediaUploads(input) {
+  const files = [...input.files];
+  if (!files.length) return;
   const list = document.getElementById('media-upload-list');
+  const btn  = document.querySelector('.btn-primary[type=submit]');
   list.innerHTML = '';
-  [...input.files].forEach(file => {
+  if (btn) { btn.disabled = true; btn.dataset.origText = btn.textContent; btn.textContent = 'Uploading…'; }
+  const rows = files.map(file => {
     const row = document.createElement('div');
-    row.textContent = '✓ ' + file.name;
+    row.textContent = '⟳ ' + file.name + ' — uploading…';
     row.style.cssText = 'font-size:.72rem;color:var(--muted);padding:.15rem 0';
     list.appendChild(row);
+    return row;
   });
+  const results = await Promise.allSettled(files.map(f => instantUpload(f)));
+  let success = 0;
+  results.forEach((result, i) => {
+    if (result.status === 'fulfilled') {
+      rows[i].textContent = '✓ ' + files[i].name;
+      success++;
+    } else {
+      rows[i].textContent = '✕ ' + files[i].name + ' — failed';
+      rows[i].style.color = '#e55';
+    }
+  });
+  input.value = '';
+  if (btn) { btn.disabled = false; btn.textContent = btn.dataset.origText || '↑ Upload'; }
+  if (success > 0) window.location.reload();
 }
 
 function toggleMediaEdit(index) {
