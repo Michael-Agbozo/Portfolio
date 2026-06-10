@@ -46,7 +46,7 @@ class MediaController extends Controller
 
     public function storeTemp(Request $request): \Illuminate\Http\JsonResponse
     {
-        $request->validate(['file' => 'required|image|max:51200']);
+        $request->validate(['file' => 'required|mimes:jpg,jpeg,png,webp,gif|max:51200']);
         $path = $request->file('file')->store('media', 'public');
         ImageCompressor::compress(Storage::disk('public')->path($path));
         return response()->json(['path' => '/storage/' . $path]);
@@ -56,7 +56,7 @@ class MediaController extends Controller
     {
         $request->validate([
             'files'     => 'required|array|min:1',
-            'files.*'   => 'image|max:51200',
+            'files.*'   => 'mimes:jpg,jpeg,png,webp,gif|max:51200',
         ]);
 
         foreach ($request->file('files') as $file) {
