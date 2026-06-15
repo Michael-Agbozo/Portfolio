@@ -12,6 +12,19 @@ echo "post_max_size=50M" >> /tmp/uploads.ini
 export PHP_INI_SCAN_DIR=/tmp
 
 php-fpm -y /assets/php-fpm.conf -D
+
+# php-fpm -D starts PHP in the background and returns immediately, before
+# PHP is actually ready to handle requests. If nginx starts first, every
+# request gets a 500 until PHP catches up. Wait for PHP-FPM's socket/port
+# to come up (max ~10s) before continuing.
+for i in $(seq 1 50); do
+    if pgrep -x php-fpm > /dev/null 2>&1 && \
+       { [ -S /run/php/php-fpm.sock ] || (echo > /dev/tcp/127.0.0.1/9000) 2>/dev/null; }; then
+        break
+    fi
+    sleep 0.2
+done
+
 node /assets/scripts/prestart.mjs /assets/nginx.template.conf /nginx.conf
 
 # Let the dashboard accept the same 100 MB image uploads Laravel validates
