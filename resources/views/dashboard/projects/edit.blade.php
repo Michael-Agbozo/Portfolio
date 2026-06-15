@@ -41,11 +41,7 @@
       <input class="f-input" type="text" name="meta" value="{{ old('meta', $project->meta) }}" placeholder="Brief one-line description"/>
     </div>
 
-    <div class="form-group">
-      <label class="f-label">Full Description</label>
-      <textarea class="f-textarea" name="body" placeholder="Write a detailed description of this project…" style="min-height:200px">{{ old('body', $project->body) }}</textarea>
-      <div class="f-hint">This appears on the project's detail page when someone clicks to read more</div>
-    </div>
+    @include('dashboard.projects._body-field')
 
     <div class="form-group">
       <label class="f-label">Tags</label>
