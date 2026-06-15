@@ -260,28 +260,25 @@ td.td-truncate{max-width:260px;white-space:nowrap;overflow:hidden;text-overflow:
 .f-select{appearance:none;cursor:pointer;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%23555'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right .9rem center}
 .f-textarea{min-height:120px;resize:vertical}
 
-/* RICH TEXT EDITOR (Quill) */
-.rte-editor{background:var(--bg3);border:1px solid var(--line);border-radius:8px;overflow:hidden}
-.rte-editor .ql-toolbar.ql-snow{border:none;border-bottom:1px solid var(--line);background:var(--bg2)}
-.rte-editor .ql-container.ql-snow{border:none;font-family:'Inter',sans-serif;font-size:.82rem;min-height:200px}
-.rte-editor .ql-editor{color:var(--white);min-height:200px}
-.rte-editor .ql-editor.ql-blank::before{color:var(--dim);font-style:normal}
-.rte-editor .ql-snow .ql-stroke{stroke:var(--muted)}
-.rte-editor .ql-snow .ql-fill{fill:var(--muted)}
-.rte-editor .ql-snow .ql-picker{color:var(--muted)}
-.rte-editor .ql-snow .ql-picker-options{background:var(--bg2);border:1px solid var(--line)}
-.rte-editor .ql-toolbar.ql-snow .ql-picker-label{border:none}
-.rte-editor .ql-snow.ql-toolbar button:hover,
-.rte-editor .ql-snow.ql-toolbar button.ql-active,
-.rte-editor .ql-snow .ql-picker-label:hover,
-.rte-editor .ql-snow .ql-picker-item:hover{color:var(--orange)}
-.rte-editor .ql-snow.ql-toolbar button:hover .ql-stroke,
-.rte-editor .ql-snow.ql-toolbar button.ql-active .ql-stroke{stroke:var(--orange)}
-.rte-editor .ql-snow.ql-toolbar button:hover .ql-fill,
-.rte-editor .ql-snow.ql-toolbar button.ql-active .ql-fill{fill:var(--orange)}
-.rte-editor .ql-snow .ql-tooltip{background:var(--bg2);border:1px solid var(--line);color:var(--white);box-shadow:none}
-.rte-editor .ql-snow .ql-tooltip input[type=text]{background:var(--bg3);border:1px solid var(--line);color:var(--white)}
-.rte-editor:focus-within{border-color:var(--orange)}
+/* RICH TEXT EDITOR (CKEditor 5) */
+.ck-host .ck.ck-editor{border-radius:8px;overflow:hidden;border:1px solid var(--line)}
+.ck-host .ck.ck-editor__top .ck-sticky-panel .ck-sticky-panel__content{border:none;border-bottom:1px solid var(--line)}
+.ck-host .ck.ck-toolbar{background:var(--bg2);border:none;padding:.3rem .4rem}
+.ck-host .ck.ck-toolbar .ck-toolbar__separator{background:var(--line)}
+.ck-host .ck.ck-button{color:var(--muted);border-radius:4px;border:none;background:transparent}
+.ck-host .ck.ck-button:hover:not(.ck-disabled),.ck-host .ck.ck-button.ck-on{background:var(--bg3);color:var(--white)}
+.ck-host .ck.ck-button.ck-on{color:var(--orange)}
+.ck-host .ck.ck-editor__main>.ck-editor__editable{background:var(--bg3);color:var(--white);border:none;min-height:200px;font-family:'Inter',sans-serif;font-size:.82rem;line-height:1.8}
+.ck-host .ck.ck-editor__main>.ck-editor__editable.ck-focused{border:none;box-shadow:none}
+.ck-host .ck.ck-editor__editable .ck-placeholder::before{color:var(--dim)}
+.ck-host .ck.ck-dropdown__panel,.ck-host .ck.ck-list{background:var(--bg2);border:1px solid var(--line)}
+.ck-host .ck.ck-list__item .ck-button{color:var(--muted)}
+.ck-host .ck.ck-list__item .ck-button:hover,.ck-host .ck.ck-list__item .ck-button.ck-on{background:var(--bg3);color:var(--white)}
+.ck-host .ck.ck-input{background:var(--bg3);border:1px solid var(--line);color:var(--white)}
+.ck-host .ck.ck-balloon-panel{background:var(--bg2);border:1px solid var(--line);box-shadow:0 4px 16px rgba(0,0,0,.4)}
+.ck-host .ck.ck-balloon-panel .ck-button{color:var(--muted)}
+.ck-host .ck.ck-balloon-panel .ck-button:hover,.ck-host .ck.ck-balloon-panel .ck-button.ck-on{color:var(--white);background:var(--bg3)}
+.ck-host:focus-within .ck.ck-editor{border-color:var(--orange)}
 .form-actions{display:flex;gap:.75rem;align-items:center;margin-top:1.5rem;padding-top:1.5rem;border-top:1px solid var(--line)}
 
 /* DESIGN GRID */
