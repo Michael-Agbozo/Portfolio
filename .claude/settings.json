@@ -5,9 +5,7 @@
       "Bash(php /Users/sonofgrace/Herd/Portfolio/artisan tinker '--execute= *)",
       "Bash(kill %1)",
       "Bash(node shot2.js)",
-      "Bash(node shot3.js)",
-      "Bash(git checkout *)",
-      "Bash(git merge *)"
+      "Bash(node shot3.js)"
     ]
   }
 }

@@ -34,13 +34,9 @@
 
   <div class="py-10 border-b border-border space-y-6">
     @if($project->body)
-      @if(strip_tags($project->body) !== $project->body)
-        <div class="project-body">{!! $project->body !!}</div>
-      @else
-        @foreach(array_filter(explode("\n\n", $project->body)) as $paragraph)
-          <p class="text-[.96rem] text-muted leading-[2]">{{ $paragraph }}</p>
-        @endforeach
-      @endif
+      @foreach(array_filter(explode("\n\n", $project->body)) as $paragraph)
+        <p class="text-[.96rem] text-muted leading-[2]">{{ $paragraph }}</p>
+      @endforeach
     @else
       <p class="text-dim italic text-[.96rem]">No detailed write-up yet — check back soon.</p>
     @endif

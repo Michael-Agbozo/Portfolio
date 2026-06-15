@@ -415,12 +415,6 @@
     <div class="reveal">
       <form class="flex flex-col gap-4" method="POST" action="{{ route('contact.send') }}">
         @csrf
-        {{-- Honeypot: hidden from real visitors, but bots tend to fill in every
-             field they find. If this has a value, we quietly ignore the submission. --}}
-        <div class="hp-field" aria-hidden="true">
-          <label for="website">Website</label>
-          <input type="text" id="website" name="website" tabindex="-1" autocomplete="off"/>
-        </div>
         @if(session('success'))
         <div class="text-orange text-[.85rem] px-4 py-3 border border-orange rounded-lg">{{ session('success') }}</div>
         @endif
