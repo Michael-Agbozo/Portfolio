@@ -401,7 +401,51 @@
 </script>
 
 <script>
+  // Shrinks large photos in the browser before they're uploaded — keeps big
+  // camera/phone photos from being sent over the wire at full size. Skips
+  // files that are already small or aren't a format we can safely re-encode
+  // (GIFs would lose their animation, SVGs aren't raster images).
+  async function compressImageFile(file, opts = {}) {
+    const maxWidth = opts.maxWidth ?? 1920;
+    const quality = opts.quality ?? 0.8;
+    const skipBelowBytes = opts.skipBelowBytes ?? 512000;
+
+    if (!['image/jpeg', 'image/png', 'image/webp'].includes(file.type)) {
+      return file;
+    }
+
+    try {
+      const bitmap = await createImageBitmap(file);
+      const needsResize = bitmap.width > maxWidth;
+
+      if (!needsResize && file.size <= skipBelowBytes) {
+        bitmap.close?.();
+        return file;
+      }
+
+      const scale = needsResize ? maxWidth / bitmap.width : 1;
+      const width = Math.round(bitmap.width * scale);
+      const height = Math.round(bitmap.height * scale);
+
+      const canvas = document.createElement('canvas');
+      canvas.width = width;
+      canvas.height = height;
+      canvas.getContext('2d').drawImage(bitmap, 0, 0, width, height);
+      bitmap.close?.();
+
+      const blob = await new Promise(resolve => canvas.toBlob(resolve, file.type, quality));
+      if (!blob || blob.size >= file.size) {
+        return file;
+      }
+
+      return new File([blob], file.name, { type: file.type, lastModified: Date.now() });
+    } catch {
+      return file;
+    }
+  }
+
   async function instantUpload(file) {
+    file = await compressImageFile(file);
     const data = new FormData();
     data.append('file', file);
     data.append('_token', '{{ csrf_token() }}');

@@ -32,7 +32,7 @@
           @csrf
           <label class="btn btn-secondary btn-sm" style="margin:0">
             Upload new photo
-            <input type="file" name="avatar" accept="image/*" style="display:none" onchange="this.form.requestSubmit()"/>
+            <input type="file" name="avatar" accept="image/*" style="display:none" onchange="compressAvatarAndSubmit(this)"/>
           </label>
         </form>
 
@@ -80,5 +80,20 @@
   </div>
 
 </div>
+
+@push('scripts')
+<script>
+async function compressAvatarAndSubmit(input) {
+  const file = input.files[0];
+  if (!file) return;
+
+  const compressed = await compressImageFile(file, { maxWidth: 800, skipBelowBytes: 200000 });
+  const dt = new DataTransfer();
+  dt.items.add(compressed);
+  input.files = dt.files;
+  input.form.requestSubmit();
+}
+</script>
+@endpush
 
 @endsection
