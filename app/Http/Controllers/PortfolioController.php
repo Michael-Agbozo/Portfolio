@@ -35,6 +35,14 @@ class PortfolioController extends Controller
 
     public function sendContact(Request $request)
     {
+        // Honeypot: real visitors never see or fill in the "website" field.
+        // If it has a value, the submission is almost certainly from a bot —
+        // pretend it succeeded so the bot doesn't keep retrying, but don't
+        // save the message or send any emails.
+        if ($request->filled('website')) {
+            return back()->with('success', 'Message sent! I\'ll get back to you soon.');
+        }
+
         $validated = $request->validate([
             'name'    => 'required|string|max:100',
             'email'   => 'required|email|max:100',

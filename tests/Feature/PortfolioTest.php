@@ -107,4 +107,21 @@ class PortfolioTest extends TestCase
         $response->assertSessionHasErrors(['name', 'email', 'subject', 'message']);
         $this->assertDatabaseCount('messages', 0);
     }
+
+    public function test_contact_form_silently_ignores_submissions_with_filled_honeypot(): void
+    {
+        Mail::fake();
+
+        $response = $this->post('/contact', [
+            'name' => 'Spam Bot',
+            'email' => 'bot@example.com',
+            'subject' => 'Buy now',
+            'message' => 'Cheap watches for sale.',
+            'website' => 'https://spammer.example',
+        ]);
+
+        $response->assertSessionHas('success');
+        $this->assertDatabaseCount('messages', 0);
+        Mail::assertNothingSent();
+    }
 }
