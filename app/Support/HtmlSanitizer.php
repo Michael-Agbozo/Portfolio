@@ -23,8 +23,9 @@ class HtmlSanitizer
         // Strip every tag not on the allowlist (keeps inner text).
         $html = strip_tags($html, self::ALLOWED_TAGS);
 
-        // Remove event-handler attributes (onclick, onmouseover, etc.).
-        $html = preg_replace('/\s+on\w+\s*=\s*(?:"[^"]*"|\'[^\']*\'|[^\s>]*)/i', '', $html);
+        // strip_tags keeps all attributes on allowed tags — strip every attribute
+        // from non-<a> tags (style, class, on*, data-*) to prevent CSS/JS injection.
+        $html = preg_replace('/<((?!a\b)[a-z][a-z0-9]*)\b[^>]*>/i', '<$1>', $html);
 
         // Rewrite <a> tags: keep only a safe href, force blank/noopener.
         $html = preg_replace_callback('/<a(\s[^>]*)?>/i', function (array $m) {

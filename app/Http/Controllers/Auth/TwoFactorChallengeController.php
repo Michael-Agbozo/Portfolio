@@ -55,12 +55,19 @@ class TwoFactorChallengeController extends Controller
     {
         $codes = $user->two_factor_recovery_codes ?? [];
 
-        if (! in_array($code, $codes, true)) {
+        $matched = null;
+        foreach ($codes as $stored) {
+            if (hash_equals($stored, $code)) {
+                $matched = $stored;
+            }
+        }
+
+        if ($matched === null) {
             return false;
         }
 
         $user->forceFill([
-            'two_factor_recovery_codes' => array_values(array_diff($codes, [$code])),
+            'two_factor_recovery_codes' => array_values(array_diff($codes, [$matched])),
         ])->save();
 
         return true;

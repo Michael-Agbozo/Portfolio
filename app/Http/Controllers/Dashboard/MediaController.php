@@ -75,14 +75,17 @@ class MediaController extends Controller
         $files   = [];
 
         $designUrls  = Design::pluck('src')->filter()->all();
-        $projectUrls = Project::all()->flatMap(fn ($p) => array_filter(array_merge(
-            [$p->feature_image],
-            $p->images ?? []
-        )))->all();
+        $projectUrls = Project::withTrashed()
+            ->get(['feature_image', 'images'])
+            ->flatMap(fn ($p) => array_filter(array_merge([$p->feature_image], $p->images ?? [])))
+            ->all();
         $meta = Media::all()->keyBy('path');
 
+        $disk     = Storage::disk('public');
+        $diskRoot = $disk->path('');
+
         foreach ($folders as $folder) {
-            foreach (Storage::disk('public')->files($folder) as $path) {
+            foreach ($disk->files($folder) as $path) {
                 $ext = strtolower(pathinfo($path, PATHINFO_EXTENSION));
                 if (!in_array($ext, ['jpg', 'jpeg', 'png', 'webp', 'gif'])) {
                     continue;
@@ -98,16 +101,17 @@ class MediaController extends Controller
                 }
 
                 $record = $meta->get($path);
+                $stat   = @stat($diskRoot . $path);
 
                 $files[] = [
-                    'path'    => $path,
-                    'url'     => $url,
-                    'folder'  => $category,
-                    'name'    => basename($path),
-                    'title'   => $record->name ?? '',
-                    'alt'     => $record->alt ?? '',
-                    'size'    => Storage::disk('public')->size($path),
-                    'modified'=> Storage::disk('public')->lastModified($path),
+                    'path'     => $path,
+                    'url'      => $url,
+                    'folder'   => $category,
+                    'name'     => basename($path),
+                    'title'    => $record->name ?? '',
+                    'alt'      => $record->alt ?? '',
+                    'size'     => $stat['size'] ?? 0,
+                    'modified' => $stat['mtime'] ?? 0,
                 ];
             }
         }
@@ -146,7 +150,18 @@ class MediaController extends Controller
             abort(403);
         }
 
+        $url = '/storage/' . $path;
+
+        $usedByProject = Project::where('feature_image', $url)->exists()
+            || Project::whereJsonContains('images', $url)->exists();
+        $usedByDesign  = Design::where('src', $url)->exists();
+
+        if ($usedByProject || $usedByDesign) {
+            return back()->withErrors(['file' => 'This image is still used by a project or design. Remove it from there first.']);
+        }
+
         Storage::disk('public')->delete($path);
+        Media::where('path', $path)->delete();
 
         return back()->with('success', 'File deleted.');
     }

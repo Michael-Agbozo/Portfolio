@@ -68,6 +68,7 @@ class ImageCompressor
             }
 
             imagecopyresampled($resized, $source, 0, 0, 0, 0, $newWidth, $newHeight, $width, $height);
+            imagedestroy($source);
             $image = $resized;
         }
 
@@ -77,5 +78,7 @@ class ImageCompressor
             IMAGETYPE_WEBP => imagewebp($image, $absolutePath, $quality),
             default        => null,
         };
+
+        imagedestroy($image);
     }
 }
