@@ -10,7 +10,7 @@
 </div>
 
 @push('scripts')
-<script src="https://cdn.ckeditor.com/ckeditor5/41.4.2/classic/ckeditor.js"></script>
+<script src="{{ asset('js/ckeditor.js') }}"></script>
 <script>
 (function () {
   var input = document.getElementById('body-input');
