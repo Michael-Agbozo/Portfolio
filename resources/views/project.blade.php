@@ -32,13 +32,20 @@
     @endif
   </div>
 
-  <div class="py-10 border-b border-border space-y-6">
+  <div class="py-10 border-b border-border">
+    <div class="text-[.7rem] text-orange uppercase tracking-[.15em] font-semibold mb-5">Project Overview</div>
     @if($project->body)
-      @foreach(array_filter(explode("\n\n", $project->body)) as $paragraph)
-        <p class="text-[.96rem] text-muted leading-[2]">{{ $paragraph }}</p>
-      @endforeach
+      @if(strip_tags($project->body) !== $project->body)
+        <div class="project-body">{!! $project->body !!}</div>
+      @else
+        <div class="space-y-5">
+          @foreach(array_filter(explode("\n\n", $project->body)) as $paragraph)
+            <p class="text-[.95rem] text-muted leading-[1.85]">{{ $paragraph }}</p>
+          @endforeach
+        </div>
+      @endif
     @else
-      <p class="text-dim italic text-[.96rem]">No detailed write-up yet — check back soon.</p>
+      <p class="text-dim italic text-[.9rem]">No detailed write-up yet — check back soon.</p>
     @endif
   </div>
 
