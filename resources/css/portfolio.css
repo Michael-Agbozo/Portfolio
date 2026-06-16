@@ -513,7 +513,7 @@ footer{border-top:1px solid var(--line)}
 .hp-field{position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden}
 
 /* PROJECT BODY (rich text) */
-.project-body{color:var(--muted);font-size:.96rem;line-height:2}
+.project-body{color:var(--muted);font-size:.95rem;line-height:1.85}
 .project-body p{margin:0 0 1.2rem}
 .project-body p:last-child{margin-bottom:0}
 .project-body h2,.project-body h3,.project-body h4{color:var(--white);font-family:'Syne',sans-serif;font-weight:700;line-height:1.4;margin:1.8rem 0 .9rem}
