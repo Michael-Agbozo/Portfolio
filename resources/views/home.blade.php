@@ -368,12 +368,12 @@
         </svg>
         Lets Talk: 0248581824
       </a>
-      <a href="mailto:agbozomykell8@gmail.com"
+      <a href="mailto:michaelsogagbozo@gmail.com"
          class="inline-flex items-center gap-2 sm:gap-2.5 border border-white/30 text-white text-[.76rem] sm:text-[.85rem] font-semibold px-5 sm:px-6 py-3 sm:py-3.5 rounded-full hover:border-white hover:bg-white/5 hover:scale-[1.04] active:scale-95 transition-all duration-200 whitespace-normal sm:whitespace-nowrap text-center">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" class="shrink-0">
           <rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-10 5L2 7"/>
         </svg>
-        Email me via: agbozomykell8@gmail.com
+        Email me via: michaelsogagbozo@gmail.com
       </a>
     </div>
   </div>
@@ -397,7 +397,7 @@
       <p class="text-muted text-[.93rem] leading-[1.85] mb-8">Whether you need a solid website, a brand that stands out, or a system that actually works — reach out and let's talk about it.</p>
       <div class="flex flex-col gap-3">
         @foreach([
-          ['✉','Email',   'agbozomykell8@gmail.com'],
+          ['✉','Email',   'michaelsogagbozo@gmail.com'],
           ['✆','Phone',   '0248581824'],
           ['◯','Location','Ghana — Available remotely'],
         ] as [$icon, $label, $value])
