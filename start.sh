@@ -1,6 +1,7 @@
 #!/bin/bash
 mkdir -p /var/log/nginx
 chmod -R 777 /app/storage /app/bootstrap/cache
+rm -f /app/public/hot
 php artisan migrate --force
 php artisan config:cache
 php artisan route:cache

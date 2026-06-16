@@ -3,8 +3,8 @@
      which is what actually gets submitted with the form. --}}
 <div class="form-group">
   <label class="f-label">Full Description</label>
-  <textarea name="body" id="body-input" style="display:none">{{ old('body', $project->body ?? '') }}</textarea>
-  <div id="body-editor" class="ck-host"></div>
+  <textarea name="body" id="body-input" class="f-textarea">{{ old('body', $project->body ?? '') }}</textarea>
+  <div id="body-editor" class="ck-host" hidden></div>
   <div class="f-hint">This appears on the project's detail page when someone clicks to read more</div>
   @error('body')<div class="field-error">{{ $message }}</div>@enderror
 </div>
@@ -14,9 +14,15 @@
 <script>
 (function () {
   var input = document.getElementById('body-input');
+  var editorHost = document.getElementById('body-editor');
+  var form = input ? input.closest('form') : null;
+
+  if (!input || !editorHost || !form || typeof ClassicEditor === 'undefined') {
+    return;
+  }
 
   ClassicEditor
-    .create(document.getElementById('body-editor'), {
+    .create(editorHost, {
       initialData: input.value,
       placeholder: 'Write a detailed description of this project — what it involved, what you built, challenges, outcomes…',
       toolbar: {
@@ -37,7 +43,10 @@
       }
     })
     .then(function (editor) {
-      input.closest('form').addEventListener('submit', function () {
+      input.style.display = 'none';
+      editorHost.hidden = false;
+
+      form.addEventListener('submit', function () {
         input.value = editor.getData();
       });
     })
