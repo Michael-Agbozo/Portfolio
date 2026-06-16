@@ -6,12 +6,7 @@ php artisan config:cache
 php artisan route:cache
 php artisan storage:link --force 2>/dev/null || true
 
-# Increase PHP upload limits
-echo "upload_max_filesize=50M" > /tmp/uploads.ini
-echo "post_max_size=50M" >> /tmp/uploads.ini
-export PHP_INI_SCAN_DIR=/tmp
-
-php-fpm -y /assets/php-fpm.conf -D
+php-fpm -y /assets/php-fpm.conf -d upload_max_filesize=50M -d post_max_size=50M -D
 
 # php-fpm -D starts PHP in the background and returns immediately, before
 # PHP is actually ready to handle requests. If nginx starts first, every
