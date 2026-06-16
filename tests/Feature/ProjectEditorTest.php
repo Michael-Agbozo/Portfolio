@@ -18,8 +18,9 @@ class ProjectEditorTest extends TestCase
 
         $response->assertOk();
         $response->assertSee('id="body-input"', false);
-        $response->assertSee('id="body-editor" class="ck-host"', false);
-        $response->assertDontSee('id="body-editor" class="ck-host" hidden', false);
+        $response->assertSee('class="ck-host"', false);
+        $response->assertSee('id="body-editor"', false);
+        $response->assertDontSee('id="body-editor" hidden', false);
         $response->assertSee('js/ckeditor.js', false);
     }
 }

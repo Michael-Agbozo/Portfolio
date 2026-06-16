@@ -4,7 +4,9 @@
 <div class="form-group">
   <label class="f-label">Full Description</label>
   <textarea name="body" id="body-input" class="f-textarea">{{ old('body', $project->body ?? '') }}</textarea>
-  <div id="body-editor" class="ck-host"></div>
+  <div class="ck-host">
+    <div id="body-editor"></div>
+  </div>
   <div class="f-hint">This appears on the project's detail page when someone clicks to read more</div>
   @error('body')<div class="field-error">{{ $message }}</div>@enderror
 </div>
