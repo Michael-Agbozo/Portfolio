@@ -1,6 +1,6 @@
 @extends('layouts.app')
 @section('title', 'Michael Agbozo — IT Professional, Web Developer & Designer')
-@section('meta_description', 'Michael Agbozo is a Ghana-based IT systems professional, Laravel and WordPress developer, and brand designer building websites, dashboards, and visual identities.')
+@section('meta_description', 'Michael Agbozo offers Laravel development, WordPress website design, brand identity design, and IT systems support in Ghana and remotely.')
 @section('canonical', url('/'))
 @section('og_image', asset('images/michael-hero.png'))
 @push('head')
@@ -47,12 +47,19 @@
             'url' => url('/'),
             'image' => asset('images/michael-hero.png'),
             'areaServed' => 'Ghana',
-            'serviceType' => [
-                'Web development',
-                'Laravel application development',
-                'WordPress website development',
-                'Brand identity design',
-                'IT systems support',
+            'serviceType' => collect($services)->pluck('short_name')->values()->all(),
+            'hasOfferCatalog' => [
+                '@type' => 'OfferCatalog',
+                'name' => 'Web, brand, and IT services',
+                'itemListElement' => collect($services)->map(fn ($service, $slug) => [
+                    '@type' => 'Offer',
+                    'itemOffered' => [
+                        '@type' => 'Service',
+                        'name' => $service['name'],
+                        'url' => route('service.show', $slug),
+                        'description' => $service['summary'],
+                    ],
+                ])->values()->all(),
             ],
         ],
     ],
@@ -237,18 +244,23 @@
   <h2 class="font-display font-extrabold text-white leading-tight" style="font-size:clamp(2rem,4vw,3.2rem)">
     Services that <span class="text-orange">deliver</span><br/><span class="[-webkit-text-stroke:1px_var(--color-white)] text-transparent">real results.</span>
   </h2>
-  <div class="grid grid-cols-1 md:grid-cols-3 gap-px bg-border border border-border mt-14 reveal">
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-px bg-border border border-border mt-14 reveal">
     @foreach([
-      ['01','Web Development',          'WordPress websites and Laravel applications built end-to-end. Custom solutions — no bloated templates. Complete ownership from concept to launch and long-term support.'],
-      ['02','Brand Identity & Design',  'Visual identity systems that communicate with precision — logos, color systems, typography, and digital materials. Brands that are memorable and built to last.'],
-      ['03','IT Systems & Infrastructure','End-to-end IT management, systems administration, and internal tool development. Efficient, clean, and built to scale with the operation.'],
-    ] as [$num, $name, $desc])
-    <div class="bg-bg p-10 hover:bg-bg3 transition-colors">
+      ['01', 'laravel-development-ghana'],
+      ['02', 'wordpress-website-design-ghana'],
+      ['03', 'brand-identity-design-ghana'],
+      ['04', 'it-systems-support-ghana'],
+    ] as [$num, $slug])
+    @php
+      $service = $services[$slug];
+    @endphp
+    <a href="{{ route('service.show', $slug) }}" class="block bg-bg p-10 hover:bg-bg3 transition-colors group">
       <div class="font-display text-[.7rem] text-orange uppercase tracking-[.15em] mb-5">{{ $num }}</div>
       <div class="w-8 h-0.5 bg-orange mb-5"></div>
-      <div class="font-display text-[1.25rem] font-bold text-white mb-3 leading-tight">{{ $name }}</div>
-      <p class="text-[.87rem] text-muted leading-[1.8]">{{ $desc }}</p>
-    </div>
+      <h3 class="font-display text-[1.25rem] font-bold text-white mb-3 leading-tight group-hover:text-orange transition-colors">{{ $service['short_name'] }}</h3>
+      <p class="text-[.87rem] text-muted leading-[1.8]">{{ $service['summary'] }}</p>
+      <span class="inline-flex mt-6 text-[.72rem] font-semibold uppercase tracking-widest text-orange">Learn more →</span>
+    </a>
     @endforeach
   </div>
 </div>

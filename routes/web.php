@@ -17,6 +17,7 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', [PortfolioController::class, 'home']);
 Route::get('/robots.txt', [PortfolioController::class, 'robots'])->name('robots');
 Route::get('/sitemap.xml', [PortfolioController::class, 'sitemap'])->name('sitemap');
+Route::get('/services/{service}', [PortfolioController::class, 'service'])->name('service.show');
 Route::post('/contact', [PortfolioController::class, 'sendContact'])->middleware('throttle:5,1')->name('contact.send');
 
 // Public project detail
