@@ -56,6 +56,26 @@ class PortfolioTest extends TestCase
         $response->assertSee('"@type": "BreadcrumbList"', false);
     }
 
+    public function test_service_page_includes_service_specific_seo_metadata(): void
+    {
+        $response = $this->get('/services/laravel-development-ghana');
+
+        $response->assertOk();
+        $response->assertViewIs('service');
+        $response->assertSee('<title>Remote Laravel Developer in Ghana | Michael Agbozo</title>', false);
+        $response->assertSee('<meta name="description" content="Hire Michael Agbozo for Laravel development in Ghana and remotely', false);
+        $response->assertSee('<link rel="canonical" href="http://localhost/services/laravel-development-ghana"/>', false);
+        $response->assertSee('"@type": "Service"', false);
+        $response->assertSee('"@type": "FAQPage"', false);
+        $response->assertSee('Laravel developer Ghana');
+        $response->assertSee('remote Laravel developer');
+    }
+
+    public function test_unknown_service_page_returns_not_found(): void
+    {
+        $this->get('/services/not-a-real-service')->assertNotFound();
+    }
+
     public function test_sitemap_lists_active_public_projects_only(): void
     {
         Project::create([
@@ -85,6 +105,10 @@ class PortfolioTest extends TestCase
         $response->assertOk();
         $response->assertHeader('content-type', 'application/xml');
         $response->assertSee('<loc>http://localhost</loc>', false);
+        $response->assertSee('<loc>http://localhost/services/laravel-development-ghana</loc>', false);
+        $response->assertSee('<loc>http://localhost/services/wordpress-website-design-ghana</loc>', false);
+        $response->assertSee('<loc>http://localhost/services/brand-identity-design-ghana</loc>', false);
+        $response->assertSee('<loc>http://localhost/services/it-systems-support-ghana</loc>', false);
         $response->assertSee('<loc>http://localhost/projects/public-project</loc>', false);
         $response->assertDontSee('hidden-project');
     }
