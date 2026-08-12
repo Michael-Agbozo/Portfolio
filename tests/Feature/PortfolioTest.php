@@ -98,6 +98,17 @@ class PortfolioTest extends TestCase
         $response->assertSee('Sitemap: https://michaelagbozo.com/sitemap.xml');
     }
 
+    public function test_not_found_page_matches_the_portfolio_theme(): void
+    {
+        $response = $this->get('/missing-page');
+
+        $response->assertNotFound();
+        $response->assertSee('This page slipped out of frame.');
+        $response->assertSee('Michael Agbozo<span class="text-orange">.</span>', false);
+        $response->assertSee('<meta name="robots" content="noindex, follow"/>', false);
+        $response->assertSee('Back Home');
+    }
+
     public function test_contact_form_stores_a_message(): void
     {
         Mail::fake();
