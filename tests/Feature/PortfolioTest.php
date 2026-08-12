@@ -5,6 +5,7 @@ namespace Tests\Feature;
 use App\Mail\ContactMessageConfirmation;
 use App\Mail\ContactMessageReceived;
 use App\Models\Message;
+use App\Models\Project;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Mail;
 use RuntimeException;
@@ -20,6 +21,81 @@ class PortfolioTest extends TestCase
 
         $response->assertStatus(200);
         $response->assertViewIs('home');
+    }
+
+    public function test_homepage_includes_core_seo_metadata(): void
+    {
+        $response = $this->get('/');
+
+        $response->assertOk();
+        $response->assertSee('<meta name="description"', false);
+        $response->assertSee('<link rel="canonical" href="http://localhost"/>', false);
+        $response->assertSee('<meta property="og:title" content="Michael Agbozo', false);
+        $response->assertSee('"@type": "Person"', false);
+    }
+
+    public function test_project_page_includes_project_specific_seo_metadata(): void
+    {
+        $project = Project::create([
+            'num' => '01',
+            'category' => 'development',
+            'title' => 'SEO Project',
+            'slug' => 'seo-project',
+            'meta' => 'A search friendly Laravel portfolio project.',
+            'tags' => ['Laravel', 'SEO'],
+            'images' => [],
+            'active' => true,
+        ]);
+
+        $response = $this->get(route('project.show', $project));
+
+        $response->assertOk();
+        $response->assertSee('<meta name="description" content="A search friendly Laravel portfolio project."', false);
+        $response->assertSee('<link rel="canonical" href="http://localhost/projects/seo-project"/>', false);
+        $response->assertSee('"@type": "CreativeWork"', false);
+        $response->assertSee('"@type": "BreadcrumbList"', false);
+    }
+
+    public function test_sitemap_lists_active_public_projects_only(): void
+    {
+        Project::create([
+            'num' => '01',
+            'category' => 'development',
+            'title' => 'Public Project',
+            'slug' => 'public-project',
+            'meta' => 'Visible project',
+            'tags' => [],
+            'images' => [],
+            'active' => true,
+        ]);
+
+        Project::create([
+            'num' => '02',
+            'category' => 'development',
+            'title' => 'Hidden Project',
+            'slug' => 'hidden-project',
+            'meta' => 'Hidden project',
+            'tags' => [],
+            'images' => [],
+            'active' => false,
+        ]);
+
+        $response = $this->get('/sitemap.xml');
+
+        $response->assertOk();
+        $response->assertHeader('content-type', 'application/xml');
+        $response->assertSee('<loc>http://localhost</loc>', false);
+        $response->assertSee('<loc>http://localhost/projects/public-project</loc>', false);
+        $response->assertDontSee('hidden-project');
+    }
+
+    public function test_robots_txt_points_crawlers_to_the_sitemap(): void
+    {
+        $response = $this->get('/robots.txt');
+
+        $response->assertOk();
+        $response->assertSee('Disallow: /dashboard/');
+        $response->assertSee('Sitemap: https://michaelagbozo.com/sitemap.xml');
     }
 
     public function test_contact_form_stores_a_message(): void

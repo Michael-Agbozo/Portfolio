@@ -1,5 +1,62 @@
 @extends('layouts.app')
+@php
+  $projectDescription = \Illuminate\Support\Str::limit(
+      trim(strip_tags($project->meta ?: $project->body ?: 'A selected web development, design, or systems project by Michael Agbozo.')),
+      155,
+      ''
+  );
+  $projectImage = $project->feature_image ?: ($project->images[0] ?? asset('images/michael-hero.png'));
+  $projectImage = \Illuminate\Support\Str::startsWith($projectImage, ['http://', 'https://'])
+      ? $projectImage
+      : url($projectImage);
+@endphp
 @section('title', $project->title . ' — Michael Agbozo')
+@section('meta_description', $projectDescription)
+@section('canonical', route('project.show', $project))
+@section('og_type', 'article')
+@section('og_image', $projectImage)
+@push('head')
+<script type="application/ld+json">
+{!! json_encode([
+    '@context' => 'https://schema.org',
+    '@graph' => [
+        [
+            '@type' => 'CreativeWork',
+            '@id' => route('project.show', $project).'#creative-work',
+            'name' => $project->title,
+            'description' => $projectDescription,
+            'url' => route('project.show', $project),
+            'image' => $projectImage,
+            'creator' => [
+                '@type' => 'Person',
+                'name' => 'Michael Agbozo',
+                'url' => url('/'),
+            ],
+            'keywords' => $project->tags ?: null,
+            'dateModified' => optional($project->updated_at)->toAtomString(),
+        ],
+        [
+            '@type' => 'BreadcrumbList',
+            '@id' => route('project.show', $project).'#breadcrumb',
+            'itemListElement' => [
+                [
+                    '@type' => 'ListItem',
+                    'position' => 1,
+                    'name' => 'Home',
+                    'item' => url('/'),
+                ],
+                [
+                    '@type' => 'ListItem',
+                    'position' => 2,
+                    'name' => $project->title,
+                    'item' => route('project.show', $project),
+                ],
+            ],
+        ],
+    ],
+], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT) !!}
+</script>
+@endpush
 @section('content')
 
 <div class="max-w-[800px] mx-auto px-8 pt-32 pb-20">

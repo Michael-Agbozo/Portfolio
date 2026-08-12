@@ -1,5 +1,64 @@
 @extends('layouts.app')
 @section('title', 'Michael Agbozo — IT Professional, Web Developer & Designer')
+@section('meta_description', 'Michael Agbozo is a Ghana-based IT systems professional, Laravel and WordPress developer, and brand designer building websites, dashboards, and visual identities.')
+@section('canonical', url('/'))
+@section('og_image', asset('images/michael-hero.png'))
+@push('head')
+<script type="application/ld+json">
+{!! json_encode([
+    '@context' => 'https://schema.org',
+    '@graph' => [
+        [
+            '@type' => 'Person',
+            '@id' => url('/').'#person',
+            'name' => 'Michael Agbozo',
+            'url' => url('/'),
+            'image' => asset('images/michael-hero.png'),
+            'email' => 'michaelsogagbozo@gmail.com',
+            'jobTitle' => 'IT Systems & Web Developer',
+            'address' => [
+                '@type' => 'PostalAddress',
+                'addressCountry' => 'GH',
+            ],
+            'knowsAbout' => [
+                'Laravel development',
+                'WordPress development',
+                'IT systems administration',
+                'Brand identity design',
+                'Dashboard UI design',
+            ],
+            'sameAs' => [
+                'https://web.facebook.com/mykell.writes.official',
+                'https://twitter.com/mykell_Writes',
+                'https://www.instagram.com/mykell_writes/',
+            ],
+        ],
+        [
+            '@type' => 'WebSite',
+            '@id' => url('/').'#website',
+            'name' => 'Michael Agbozo Portfolio',
+            'url' => url('/'),
+            'publisher' => ['@id' => url('/').'#person'],
+        ],
+        [
+            '@type' => 'ProfessionalService',
+            '@id' => url('/').'#service',
+            'name' => 'Michael Agbozo',
+            'url' => url('/'),
+            'image' => asset('images/michael-hero.png'),
+            'areaServed' => 'Ghana',
+            'serviceType' => [
+                'Web development',
+                'Laravel application development',
+                'WordPress website development',
+                'Brand identity design',
+                'IT systems support',
+            ],
+        ],
+    ],
+], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT) !!}
+</script>
+@endpush
 @section('content')
 
 {{-- ─── HERO ─────────────────────────────────────────────── --}}

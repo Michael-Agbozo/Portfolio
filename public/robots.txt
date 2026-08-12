@@ -1,2 +1,6 @@
 User-agent: *
-Disallow:
+Disallow: /dashboard/
+Disallow: /login
+Disallow: /two-factor-challenge
+
+Sitemap: https://michaelagbozo.com/sitemap.xml

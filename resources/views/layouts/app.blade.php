@@ -1,13 +1,37 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+@php
+  $seoTitle = trim($__env->yieldContent('title', 'Michael Agbozo — Portfolio'));
+  $seoDescription = trim($__env->yieldContent(
+      'meta_description',
+      'Michael Agbozo is a Ghana-based IT systems professional, Laravel and WordPress developer, and brand designer building strategic websites, dashboards, and identities.'
+  ));
+  $seoCanonical = trim($__env->yieldContent('canonical', url()->current()));
+  $seoImage = trim($__env->yieldContent('og_image', asset('images/michael-hero.png')));
+  $seoType = trim($__env->yieldContent('og_type', 'website'));
+@endphp
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>@yield('title', 'Michael Agbozo — Portfolio')</title>
+<title>{{ $seoTitle }}</title>
+<meta name="description" content="{{ $seoDescription }}"/>
+<meta name="robots" content="index, follow, max-image-preview:large"/>
+<link rel="canonical" href="{{ $seoCanonical }}"/>
+<meta property="og:site_name" content="Michael Agbozo"/>
+<meta property="og:type" content="{{ $seoType }}"/>
+<meta property="og:title" content="{{ $seoTitle }}"/>
+<meta property="og:description" content="{{ $seoDescription }}"/>
+<meta property="og:url" content="{{ $seoCanonical }}"/>
+<meta property="og:image" content="{{ $seoImage }}"/>
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:title" content="{{ $seoTitle }}"/>
+<meta name="twitter:description" content="{{ $seoDescription }}"/>
+<meta name="twitter:image" content="{{ $seoImage }}"/>
 <link rel="icon" type="image/png" href="{{ asset('favicon.png') }}"/>
 <link rel="apple-touch-icon" href="{{ asset('apple-touch-icon.png') }}"/>
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link rel="preconnect" href="https://www.googletagmanager.com"/>
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Inter:wght@300;400;500&display=swap" rel="stylesheet"/>
 @if($measurementId = config('services.google_analytics.measurement_id'))
 <script async src="https://www.googletagmanager.com/gtag/js?id={{ $measurementId }}"></script>
