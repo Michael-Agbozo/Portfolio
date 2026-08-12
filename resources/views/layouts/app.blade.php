@@ -10,12 +10,13 @@
   $seoCanonical = trim($__env->yieldContent('canonical', url()->current()));
   $seoImage = trim($__env->yieldContent('og_image', asset('images/michael-hero.png')));
   $seoType = trim($__env->yieldContent('og_type', 'website'));
+  $seoRobots = trim($__env->yieldContent('meta_robots', 'index, follow, max-image-preview:large'));
 @endphp
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>{{ $seoTitle }}</title>
 <meta name="description" content="{{ $seoDescription }}"/>
-<meta name="robots" content="index, follow, max-image-preview:large"/>
+<meta name="robots" content="{{ $seoRobots }}"/>
 <link rel="canonical" href="{{ $seoCanonical }}"/>
 <meta property="og:site_name" content="Michael Agbozo"/>
 <meta property="og:type" content="{{ $seoType }}"/>
