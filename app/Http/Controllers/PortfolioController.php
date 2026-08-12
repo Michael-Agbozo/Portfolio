@@ -8,6 +8,7 @@ use App\Models\Design;
 use App\Models\Message;
 use App\Models\Project;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 use Throwable;
@@ -31,6 +32,23 @@ class PortfolioController extends Controller
         abort_unless($project->active, 404);
 
         return view('project', compact('project'));
+    }
+
+    public function robots(): Response
+    {
+        return response(file_get_contents(public_path('robots.txt')), 200)
+            ->header('Content-Type', 'text/plain');
+    }
+
+    public function sitemap(): Response
+    {
+        $projects = Project::where('active', true)
+            ->orderByDesc('updated_at')
+            ->get(['title', 'slug', 'updated_at']);
+
+        return response()
+            ->view('sitemap', compact('projects'))
+            ->header('Content-Type', 'application/xml');
     }
 
     public function sendContact(Request $request)
