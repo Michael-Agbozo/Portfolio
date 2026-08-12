@@ -46,7 +46,16 @@
             'name' => 'Michael Agbozo',
             'url' => url('/'),
             'image' => asset('images/michael-hero.png'),
-            'areaServed' => 'Ghana',
+            'areaServed' => [
+                [
+                    '@type' => 'Country',
+                    'name' => 'Ghana',
+                ],
+                [
+                    '@type' => 'AdministrativeArea',
+                    'name' => 'Remote clients worldwide',
+                ],
+            ],
             'serviceType' => collect($services)->pluck('short_name')->values()->all(),
             'hasOfferCatalog' => [
                 '@type' => 'OfferCatalog',

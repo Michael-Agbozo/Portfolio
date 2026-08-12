@@ -62,12 +62,13 @@ class PortfolioTest extends TestCase
 
         $response->assertOk();
         $response->assertViewIs('service');
-        $response->assertSee('<title>Laravel Developer in Ghana | Michael Agbozo</title>', false);
-        $response->assertSee('<meta name="description" content="Hire Michael Agbozo for Laravel development in Ghana', false);
+        $response->assertSee('<title>Remote Laravel Developer in Ghana | Michael Agbozo</title>', false);
+        $response->assertSee('<meta name="description" content="Hire Michael Agbozo for Laravel development in Ghana and remotely', false);
         $response->assertSee('<link rel="canonical" href="http://localhost/services/laravel-development-ghana"/>', false);
         $response->assertSee('"@type": "Service"', false);
         $response->assertSee('"@type": "FAQPage"', false);
         $response->assertSee('Laravel developer Ghana');
+        $response->assertSee('remote Laravel developer');
     }
 
     public function test_unknown_service_page_returns_not_found(): void

@@ -50,8 +50,14 @@
             'url' => route('service.show', $service['slug']),
             'provider' => ['@id' => url('/').'#person'],
             'areaServed' => [
-                '@type' => 'Country',
-                'name' => 'Ghana',
+                [
+                    '@type' => 'Country',
+                    'name' => 'Ghana',
+                ],
+                [
+                    '@type' => 'AdministrativeArea',
+                    'name' => 'Remote clients worldwide',
+                ],
             ],
             'serviceType' => $service['short_name'],
             'keywords' => $service['keywords'],
@@ -110,7 +116,7 @@
     </nav>
 
     <div class="inline-flex items-center gap-2 border border-border rounded-full px-3 py-1.5 text-[.7rem] text-muted uppercase tracking-widest mb-8">
-      <span class="w-1.5 h-1.5 rounded-full bg-orange"></span> Available in Ghana & remotely
+      <span class="w-1.5 h-1.5 rounded-full bg-orange"></span> Based in Ghana, available remotely
     </div>
 
     <h1 class="font-display font-extrabold text-white leading-tight max-w-[850px]" style="font-size:clamp(2.5rem,6vw,5rem)">

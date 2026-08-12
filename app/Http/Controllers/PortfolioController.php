@@ -17,10 +17,10 @@ class PortfolioController extends Controller
 {
     private const SERVICES = [
         'laravel-development-ghana' => [
-            'name' => 'Laravel Development in Ghana',
+            'name' => 'Laravel Development in Ghana & Remote',
             'short_name' => 'Laravel Development',
-            'meta_title' => 'Laravel Developer in Ghana | Michael Agbozo',
-            'meta_description' => 'Hire Michael Agbozo for Laravel development in Ghana: custom web apps, dashboards, admin portals, backend features, and long-term support.',
+            'meta_title' => 'Remote Laravel Developer in Ghana | Michael Agbozo',
+            'meta_description' => 'Hire Michael Agbozo for Laravel development in Ghana and remotely: custom web apps, dashboards, admin portals, backend features, and support.',
             'summary' => 'Custom Laravel applications, dashboards, admin portals, and backend features for businesses that need reliable systems instead of fragile workarounds.',
             'intro' => 'I build Laravel applications that are practical, maintainable, and easy for teams to use. That can mean a private dashboard, a custom workflow tool, a client portal, or backend improvements for an existing platform.',
             'audience' => 'Best for businesses, logistics teams, schools, churches, agencies, and growing operations that need a custom web system built around their real process.',
@@ -33,9 +33,10 @@ class PortfolioController extends Controller
             ],
             'keywords' => [
                 'Laravel developer Ghana',
+                'remote Laravel developer',
                 'Laravel web application Ghana',
                 'custom dashboard developer',
-                'backend developer Ghana',
+                'remote backend developer',
             ],
             'faq' => [
                 [
@@ -53,10 +54,10 @@ class PortfolioController extends Controller
             ],
         ],
         'wordpress-website-design-ghana' => [
-            'name' => 'WordPress Website Design in Ghana',
+            'name' => 'WordPress Website Design in Ghana & Remote',
             'short_name' => 'WordPress Websites',
-            'meta_title' => 'WordPress Website Designer in Ghana | Michael Agbozo',
-            'meta_description' => 'WordPress website design in Ghana for businesses, brands, and organizations that need fast, clean, responsive websites with support.',
+            'meta_title' => 'Remote WordPress Website Designer | Michael Agbozo',
+            'meta_description' => 'WordPress website design in Ghana and remotely for businesses, brands, and organizations that need fast, clean, responsive websites with support.',
             'summary' => 'Business websites, landing pages, and portfolio sites built with WordPress, clear content structure, responsive design, and launch support.',
             'intro' => 'I design and build WordPress websites that are simple to manage, fast to load, and clear for visitors. The goal is a site that explains what you do, builds trust, and makes it easy for people to contact you.',
             'audience' => 'Best for small businesses, personal brands, logistics companies, service providers, churches, schools, and organizations that need a professional online presence.',
@@ -69,9 +70,10 @@ class PortfolioController extends Controller
             ],
             'keywords' => [
                 'WordPress designer Ghana',
+                'remote WordPress designer',
                 'website designer Ghana',
-                'business website Ghana',
-                'responsive website design Ghana',
+                'remote website designer',
+                'responsive website design',
             ],
             'faq' => [
                 [
@@ -89,10 +91,10 @@ class PortfolioController extends Controller
             ],
         ],
         'brand-identity-design-ghana' => [
-            'name' => 'Brand Identity Design in Ghana',
+            'name' => 'Brand Identity Design in Ghana & Remote',
             'short_name' => 'Brand Identity Design',
-            'meta_title' => 'Brand Identity Designer in Ghana | Michael Agbozo',
-            'meta_description' => 'Brand identity design in Ghana: logos, colors, typography, social media visuals, print materials, and brand systems by Michael Agbozo.',
+            'meta_title' => 'Remote Brand Identity Designer | Michael Agbozo',
+            'meta_description' => 'Brand identity design in Ghana and remotely: logos, colors, typography, social media visuals, print materials, and brand systems by Michael Agbozo.',
             'summary' => 'Logo design, brand identity systems, social media visuals, and print-ready materials for businesses that need to look consistent and trustworthy.',
             'intro' => 'I create brand identity systems that help businesses look clear, consistent, and professional across digital and print touchpoints. The work can include logos, colors, type, social media templates, and campaign visuals.',
             'audience' => 'Best for new businesses, growing brands, service companies, logistics brands, churches, events, and teams that need stronger visual consistency.',
@@ -105,9 +107,10 @@ class PortfolioController extends Controller
             ],
             'keywords' => [
                 'brand designer Ghana',
+                'remote brand identity designer',
                 'logo designer Ghana',
-                'brand identity Ghana',
-                'social media designer Ghana',
+                'brand identity design',
+                'remote social media designer',
             ],
             'faq' => [
                 [
@@ -125,10 +128,10 @@ class PortfolioController extends Controller
             ],
         ],
         'it-systems-support-ghana' => [
-            'name' => 'IT Systems Support in Ghana',
+            'name' => 'IT Systems Support in Ghana & Remote',
             'short_name' => 'IT Systems Support',
-            'meta_title' => 'IT Systems Support in Ghana | Michael Agbozo',
-            'meta_description' => 'IT systems support in Ghana for email setup, user access, help desk workflows, internal tools, telecom support, and staff technology operations.',
+            'meta_title' => 'Remote IT Systems Support | Michael Agbozo',
+            'meta_description' => 'IT systems support in Ghana and remotely for email setup, user access, help desk workflows, internal tools, telecom support, and staff operations.',
             'summary' => 'Hands-on IT systems support, email setup, access management, help desk workflows, telecom coordination, and internal tool support for teams.',
             'intro' => 'I support the technology behind daily operations: staff accounts, email, access, internal tools, troubleshooting, telecom setup, and practical systems that keep teams moving.',
             'audience' => 'Best for organizations and operations teams that need dependable IT support, cleaner internal processes, and someone who understands both systems and people.',
@@ -141,9 +144,10 @@ class PortfolioController extends Controller
             ],
             'keywords' => [
                 'IT support Ghana',
+                'remote IT support',
                 'systems administrator Ghana',
-                'help desk support Ghana',
-                'business IT support Ghana',
+                'remote help desk support',
+                'business IT support',
             ],
             'faq' => [
                 [
