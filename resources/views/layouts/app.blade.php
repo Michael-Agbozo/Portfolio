@@ -64,13 +64,17 @@
 
     <ul class="hidden md:flex gap-10 list-none">
       @if(request()->is('/'))
-        <li><a href="#about"    class="text-muted text-[.82rem] font-medium uppercase tracking-widest hover:text-white transition-colors">About</a></li>
+        <li><a href="{{ route('about') }}" class="text-muted text-[.82rem] font-medium uppercase tracking-widest hover:text-white transition-colors">About</a></li>
         <li><a href="#services" class="text-muted text-[.82rem] font-medium uppercase tracking-widest hover:text-white transition-colors">Services</a></li>
         <li><a href="#work"     class="text-muted text-[.82rem] font-medium uppercase tracking-widest hover:text-white transition-colors">Work</a></li>
         <li><a href="#designs"  class="text-muted text-[.82rem] font-medium uppercase tracking-widest hover:text-white transition-colors">Designs</a></li>
         <li><a href="#contact"  class="text-muted text-[.82rem] font-medium uppercase tracking-widest hover:text-white transition-colors">Contact</a></li>
       @else
         <li><a href="/" class="text-muted text-[.82rem] font-medium uppercase tracking-widest hover:text-white transition-colors">Home</a></li>
+        <li><a href="{{ route('about') }}" class="text-muted text-[.82rem] font-medium uppercase tracking-widest hover:text-white transition-colors">About</a></li>
+        <li><a href="/#services" class="text-muted text-[.82rem] font-medium uppercase tracking-widest hover:text-white transition-colors">Services</a></li>
+        <li><a href="/#work" class="text-muted text-[.82rem] font-medium uppercase tracking-widest hover:text-white transition-colors">Work</a></li>
+        <li><a href="/#contact" class="text-muted text-[.82rem] font-medium uppercase tracking-widest hover:text-white transition-colors">Contact</a></li>
       @endif
     </ul>
 
@@ -107,11 +111,11 @@
       </svg>
       <span class="text-[.62rem] font-medium uppercase tracking-wide">Home</span>
     </a>
-    <a href="/#work" class="flex flex-col items-center gap-1 py-3 text-muted hover:text-white transition-colors active:scale-90">
+    <a href="{{ route('about') }}" class="flex flex-col items-center gap-1 py-3 {{ request()->routeIs('about') ? 'text-orange' : 'text-muted' }} hover:text-white transition-colors active:scale-90">
       <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-        <rect x="3" y="7" width="18" height="13" rx="2"/><path d="M9 7V5a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v2"/>
+        <circle cx="12" cy="8" r="4"/><path d="M20 21a8 8 0 0 0-16 0"/>
       </svg>
-      <span class="text-[.62rem] font-medium uppercase tracking-wide">Work</span>
+      <span class="text-[.62rem] font-medium uppercase tracking-wide">About</span>
     </a>
     <a href="/#designs" class="flex flex-col items-center gap-1 py-3 text-muted hover:text-white transition-colors active:scale-90">
       <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">

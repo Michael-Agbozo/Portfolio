@@ -15,6 +15,7 @@ use Illuminate\Support\Facades\Route;
 
 // Public portfolio
 Route::get('/', [PortfolioController::class, 'home']);
+Route::get('/about', [PortfolioController::class, 'about'])->name('about');
 Route::get('/robots.txt', [PortfolioController::class, 'robots'])->name('robots');
 Route::get('/sitemap.xml', [PortfolioController::class, 'sitemap'])->name('sitemap');
 Route::get('/services/{service}', [PortfolioController::class, 'service'])->name('service.show');

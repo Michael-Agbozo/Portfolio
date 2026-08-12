@@ -6,7 +6,7 @@
 @push('head')
 <script type="application/ld+json">
 {!! json_encode([
-    '@context' => 'https://schema.org',
+    '@'.'context' => 'https://schema.org',
     '@graph' => [
         [
             '@type' => 'Person',
@@ -90,7 +90,7 @@
         <span class="w-1.5 h-1.5 rounded-full bg-orange"></span> Available for projects
       </span>
       <span class="inline-flex items-center gap-1.5 border border-border rounded-full px-3 py-1.5 text-[.7rem] text-muted uppercase tracking-widest">
-        Based in Ghana 🇬🇭
+        Ghana-based <span class="text-orange normal-case">&amp;</span> remote worldwide
       </span>
       <span class="inline-flex items-center gap-1.5 border border-border rounded-full px-3 py-1.5 text-[.7rem] text-muted uppercase tracking-widest">
         Designer <span class="text-orange normal-case">&amp;</span> Developer
@@ -474,12 +474,12 @@
       <p class="font-display font-extrabold text-white leading-tight mb-6" style="font-size:clamp(1.6rem,2.5vw,2.4rem)">
         Have a project?<br/>Let's make it <span class="text-orange">real.</span>
       </p>
-      <p class="text-muted text-[.93rem] leading-[1.85] mb-8">Whether you need a solid website, a brand that stands out, or a system that actually works — reach out and let's talk about it.</p>
+      <p class="text-muted text-[.93rem] leading-[1.85] mb-8">Whether you need a solid website, a brand that stands out, or a system that actually works, I am available for Ghana-based and remote projects worldwide.</p>
       <div class="flex flex-col gap-3">
         @foreach([
           ['✉','Email',   'michaelsogagbozo@gmail.com'],
           ['✆','Phone',   '0248581824'],
-          ['◯','Location','Ghana — Available remotely'],
+          ['◯','Location','Ghana — Remote worldwide'],
         ] as [$icon, $label, $value])
         <div class="flex items-center gap-4 px-5 py-4 bg-bg2 border border-border rounded-lg hover:border-orange transition-colors">
           <div class="w-9 h-9 bg-bg3 rounded-md flex items-center justify-center text-orange flex-shrink-0">{{ $icon }}</div>

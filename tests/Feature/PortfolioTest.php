@@ -34,6 +34,45 @@ class PortfolioTest extends TestCase
         $response->assertSee('"@type": "Person"', false);
     }
 
+    public function test_about_page_includes_experience_seo_and_project_proof(): void
+    {
+        $project = Project::create([
+            'num' => '01',
+            'category' => 'development',
+            'title' => 'Remote Dashboard Project',
+            'slug' => 'remote-dashboard-project',
+            'meta' => 'A Laravel dashboard project for remote operations.',
+            'tags' => ['Laravel', 'Dashboard'],
+            'images' => [],
+            'active' => true,
+        ]);
+
+        $hiddenProject = Project::create([
+            'num' => '02',
+            'category' => 'design',
+            'title' => 'Hidden Brand Project',
+            'slug' => 'hidden-brand-project',
+            'meta' => 'This should not appear publicly.',
+            'tags' => [],
+            'images' => [],
+            'active' => false,
+        ]);
+
+        $response = $this->get('/about');
+
+        $response->assertOk();
+        $response->assertViewIs('about');
+        $response->assertSee('<title>About Michael Agbozo | Remote Web Developer, Designer and IT Systems Support</title>', false);
+        $response->assertSee('Ghana-based IT Systems and Web Developer offering remote Laravel development', false);
+        $response->assertSee('"ProfilePage"', false);
+        $response->assertSee('"@type": "BreadcrumbList"', false);
+        $response->assertSee('Four Corners Community Services');
+        $response->assertSee('La Necar Logistics');
+        $response->assertSee('Remote Dashboard Project');
+        $response->assertSee(route('project.show', $project), false);
+        $response->assertDontSee($hiddenProject->title);
+    }
+
     public function test_project_page_includes_project_specific_seo_metadata(): void
     {
         $project = Project::create([
@@ -105,6 +144,7 @@ class PortfolioTest extends TestCase
         $response->assertOk();
         $response->assertHeader('content-type', 'application/xml');
         $response->assertSee('<loc>http://localhost</loc>', false);
+        $response->assertSee('<loc>http://localhost/about</loc>', false);
         $response->assertSee('<loc>http://localhost/services/laravel-development-ghana</loc>', false);
         $response->assertSee('<loc>http://localhost/services/wordpress-website-design-ghana</loc>', false);
         $response->assertSee('<loc>http://localhost/services/brand-identity-design-ghana</loc>', false);
