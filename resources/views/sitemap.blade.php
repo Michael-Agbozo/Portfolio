@@ -6,6 +6,12 @@
         <changefreq>weekly</changefreq>
         <priority>1.0</priority>
     </url>
+    <url>
+        <loc>{{ route('about') }}</loc>
+        <lastmod>{{ now()->toAtomString() }}</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.9</priority>
+    </url>
 @foreach($services as $slug => $service)
     <url>
         <loc>{{ route('service.show', $slug) }}</loc>

@@ -187,6 +187,18 @@ class PortfolioController extends Controller
         return view('project', compact('project'));
     }
 
+    public function about()
+    {
+        $proofProjects = Project::where('active', true)
+            ->latest()
+            ->take(4)
+            ->get();
+
+        $services = self::SERVICES;
+
+        return view('about', compact('proofProjects', 'services'));
+    }
+
     public function service(string $service)
     {
         abort_unless(array_key_exists($service, self::SERVICES), 404);
