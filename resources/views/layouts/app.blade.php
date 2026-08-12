@@ -9,6 +9,15 @@
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Inter:wght@300;400;500&display=swap" rel="stylesheet"/>
+@if($measurementId = config('services.google_analytics.measurement_id'))
+<script async src="https://www.googletagmanager.com/gtag/js?id={{ $measurementId }}"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', '{{ $measurementId }}');
+</script>
+@endif
 {{-- Paint the correct background immediately, before the stylesheet finishes
      loading — otherwise the browser shows a plain white page for a moment
      on every page load/refresh. --}}
