@@ -50,6 +50,8 @@
       <div class="f-hint">Separate tags with commas</div>
     </div>
 
+    @include('dashboard.projects._case-study-fields')
+
     {{-- ─── Feature Image ─────────────────────────── --}}
     <div class="form-group">
       <label class="f-label">Feature Image</label>

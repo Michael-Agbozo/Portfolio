@@ -1,6 +1,6 @@
 @extends('layouts.app')
 @section('title', 'Michael Agbozo — IT Professional, Web Developer & Designer')
-@section('meta_description', 'Michael Agbozo offers Laravel development, WordPress website design, brand identity design, and IT systems support in Ghana and remotely.')
+@section('meta_description', 'Michael Agbozo offers Laravel development, WordPress website design, brand identity design, print cutline artwork, and IT systems support in Ghana and remotely.')
 @section('canonical', url('/'))
 @section('og_image', asset('images/michael-hero.png'))
 @push('head')
@@ -25,6 +25,7 @@
                 'WordPress development',
                 'IT systems administration',
                 'Brand identity design',
+                'Print cutline artwork',
                 'Dashboard UI design',
             ],
             'sameAs' => [
@@ -253,12 +254,13 @@
   <h2 class="font-display font-extrabold text-white leading-tight" style="font-size:clamp(2rem,4vw,3.2rem)">
     Services that <span class="text-orange">deliver</span><br/><span class="[-webkit-text-stroke:1px_var(--color-white)] text-transparent">real results.</span>
   </h2>
-  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-px bg-border border border-border mt-14 reveal">
+  <div class="service-offer-grid mt-14 reveal">
     @foreach([
       ['01', 'laravel-development-ghana'],
       ['02', 'wordpress-website-design-ghana'],
       ['03', 'brand-identity-design-ghana'],
-      ['04', 'it-systems-support-ghana'],
+      ['04', 'print-cutline-artwork-ghana'],
+      ['05', 'it-systems-support-ghana'],
     ] as [$num, $slug])
     @php
       $service = $services[$slug];
@@ -389,6 +391,11 @@
 
   @php $perPage = 16; $totalPages = (int) ceil($designs->count() / $perPage); @endphp
 
+  @if($designs->isEmpty())
+  <div class="reveal text-center py-20 border border-border rounded-2xl text-muted text-[.9rem]">
+    Designs coming soon — check back shortly.
+  </div>
+  @else
   <div class="design-grid reveal" id="designs-grid">
     @foreach($designs as $design)
     <div class="design-item overflow-hidden rounded-[10px] relative cursor-pointer bg-bg3 group"
@@ -405,6 +412,7 @@
     </div>
     @endforeach
   </div>
+  @endif
 
   @if($totalPages > 1)
   <div class="flex justify-center items-center gap-2 mt-12 reveal" id="designs-pagination">

@@ -177,3 +177,26 @@ img {
   object-fit: contain; border-radius: 10px; display: block;
   box-shadow: 0 30px 80px rgba(0,0,0,.7), 0 0 0 1px rgba(255,255,255,.06);
 }
+
+/* Honeypot — visually hidden from real users, still in DOM for bots */
+.hp-field {
+  position: absolute;
+  left: -9999px;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+}
+
+.service-offer-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr));
+  gap: 1px;
+  background: var(--color-border);
+  border: 1px solid var(--color-border);
+}
+
+@media (max-width: 640px) {
+  .service-offer-grid > * {
+    padding: 1.75rem;
+  }
+}

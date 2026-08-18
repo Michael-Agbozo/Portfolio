@@ -1,6 +1,6 @@
 @extends('layouts.app')
 @section('title', 'About Michael Agbozo | Remote Web Developer, Designer and IT Systems Support')
-@section('meta_description', 'About Michael Agbozo: Ghana-based IT Systems and Web Developer offering remote Laravel development, WordPress websites, brand identity design, and IT systems support.')
+@section('meta_description', 'About Michael Agbozo: Ghana-based IT Systems and Web Developer offering remote Laravel development, WordPress websites, brand identity design, print cutline artwork, and IT systems support.')
 @section('canonical', route('about'))
 @section('og_image', asset('images/michael-hero.png'))
 @php
@@ -16,6 +16,10 @@
       [
           'name' => 'Brand Identity',
           'items' => ['Logo systems', 'Color and type direction', 'Social media graphics', 'Print materials', 'Reusable brand assets'],
+      ],
+      [
+          'name' => 'Print Cutlines',
+          'items' => ['Sticker cutlines', 'Label setup', 'Packaging artwork', 'Print-ready files', 'Production adjustments'],
       ],
       [
           'name' => 'IT Systems',
@@ -65,6 +69,7 @@
                 'Laravel development',
                 'WordPress website design',
                 'Brand identity design',
+                'Print cutline artwork',
                 'IT systems support',
                 'Remote web development',
             ],
@@ -198,15 +203,15 @@
           <span class="w-[5px] h-[5px] rounded-full bg-orange"></span> Capabilities
         </div>
         <h2 class="font-display font-extrabold text-white leading-tight" style="font-size:clamp(2rem,4vw,3.2rem)">
-          Four ways I help teams <span class="text-orange">ship.</span>
+          Five ways I help teams <span class="text-orange">ship.</span>
         </h2>
       </div>
       <p class="text-muted text-[.92rem] leading-[1.8] max-w-[420px]">
-        Clear services for clients who need web development, website design, brand identity, or ongoing IT support.
+        Clear services for clients who need web development, website design, brand identity, print cutlines, or ongoing IT support.
       </p>
     </div>
 
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-px bg-border border border-border">
+    <div class="service-offer-grid">
       @foreach($capabilities as $capability)
         <div class="bg-bg p-7 hover:bg-bg3 transition-colors">
           <div class="w-8 h-0.5 bg-orange mb-5"></div>
