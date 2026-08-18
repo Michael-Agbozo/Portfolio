@@ -31,6 +31,10 @@ class ProjectController extends Controller
 
         $data['body'] = HtmlSanitizer::clean($data['body'] ?? null);
         $data['tags'] = $this->parseTags($data['tags'] ?? '');
+        $data['services'] = $this->parseTags($data['services'] ?? '');
+        $data['tech_stack'] = $this->parseTags($data['tech_stack'] ?? '');
+        $data['before_image'] = $this->resolveOptionalImagePath($data['before_image'] ?? null, 'before_image');
+        $data['after_image'] = $this->resolveOptionalImagePath($data['after_image'] ?? null, 'after_image');
         $data['feature_image'] = $this->resolveFeatureImage($request, null);
         $data['images'] = $this->resolveGalleryImages($request, $data['images'] ?? '');
         $data['slug'] = $this->uniqueSlug($data['title'], null);
@@ -53,6 +57,10 @@ class ProjectController extends Controller
 
         $data['body'] = HtmlSanitizer::clean($data['body'] ?? null);
         $data['tags'] = $this->parseTags($data['tags'] ?? '');
+        $data['services'] = $this->parseTags($data['services'] ?? '');
+        $data['tech_stack'] = $this->parseTags($data['tech_stack'] ?? '');
+        $data['before_image'] = $this->resolveOptionalImagePath($data['before_image'] ?? null, 'before_image');
+        $data['after_image'] = $this->resolveOptionalImagePath($data['after_image'] ?? null, 'after_image');
         $data['feature_image'] = $this->resolveFeatureImage($request, $project);
         $data['images'] = $this->resolveGalleryImages($request, $data['images'] ?? '');
 
@@ -85,6 +93,16 @@ class ProjectController extends Controller
             'category'          => 'required|in:design,development',
             'title'             => 'required|string|max:150',
             'meta'              => 'nullable|string|max:300',
+            'client_name'       => 'nullable|string|max:150',
+            'project_year'      => 'nullable|string|max:20',
+            'services'          => 'nullable|string',
+            'tech_stack'        => 'nullable|string',
+            'challenge'         => 'nullable|string',
+            'solution'          => 'nullable|string',
+            'results'           => 'nullable|string',
+            'testimonial'       => 'nullable|string',
+            'before_image'      => 'nullable|string|max:500',
+            'after_image'       => 'nullable|string|max:500',
             'body'              => 'nullable|string',
             'feature_image_file' => 'nullable|mimes:jpg,jpeg,png,webp,gif|max:102400',
             'feature_image_path' => 'nullable|string|max:500',
@@ -187,6 +205,19 @@ class ProjectController extends Controller
         }
 
         return $lines;
+    }
+
+    private function resolveOptionalImagePath(?string $path, string $field): ?string
+    {
+        $path = trim((string) $path);
+
+        if ($path === '') {
+            return null;
+        }
+
+        $this->assertValidImagePath($field, $path);
+
+        return $path;
     }
 
     private function assertValidImagePath(string $field, string $value): void

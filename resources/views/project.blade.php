@@ -9,6 +9,18 @@
   $projectImage = \Illuminate\Support\Str::startsWith($projectImage, ['http://', 'https://'])
       ? $projectImage
       : url($projectImage);
+  $quickFacts = array_filter([
+      'Client' => $project->client_name,
+      'Year' => $project->project_year,
+      'Services' => $project->services ? implode(', ', $project->services) : null,
+      'Tech Stack' => $project->tech_stack ? implode(', ', $project->tech_stack) : null,
+  ]);
+  $caseStudySections = array_filter([
+      'The Challenge' => $project->challenge,
+      'The Solution' => $project->solution,
+      'Results / Outcome' => $project->results,
+  ]);
+  $hasBeforeAfter = $project->before_image || $project->after_image;
 @endphp
 @section('title', $project->title . ' — Michael Agbozo')
 @section('meta_description', $projectDescription)
@@ -33,6 +45,15 @@
                 'url' => url('/'),
             ],
             'keywords' => $project->tags ?: null,
+            'about' => $project->services ?: null,
+            'review' => $project->testimonial ? [
+                '@type' => 'Review',
+                'reviewBody' => $project->testimonial,
+                'author' => [
+                    '@type' => 'Organization',
+                    'name' => $project->client_name ?: 'Client',
+                ],
+            ] : null,
             'dateModified' => optional($project->updated_at)->toAtomString(),
         ],
         [
@@ -89,6 +110,17 @@
     @endif
   </div>
 
+  @if(count($quickFacts))
+    <div class="grid sm:grid-cols-2 gap-4 py-10 border-b border-border">
+      @foreach($quickFacts as $label => $value)
+        <div class="border border-border bg-bg2/40 rounded-lg p-5">
+          <div class="text-[.68rem] text-orange uppercase tracking-[.15em] font-semibold mb-2">{{ $label }}</div>
+          <div class="text-white text-[.95rem] leading-relaxed">{{ $value }}</div>
+        </div>
+      @endforeach
+    </div>
+  @endif
+
   <div class="py-10 border-b border-border">
     <div class="text-[.7rem] text-orange uppercase tracking-[.15em] font-semibold mb-5">Project Overview</div>
     @if($project->body)
@@ -105,6 +137,46 @@
       <p class="text-dim italic text-[.9rem]">No detailed write-up yet — check back soon.</p>
     @endif
   </div>
+
+  @if(count($caseStudySections))
+    <div class="py-10 border-b border-border space-y-10">
+      @foreach($caseStudySections as $label => $content)
+        <section>
+          <div class="text-[.7rem] text-orange uppercase tracking-[.15em] font-semibold mb-4">{{ $label }}</div>
+          <p class="text-[.95rem] text-muted leading-[1.85] whitespace-pre-line">{{ $content }}</p>
+        </section>
+      @endforeach
+    </div>
+  @endif
+
+  @if($hasBeforeAfter)
+    <div class="py-10 border-b border-border">
+      <div class="text-[.7rem] text-orange uppercase tracking-[.15em] font-semibold mb-5">Before / After</div>
+      <div class="grid sm:grid-cols-2 gap-4">
+        @if($project->before_image)
+          <figure class="border border-border rounded-lg overflow-hidden bg-bg2">
+            <img src="{{ $project->before_image }}" alt="{{ $project->title }} before" loading="lazy" class="w-full h-auto block"/>
+            <figcaption class="px-4 py-3 text-[.72rem] text-muted uppercase tracking-widest border-t border-border">Before</figcaption>
+          </figure>
+        @endif
+        @if($project->after_image)
+          <figure class="border border-border rounded-lg overflow-hidden bg-bg2">
+            <img src="{{ $project->after_image }}" alt="{{ $project->title }} after" loading="lazy" class="w-full h-auto block"/>
+            <figcaption class="px-4 py-3 text-[.72rem] text-muted uppercase tracking-widest border-t border-border">After</figcaption>
+          </figure>
+        @endif
+      </div>
+    </div>
+  @endif
+
+  @if($project->testimonial)
+    <blockquote class="my-10 border-l-2 border-orange pl-6 text-white font-display text-[1.35rem] leading-[1.45]">
+      "{{ $project->testimonial }}"
+      @if($project->client_name)
+        <footer class="mt-4 font-sans text-[.75rem] text-muted uppercase tracking-widest">- {{ $project->client_name }}</footer>
+      @endif
+    </blockquote>
+  @endif
 
   @if($project->images && count($project->images))
   <div class="columns-2 gap-4 pt-10 border-t border-border mb-12">

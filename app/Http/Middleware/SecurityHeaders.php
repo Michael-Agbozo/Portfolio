@@ -12,13 +12,21 @@ class SecurityHeaders
     {
         $response = $next($request);
 
+        $viteOrigins = app()->isLocal()
+            ? ' http://127.0.0.1:5173 http://localhost:5173'
+            : '';
+
+        $viteConnections = app()->isLocal()
+            ? ' http://127.0.0.1:5173 http://localhost:5173 ws://127.0.0.1:5173 ws://localhost:5173'
+            : '';
+
         $csp = implode('; ', [
             "default-src 'self'",
-            "script-src 'self' 'unsafe-inline' https://www.googletagmanager.com",
-            "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
+            "script-src 'self' 'unsafe-inline' https://www.googletagmanager.com{$viteOrigins}",
+            "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com{$viteOrigins}",
             "font-src 'self' https://fonts.gstatic.com",
             "img-src 'self' data: blob: https:",
-            "connect-src 'self' https://www.google-analytics.com https://region1.google-analytics.com",
+            "connect-src 'self' https://www.google-analytics.com https://region1.google-analytics.com{$viteConnections}",
             "frame-ancestors 'none'",
             "base-uri 'self'",
             "form-action 'self'",

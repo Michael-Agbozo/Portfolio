@@ -1,4 +1,4 @@
-{{-- Reusable media-library picker modal. Include once per page; open with openMediaPicker('feature'|'gallery') --}}
+{{-- Reusable media-library picker modal. Include once per page; open with openMediaPicker('feature'|'gallery'|'before'|'after') --}}
 <div id="media-picker-overlay" style="display:none;position:fixed;inset:0;z-index:9999;background:rgba(0,0,0,.7);align-items:center;justify-content:center;padding:2rem">
   <div style="background:var(--bg2);border:1px solid var(--line);border-radius:12px;max-width:880px;width:100%;max-height:85vh;display:flex;flex-direction:column;overflow:hidden">
 
@@ -52,11 +52,15 @@ function openMediaPicker(mode) {
   });
   const titles = {
     feature: 'Choose Feature Image',
+    before: 'Choose Before Image',
+    after: 'Choose After Image',
     design:  'Choose Image',
     gallery: 'Choose Images for Gallery',
   };
   const confirmLabels = {
     feature: 'Use Image',
+    before: 'Use Image',
+    after: 'Use Image',
     design:  'Use Image',
     gallery: 'Add Selected',
   };
@@ -73,7 +77,7 @@ function mediaPickerSelect(el) {
   const path = el.dataset.path;
   const check = el.querySelector('.media-picker-check');
 
-  if (mediaPickerMode === 'feature' || mediaPickerMode === 'design') {
+  if (['feature', 'design', 'before', 'after'].includes(mediaPickerMode)) {
     document.querySelectorAll('.media-picker-item').forEach(other => {
       other.style.borderColor = 'var(--line)';
       other.querySelector('.media-picker-check').style.display = 'none';
@@ -104,6 +108,10 @@ function mediaPickerConfirm() {
 
   if (mediaPickerMode === 'feature') {
     setFeatureImageFromPath(mediaPickerSelection[0]);
+  } else if (mediaPickerMode === 'before') {
+    setBeforeImageFromPath(mediaPickerSelection[0]);
+  } else if (mediaPickerMode === 'after') {
+    setAfterImageFromPath(mediaPickerSelection[0]);
   } else if (mediaPickerMode === 'design') {
     setDesignImageFromPath(mediaPickerSelection[0]);
   } else {

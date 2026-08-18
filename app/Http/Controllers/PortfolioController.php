@@ -127,6 +127,43 @@ class PortfolioController extends Controller
                 ],
             ],
         ],
+        'print-cutline-artwork-ghana' => [
+            'name' => 'Print Cutline Artwork in Ghana & Remote',
+            'short_name' => 'Print Cutline Artwork',
+            'meta_title' => 'Print Cutline Artwork for Print Shops | Michael Agbozo',
+            'meta_description' => 'Print cutline artwork in Ghana and remotely for stickers, labels, packaging, signage, and print-ready files prepared for print shops and individuals.',
+            'summary' => 'Clean cutlines and print-ready artwork for stickers, labels, packaging, signage, and custom print jobs that need accurate cutting paths.',
+            'intro' => 'I prepare cutline artwork for print shops, businesses, and individuals who need files that are ready for production. The goal is simple: clean artwork, accurate cutting paths, and fewer back-and-forth corrections before printing.',
+            'audience' => 'Best for print shops, small businesses, product sellers, event organizers, and individuals who need stickers, labels, packaging, signage, or custom print pieces prepared correctly.',
+            'outcomes' => [
+                'Cutline setup for stickers, labels, and packaging',
+                'Print-ready files with clean artwork and cutting paths',
+                'Artwork adjustments for better print production',
+                'Files prepared for print shops and production teams',
+                'Support for small one-off jobs and business print needs',
+            ],
+            'keywords' => [
+                'cutline artwork Ghana',
+                'print cutline design',
+                'sticker cutline setup',
+                'print-ready artwork Ghana',
+                'label cutline designer',
+            ],
+            'faq' => [
+                [
+                    'question' => 'Do you create cutlines for stickers and labels?',
+                    'answer' => 'Yes. I can prepare clean cutlines for stickers, labels, packaging, and similar print jobs.',
+                ],
+                [
+                    'question' => 'Can print shops send you artwork to prepare?',
+                    'answer' => 'Yes. Print shops can send existing artwork, and I can help prepare the cutlines and print-ready files they need for production.',
+                ],
+                [
+                    'question' => 'Do you work with individuals too?',
+                    'answer' => 'Yes. I can help individuals prepare personal, event, product, or small business print artwork.',
+                ],
+            ],
+        ],
         'it-systems-support-ghana' => [
             'name' => 'IT Systems Support in Ghana & Remote',
             'short_name' => 'IT Systems Support',

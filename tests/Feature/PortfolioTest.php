@@ -95,6 +95,46 @@ class PortfolioTest extends TestCase
         $response->assertSee('"@type": "BreadcrumbList"', false);
     }
 
+    public function test_project_page_shows_case_study_details_when_available(): void
+    {
+        $project = Project::create([
+            'num' => '03',
+            'category' => 'development',
+            'title' => 'Detailed Case Study',
+            'slug' => 'detailed-case-study',
+            'meta' => 'A project with a complete case study.',
+            'body' => 'A concise overview.',
+            'tags' => ['Laravel'],
+            'services' => ['Web Design', 'Laravel'],
+            'tech_stack' => ['Laravel', 'Tailwind'],
+            'client_name' => 'Poetik Koncept',
+            'project_year' => '2026',
+            'challenge' => 'The old site needed a better structure.',
+            'solution' => 'Built a cleaner showcase experience.',
+            'results' => 'The project story is easier to understand.',
+            'testimonial' => 'The work feels clear and professional.',
+            'before_image' => '/storage/projects/before.jpg',
+            'after_image' => '/storage/projects/after.jpg',
+            'images' => [],
+            'active' => true,
+        ]);
+
+        $response = $this->get(route('project.show', $project));
+
+        $response->assertOk();
+        $response->assertSee('Client');
+        $response->assertSee('Poetik Koncept');
+        $response->assertSee('Services');
+        $response->assertSee('Web Design, Laravel');
+        $response->assertSee('Tech Stack');
+        $response->assertSee('Laravel, Tailwind');
+        $response->assertSee('The Challenge');
+        $response->assertSee('The Solution');
+        $response->assertSee('Results / Outcome');
+        $response->assertSee('Before / After');
+        $response->assertSee('The work feels clear and professional.');
+    }
+
     public function test_service_page_includes_service_specific_seo_metadata(): void
     {
         $response = $this->get('/services/laravel-development-ghana');
@@ -148,6 +188,7 @@ class PortfolioTest extends TestCase
         $response->assertSee('<loc>http://localhost/services/laravel-development-ghana</loc>', false);
         $response->assertSee('<loc>http://localhost/services/wordpress-website-design-ghana</loc>', false);
         $response->assertSee('<loc>http://localhost/services/brand-identity-design-ghana</loc>', false);
+        $response->assertSee('<loc>http://localhost/services/print-cutline-artwork-ghana</loc>', false);
         $response->assertSee('<loc>http://localhost/services/it-systems-support-ghana</loc>', false);
         $response->assertSee('<loc>http://localhost/projects/public-project</loc>', false);
         $response->assertDontSee('hidden-project');
