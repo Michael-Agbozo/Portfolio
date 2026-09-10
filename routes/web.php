@@ -8,8 +8,10 @@ use App\Http\Controllers\Dashboard\CvController;
 use App\Http\Controllers\Dashboard\DesignController;
 use App\Http\Controllers\Dashboard\LogController;
 use App\Http\Controllers\Dashboard\MessageController;
+use App\Http\Controllers\Dashboard\MemorialBookController as DashboardMemorialBookController;
 use App\Http\Controllers\Dashboard\ProfileController;
 use App\Http\Controllers\Dashboard\ProjectController;
+use App\Http\Controllers\MemorialBookController;
 use App\Http\Controllers\PortfolioController;
 use Illuminate\Support\Facades\Route;
 
@@ -20,6 +22,7 @@ Route::get('/robots.txt', [PortfolioController::class, 'robots'])->name('robots'
 Route::get('/sitemap.xml', [PortfolioController::class, 'sitemap'])->name('sitemap');
 Route::get('/services/{service}', [PortfolioController::class, 'service'])->name('service.show');
 Route::post('/contact', [PortfolioController::class, 'sendContact'])->middleware('throttle:5,1')->name('contact.send');
+Route::get('/dadaa-kate-dzidzornu-nyamadi-funeral-ebook', [MemorialBookController::class, 'show'])->name('memorial.book');
 
 // Public project detail
 Route::get('/projects/{project}', [PortfolioController::class, 'project'])->name('project.show');
@@ -55,6 +58,9 @@ Route::prefix('dashboard')->name('dashboard.')->middleware('auth')->group(functi
     Route::post('media', [\App\Http\Controllers\Dashboard\MediaController::class, 'store'])->name('media.store');
     Route::patch('media/{filename}', [\App\Http\Controllers\Dashboard\MediaController::class, 'update'])->name('media.update')->where('filename', '.*');
     Route::delete('media/{filename}', [\App\Http\Controllers\Dashboard\MediaController::class, 'destroy'])->name('media.destroy')->where('filename', '.*');
+
+    Route::get('memorial-book', [DashboardMemorialBookController::class, 'show'])->name('memorial-book.show');
+    Route::post('memorial-book', [DashboardMemorialBookController::class, 'update'])->name('memorial-book.update');
 
     Route::get('messages', [MessageController::class, 'index'])->name('messages.index');
     Route::get('messages/{message}', [MessageController::class, 'show'])->name('messages.show');
