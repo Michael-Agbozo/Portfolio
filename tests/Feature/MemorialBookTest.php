@@ -118,6 +118,16 @@ class MemorialBookTest extends TestCase
         }
     }
 
+    public function test_iet_induction_reader_uses_its_own_book_assets(): void
+    {
+        $this->get(route('iet.induction.book'))
+            ->assertOk()
+            ->assertSee('IET-GH Induction Of New Members')
+            ->assertSee('iet-gh-induction-of-new-members.pdf', false)
+            ->assertSee('page-01.jpg', false)
+            ->assertDontSee('/memorial/dadaa-kate-dzidzornu-nyamadi-funeral-ebook.pdf', false);
+    }
+
     private function backupPageImages(string $pagesDirectory): array
     {
         $backups = [];

@@ -3,10 +3,10 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>Dadaa Kate Dzidzornu Nyamadi Funeral Ebook</title>
-<meta name="description" content="Dadaa Kate Dzidzornu Nyamadi funeral ebook shared with family and friends."/>
+<title>{{ $title }}</title>
+<meta name="description" content="{{ $description }}"/>
 <meta name="robots" content="noindex, follow"/>
-<link rel="canonical" href="{{ route('memorial.book') }}"/>
+<link rel="canonical" href="{{ $canonicalUrl }}"/>
 <link rel="icon" type="image/png" href="{{ asset('favicon.png') }}"/>
 <style>
   *{box-sizing:border-box}
@@ -243,7 +243,7 @@
     <iframe
       class="ebook-frame"
       src="{{ $bookUrl }}#toolbar=1&navpanes=0&view=FitH"
-      title="Dadaa Kate Dzidzornu Nyamadi Funeral Ebook"
+      title="{{ $title }}"
     ></iframe>
   @endif
   <a class="download-btn" href="{{ $bookUrl }}" download>Download</a>
