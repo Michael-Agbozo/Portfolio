@@ -23,6 +23,7 @@ Route::get('/sitemap.xml', [PortfolioController::class, 'sitemap'])->name('sitem
 Route::get('/services/{service}', [PortfolioController::class, 'service'])->name('service.show');
 Route::post('/contact', [PortfolioController::class, 'sendContact'])->middleware('throttle:5,1')->name('contact.send');
 Route::get('/dadaa-kate-dzidzornu-nyamadi-funeral-ebook', [MemorialBookController::class, 'show'])->name('memorial.book');
+Route::get('/iet-gh-induction-of-new-members', [MemorialBookController::class, 'showIetInduction'])->name('iet.induction.book');
 
 // Public project detail
 Route::get('/projects/{project}', [PortfolioController::class, 'project'])->name('project.show');
