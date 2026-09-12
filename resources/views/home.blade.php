@@ -509,6 +509,8 @@
           <label for="website">Website</label>
           <input type="text" id="website" name="website" tabindex="-1" autocomplete="off"/>
         </div>
+        <input type="hidden" name="contact_started_at" value="{{ $contactFormStartedAt }}">
+        <input type="hidden" name="contact_signature" value="{{ $contactFormSignature }}">
         @if(session('success'))
         <div class="text-orange text-[.85rem] px-4 py-3 border border-orange rounded-lg">{{ session('success') }}</div>
         @endif

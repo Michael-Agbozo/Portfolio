@@ -218,12 +218,12 @@ class PortfolioTest extends TestCase
     {
         Mail::fake();
 
-        $response = $this->post('/contact', [
+        $response = $this->post('/contact', $this->validContactPayload([
             'name' => 'Jane Visitor',
             'email' => 'jane@example.com',
             'subject' => 'Project enquiry',
             'message' => 'Hi, I would like to discuss a project with you.',
-        ]);
+        ]));
 
         $response->assertSessionHas('success');
         $this->assertDatabaseHas('messages', [
@@ -237,12 +237,12 @@ class PortfolioTest extends TestCase
     {
         Mail::fake();
 
-        $this->post('/contact', [
+        $this->post('/contact', $this->validContactPayload([
             'name' => 'Jane Visitor',
             'email' => 'jane@example.com',
             'subject' => 'Project enquiry',
             'message' => 'Hi, I would like to discuss a project with you.',
-        ]);
+        ]));
 
         Mail::assertSent(ContactMessageReceived::class, function (ContactMessageReceived $mail) {
             return $mail->hasTo('michaelsogagbozo@gmail.com')
@@ -255,12 +255,12 @@ class PortfolioTest extends TestCase
     {
         Mail::fake();
 
-        $this->post('/contact', [
+        $this->post('/contact', $this->validContactPayload([
             'name' => 'Jane Visitor',
             'email' => 'jane@example.com',
             'subject' => 'Project enquiry',
             'message' => 'Hi, I would like to discuss a project with you.',
-        ]);
+        ]));
 
         Mail::assertSent(ContactMessageConfirmation::class, function (ContactMessageConfirmation $mail) {
             return $mail->hasTo('jane@example.com')
@@ -273,12 +273,12 @@ class PortfolioTest extends TestCase
     {
         Mail::shouldReceive('to')->once()->andThrow(new RuntimeException('SMTP is unavailable.'));
 
-        $response = $this->post('/contact', [
+        $response = $this->post('/contact', $this->validContactPayload([
             'name' => 'Jane Visitor',
             'email' => 'jane@example.com',
             'subject' => 'Project enquiry',
             'message' => 'Hi, I would like to discuss a project with you.',
-        ]);
+        ]));
 
         $response->assertSessionHas('success');
         $this->assertDatabaseHas('messages', [
@@ -289,12 +289,12 @@ class PortfolioTest extends TestCase
 
     public function test_contact_form_rejects_invalid_input(): void
     {
-        $response = $this->post('/contact', [
+        $response = $this->post('/contact', $this->validContactPayload([
             'name' => '',
             'email' => 'not-an-email',
             'subject' => '',
             'message' => '',
-        ]);
+        ]));
 
         $response->assertSessionHasErrors(['name', 'email', 'subject', 'message']);
         $this->assertDatabaseCount('messages', 0);
@@ -304,16 +304,85 @@ class PortfolioTest extends TestCase
     {
         Mail::fake();
 
-        $response = $this->post('/contact', [
+        $response = $this->post('/contact', $this->validContactPayload([
             'name' => 'Spam Bot',
             'email' => 'bot@example.com',
             'subject' => 'Buy now',
             'message' => 'Cheap watches for sale.',
             'website' => 'https://spammer.example',
+        ]));
+
+        $response->assertSessionHas('success');
+        $this->assertDatabaseCount('messages', 0);
+        Mail::assertNothingSent();
+    }
+
+    public function test_contact_form_silently_ignores_submissions_without_spam_protection_fields(): void
+    {
+        Mail::fake();
+
+        $response = $this->post('/contact', [
+            'name' => 'Spam Bot',
+            'email' => 'bot@example.com',
+            'subject' => 'Direct post',
+            'message' => 'This skipped the real form.',
         ]);
 
         $response->assertSessionHas('success');
         $this->assertDatabaseCount('messages', 0);
         Mail::assertNothingSent();
+    }
+
+    public function test_contact_form_silently_ignores_submissions_with_invalid_signature(): void
+    {
+        Mail::fake();
+
+        $response = $this->post('/contact', $this->validContactPayload([
+            'name' => 'Spam Bot',
+            'email' => 'bot@example.com',
+            'subject' => 'Bad signature',
+            'message' => 'This token was forged.',
+            'contact_signature' => 'bad-signature',
+        ]));
+
+        $response->assertSessionHas('success');
+        $this->assertDatabaseCount('messages', 0);
+        Mail::assertNothingSent();
+    }
+
+    public function test_contact_form_silently_ignores_submissions_sent_too_quickly(): void
+    {
+        Mail::fake();
+
+        $startedAt = time();
+
+        $response = $this->post('/contact', $this->validContactPayload([
+            'name' => 'Spam Bot',
+            'email' => 'bot@example.com',
+            'subject' => 'Too fast',
+            'message' => 'This was submitted too quickly.',
+            'contact_started_at' => $startedAt,
+            'contact_signature' => $this->contactSignature($startedAt),
+        ]));
+
+        $response->assertSessionHas('success');
+        $this->assertDatabaseCount('messages', 0);
+        Mail::assertNothingSent();
+    }
+
+    private function validContactPayload(array $overrides = []): array
+    {
+        $startedAt = time() - 10;
+
+        return array_merge([
+            'contact_started_at' => $startedAt,
+            'contact_signature' => $this->contactSignature($startedAt),
+            'website' => '',
+        ], $overrides);
+    }
+
+    private function contactSignature(int $startedAt): string
+    {
+        return hash_hmac('sha256', (string) $startedAt, config('app.key'));
     }
 }

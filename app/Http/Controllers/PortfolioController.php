@@ -15,6 +15,9 @@ use Throwable;
 
 class PortfolioController extends Controller
 {
+    private const CONTACT_FORM_MIN_SECONDS = 3;
+    private const CONTACT_FORM_MAX_SECONDS = 21600;
+
     private const SERVICES = [
         'laravel-development-ghana' => [
             'name' => 'Laravel Development in Ghana & Remote',
@@ -210,8 +213,10 @@ class PortfolioController extends Controller
         $designs        = Design::orderBy('id', 'desc')->get();
 
         $services = self::SERVICES;
+        $contactFormStartedAt = time();
+        $contactFormSignature = $this->contactFormSignature($contactFormStartedAt);
 
-        return view('home', compact('designProjects', 'devProjects', 'designs', 'services'));
+        return view('home', compact('designProjects', 'devProjects', 'designs', 'services', 'contactFormStartedAt', 'contactFormSignature'));
     }
 
     public function project(Project $project)
@@ -270,11 +275,7 @@ class PortfolioController extends Controller
 
     public function sendContact(Request $request)
     {
-        // Honeypot: real visitors never see or fill in the "website" field.
-        // If it has a value, the submission is almost certainly from a bot —
-        // pretend it succeeded so the bot doesn't keep retrying, but don't
-        // save the message or send any emails.
-        if ($request->filled('website')) {
+        if ($this->looksLikeSpam($request)) {
             return back()->with('success', 'Message sent! I\'ll get back to you soon.');
         }
 
@@ -298,5 +299,33 @@ class PortfolioController extends Controller
         }
 
         return back()->with('success', 'Message sent! I\'ll get back to you soon.');
+    }
+
+    private function looksLikeSpam(Request $request): bool
+    {
+        // Honeypot: real visitors never see or fill in the "website" field.
+        if ($request->filled('website')) {
+            return true;
+        }
+
+        $startedAt = (int) $request->input('contact_started_at', 0);
+        $signature = (string) $request->input('contact_signature', '');
+
+        if ($startedAt <= 0 || $signature === '') {
+            return true;
+        }
+
+        if (! hash_equals($this->contactFormSignature($startedAt), $signature)) {
+            return true;
+        }
+
+        $age = time() - $startedAt;
+
+        return $age < self::CONTACT_FORM_MIN_SECONDS || $age > self::CONTACT_FORM_MAX_SECONDS;
+    }
+
+    private function contactFormSignature(int $startedAt): string
+    {
+        return hash_hmac('sha256', (string) $startedAt, config('app.key'));
     }
 }
