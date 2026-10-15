@@ -62,7 +62,7 @@ Use `tests/Feature` because the project may not have a `tests/Unit` folder.
 |---|---|
 | Laravel | Backend framework |
 | Blade | Template language for HTML pages |
-| SQLite | Local database at `database/database.sqlite` |
+| MySQL | Local database `portfolio` (set in `.env`) |
 | Vite | Bundles CSS and JavaScript |
 | Composer | PHP package manager |
 | npm | JavaScript package manager |
@@ -204,8 +204,9 @@ The user has **no background in software development or IT**. Always:
 
 ## Database
 
-- Engine: SQLite.
-- File: `database/database.sqlite`.
+- Local engine: MySQL, database `portfolio` on `127.0.0.1` (see `DB_*` in `.env`).
+- `.env.example` and `composer run setup` default to SQLite (`database/database.sqlite`), but that file is not what the local site uses — check `.env` before reading data directly.
+- Tests use their own temporary database, so they never touch real data.
 - Tables include `users`, `projects`, `designs`, `messages`, `media`, `cache`, and `jobs`.
 
 ## Authentication
