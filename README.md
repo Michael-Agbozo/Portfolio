@@ -23,6 +23,10 @@ http://localhost:8000
 
 First-time setup:
 
+1. Start MySQL in DBngin and create a database named `portfolio`.
+2. The defaults expect DBngin at `127.0.0.1:3306`, with username `root` and no password. If yours differs, create `.env` from `.env.example` and update the matching `DB_*` values before setup.
+3. Run:
+
 ```bash
 composer run setup
 ```
@@ -41,7 +45,7 @@ The default `php artisan test` command may complain if `tests/Unit` does not exi
 |---|---|
 | Laravel | Backend framework |
 | Blade | HTML templates |
-| SQLite | Local database at `database/database.sqlite` |
+| MySQL (DBngin) | Local database named `portfolio` |
 | Vite | CSS and JavaScript bundling |
 | Composer | PHP package manager |
 | npm | JavaScript package manager |
@@ -190,11 +194,11 @@ tests/
 
 ## Database
 
-The local database is SQLite:
-
-```text
-database/database.sqlite
-```
+The local site uses MySQL through DBngin. The `.env.example` defaults point to
+`127.0.0.1:3306`, with database `portfolio` and username `root`. Start the
+MySQL server in DBngin and create the `portfolio` database before running
+`composer run setup`. If DBngin uses a different port or requires a password,
+update the matching `DB_*` values in `.env` first.
 
 Important tables:
 

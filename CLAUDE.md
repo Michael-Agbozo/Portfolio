@@ -204,8 +204,8 @@ The user has **no background in software development or IT**. Always:
 
 ## Database
 
-- Local engine: MySQL, database `portfolio` on `127.0.0.1` (see `DB_*` in `.env`).
-- `.env.example` and `composer run setup` default to SQLite (`database/database.sqlite`), but that file is not what the local site uses — check `.env` before reading data directly.
+- Local engine: MySQL through DBngin, database `portfolio` on `127.0.0.1:3306` by default (see `DB_*` in `.env`).
+- `.env.example` defaults to the local DBngin connection. Start its MySQL server and create the `portfolio` database before running `composer run setup`; adjust `.env` if DBngin uses a different port or password.
 - Tests use their own temporary database, so they never touch real data.
 - Tables include `users`, `projects`, `designs`, `messages`, `media`, `cache`, and `jobs`.
 
