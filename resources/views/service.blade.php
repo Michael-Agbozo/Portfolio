@@ -1,8 +1,8 @@
-@extends('layouts.app')
+@extends('layouts.emerald')
 @section('title', $service['meta_title'])
 @section('meta_description', $service['meta_description'])
 @section('canonical', route('service.show', $service['slug']))
-@section('og_image', asset('images/michael-hero.png'))
+@section('og_image', asset('images/michael-og.jpg'))
 @push('head')
 <script type="application/ld+json">
 {!! json_encode([
@@ -13,7 +13,7 @@
             '@id' => url('/').'#person',
             'name' => 'Michael Agbozo',
             'url' => url('/'),
-            'image' => asset('images/michael-hero.png'),
+            'image' => asset('images/michael-portrait.jpg'),
             'email' => 'michaelsogagbozo@gmail.com',
             'jobTitle' => 'IT Systems & Web Developer',
             'address' => [
@@ -103,146 +103,119 @@
 @endpush
 @section('content')
 
-<section class="relative overflow-hidden border-b border-border pt-[72px]">
-  <div class="hero-glow"></div>
-  <div class="hero-grid-pattern"></div>
-  <div class="relative max-w-[980px] mx-auto px-6 sm:px-8 pt-20 pb-20 md:pt-28 md:pb-28">
-    <nav aria-label="Breadcrumb" class="flex flex-wrap gap-2 text-[.72rem] uppercase tracking-widest mb-8">
-      <a href="/" class="text-muted hover:text-white transition-colors">Home</a>
-      <span class="text-dim">/</span>
-      <a href="/#services" class="text-muted hover:text-white transition-colors">Services</a>
-      <span class="text-dim">/</span>
-      <span class="text-orange">{{ $service['short_name'] }}</span>
-    </nav>
-
-    <div class="inline-flex items-center gap-2 border border-border rounded-full px-3 py-1.5 text-[.7rem] text-muted uppercase tracking-widest mb-8">
-      <span class="w-1.5 h-1.5 rounded-full bg-orange"></span> Based in Ghana, available remotely
-    </div>
-
-    <h1 class="font-display font-extrabold text-white leading-tight max-w-[850px]" style="font-size:clamp(2.5rem,6vw,5rem)">
-      {{ $service['name'] }}
+<section class="em-page-hero">
+  @include('partials.em-backdrop')
+  <div class="em-wrap em-page-hero-inner">
+    <ol class="em-crumbs" aria-label="Breadcrumb">
+      <li><a href="/">Home</a></li>
+      <li aria-hidden="true">/</li>
+      <li><a href="/#services">Services</a></li>
+      <li aria-hidden="true">/</li>
+      <li aria-current="page">{{ $service['short_name'] }}</li>
+    </ol>
+    <p class="em-eyebrow em-status"><span class="em-dot em-glow"></span>Based in Ghana · available remotely</p>
+    <h1 class="em-page-title">
+      @foreach(explode(' ', $service['name']) as $word)
+        <span class="em-word {{ $loop->first ? 'em-fade' : ($loop->last ? 'em-mint' : '') }}" style="animation-delay:{{ number_format(0.1 + $loop->index * 0.08, 2) }}s">{{ $word }}</span>
+      @endforeach
     </h1>
-
-    <p class="text-muted text-[1rem] sm:text-[1.08rem] leading-[1.9] max-w-[700px] mt-7">
-      {{ $service['intro'] }}
-    </p>
-
-    <div class="flex flex-wrap gap-3 mt-10">
-      <a href="/#contact" class="bg-orange text-white px-7 py-3 rounded-full text-[.85rem] font-semibold hover:bg-orange2 hover:scale-[1.04] active:scale-95 transition-all duration-200">Start a Project</a>
-      <a href="/#work" class="border border-border text-muted px-7 py-3 rounded-full text-[.85rem] font-medium hover:border-white hover:text-white hover:scale-[1.04] active:scale-95 transition-all duration-200">View Work</a>
+    <p class="em-lede" style="max-width:700px">{{ $service['intro'] }}</p>
+    <div class="em-actions">
+      <a href="/#contact" class="em-btn em-btn-mint">Start a project</a>
+      <a href="/#work" class="em-btn em-btn-ghost">View work</a>
     </div>
   </div>
 </section>
 
-<section class="py-20 border-b border-border">
-  <div class="max-w-[1180px] mx-auto px-6 sm:px-8 md:px-12 grid grid-cols-1 lg:grid-cols-[.85fr_1.15fr] gap-12">
+<section class="em-section">
+  <div class="em-wrap em-section-pad em-split em-split-wide">
     <div>
-      <div class="inline-flex items-center gap-2 border border-border rounded-full px-3 py-1 text-[.7rem] text-muted uppercase tracking-widest mb-6">
-        <span class="w-[5px] h-[5px] rounded-full bg-orange"></span> Who It Helps
-      </div>
-      <p class="font-display font-extrabold text-white leading-tight" style="font-size:clamp(1.7rem,3vw,2.6rem)">
-        Built for practical business outcomes.
-      </p>
-      <p class="text-muted text-[.95rem] leading-[1.85] mt-5">{{ $service['audience'] }}</p>
+      <p class="em-eyebrow">Who it helps</p>
+      <h2 class="em-h2"><span class="em-fade">Built for practical</span> <span class="em-mint">business outcomes.</span></h2>
+      <p class="em-lede">{{ $service['audience'] }}</p>
     </div>
-
-    <div class="grid grid-cols-1 sm:grid-cols-2 gap-px bg-border border border-border">
+    <div class="em-grid-2" style="grid-template-columns:repeat(auto-fill,minmax(min(100%,260px),1fr))">
       @foreach($service['outcomes'] as $outcome)
-        <div class="bg-bg p-6 hover:bg-bg3 transition-colors">
-          <div class="w-8 h-0.5 bg-orange mb-5"></div>
-          <p class="text-white text-[.95rem] leading-[1.7]">{{ $outcome }}</p>
+      <div class="em-reveal">
+        <div class="em-card em-tilt {{ $loop->odd ? 'is-mint' : '' }}" style="min-height:180px">
+          <span class="em-card-kicker">0{{ $loop->iteration }}</span>
+          <p style="margin:auto 0 0;font-size:17px;font-weight:500">{{ $outcome }}</p>
         </div>
+      </div>
       @endforeach
     </div>
   </div>
 </section>
 
-<section class="py-20 border-b border-border">
-  <div class="max-w-[980px] mx-auto px-6 sm:px-8 md:px-12">
-    <div class="inline-flex items-center gap-2 border border-border rounded-full px-3 py-1 text-[.7rem] text-muted uppercase tracking-widest mb-6">
-      <span class="w-[5px] h-[5px] rounded-full bg-orange"></span> Focus Areas
-    </div>
-    <h2 class="font-display font-extrabold text-white leading-tight mb-8" style="font-size:clamp(1.8rem,3.5vw,3rem)">
-      Clear services, easy to understand.
-    </h2>
-    <div class="flex flex-wrap gap-2">
-      @foreach($service['keywords'] as $keyword)
-        <span class="border border-border bg-bg2 text-muted rounded-full px-4 py-2 text-[.82rem]">{{ $keyword }}</span>
-      @endforeach
-    </div>
+<section class="em-section">
+  <div class="em-wrap em-section-pad">
+    <p class="em-eyebrow">Focus areas</p>
+    <h2 class="em-h2" style="margin-bottom:32px">Clear services, <span class="em-mint">easy to understand.</span></h2>
+    <ul class="em-chips">
+      @foreach($service['keywords'] as $keyword)<li>{{ $keyword }}</li>@endforeach
+    </ul>
   </div>
 </section>
 
-<section class="py-20 border-b border-border">
-  <div class="max-w-[980px] mx-auto px-6 sm:px-8 md:px-12">
-    <div class="inline-flex items-center gap-2 border border-border rounded-full px-3 py-1 text-[.7rem] text-muted uppercase tracking-widest mb-6">
-      <span class="w-[5px] h-[5px] rounded-full bg-orange"></span> FAQ
-    </div>
-    <div class="space-y-4">
+<section class="em-section">
+  <div class="em-wrap em-section-pad" style="max-width:980px">
+    <p class="em-eyebrow">FAQ</p>
+    <h2 class="em-h2" style="margin-bottom:32px">Questions, <span class="em-mint">answered.</span></h2>
+    <div class="em-faq">
       @foreach($service['faq'] as $item)
-        <details class="group bg-bg2 border border-border rounded-xl p-5 open:border-orange">
-          <summary class="cursor-pointer list-none font-display font-bold text-white text-[1rem] flex items-center justify-between gap-6">
-            {{ $item['question'] }}
-            <span class="text-orange group-open:rotate-45 transition-transform">+</span>
-          </summary>
-          <p class="text-muted text-[.92rem] leading-[1.8] mt-4">{{ $item['answer'] }}</p>
-        </details>
+      <details>
+        <summary>{{ $item['question'] }}</summary>
+        <p>{{ $item['answer'] }}</p>
+      </details>
       @endforeach
     </div>
   </div>
 </section>
 
 @if($relatedProjects->isNotEmpty())
-<section class="py-20 border-b border-border">
-  <div class="max-w-[1180px] mx-auto px-6 sm:px-8 md:px-12">
-    <div class="flex justify-between items-end gap-6 mb-10">
+<section class="em-section" style="overflow:hidden">
+  <div aria-hidden="true" class="em-work-glow em-glow"></div>
+  <div class="em-wrap em-section-pad" style="position:relative">
+    <div class="em-section-head">
       <div>
-        <div class="inline-flex items-center gap-2 border border-border rounded-full px-3 py-1 text-[.7rem] text-muted uppercase tracking-widest mb-6">
-          <span class="w-[5px] h-[5px] rounded-full bg-orange"></span> Proof
-        </div>
-        <h2 class="font-display font-extrabold text-white leading-tight" style="font-size:clamp(1.8rem,3.5vw,3rem)">
-          Related work.
-        </h2>
+        <p class="em-eyebrow">Proof</p>
+        <h2 class="em-h2">Related <span class="em-mint">work.</span></h2>
       </div>
-      <a href="/#work" class="hidden sm:inline-flex text-orange text-[.78rem] font-semibold uppercase tracking-widest">View all →</a>
+      <a href="/#work" class="em-btn em-btn-ghost">View all →</a>
     </div>
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
+    <div class="em-tile-grid">
       @foreach($relatedProjects as $project)
-        @php
-          $thumb = $project->feature_image ?: ($project->images[0] ?? null);
-        @endphp
-        <a href="{{ route('project.show', $project) }}" class="group bg-bg2 border border-border rounded-2xl overflow-hidden hover:border-orange hover:-translate-y-1 transition-all duration-300">
-          <div class="aspect-[16/10] overflow-hidden bg-bg3">
-            @if($thumb)
-              <img src="{{ $thumb }}" alt="{{ $project->title }}" loading="lazy" decoding="async" class="w-full h-full object-cover group-hover:scale-[1.05] transition-transform duration-500"/>
-            @else
-              <div class="w-full h-full flex items-center justify-center">
-                <span class="font-display font-extrabold text-[3rem] text-white/10">{{ $project->num }}</span>
-              </div>
-            @endif
-          </div>
-          <div class="p-5">
-            <h3 class="font-display font-bold text-white text-[1.05rem] group-hover:text-orange transition-colors">{{ $project->title }}</h3>
-            @if($project->meta)
-              <p class="text-muted text-[.82rem] leading-[1.7] mt-3">{{ \Illuminate\Support\Str::limit($project->meta, 110) }}</p>
-            @endif
-          </div>
-        </a>
+        @php $thumb = $project->feature_image ?: ($project->images[0] ?? null); @endphp
+        <div class="em-reveal">
+          <a href="{{ route('project.show', $project) }}" class="em-project em-tilt">
+            <div class="em-project-thumb">
+              @if($thumb)
+                <img src="{{ $thumb }}" alt="{{ $project->title }}" loading="lazy" decoding="async">
+              @else
+                <b>{{ str_pad($loop->iteration, 2, '0', STR_PAD_LEFT) }}</b>
+              @endif
+            </div>
+            <div class="em-project-body">
+              <span class="em-project-title"><strong>{{ $project->title }}</strong></span>
+              @if($project->meta)<p class="em-project-meta">{{ \Illuminate\Support\Str::limit($project->meta, 110) }}</p>@endif
+            </div>
+          </a>
+        </div>
       @endforeach
     </div>
   </div>
 </section>
 @endif
 
-<section class="py-20">
-  <div class="max-w-[980px] mx-auto px-6 sm:px-8 md:px-12 text-center">
-    <p class="font-display font-extrabold text-white leading-tight" style="font-size:clamp(1.8rem,3.5vw,3rem)">
-      Need {{ strtolower($service['short_name']) }}?
-    </p>
-    <p class="text-muted text-[.95rem] leading-[1.85] max-w-[620px] mx-auto mt-5">
-      Send a short message with what you want to build, improve, or launch. I will reply with the next practical step.
-    </p>
-    <a href="/#contact" class="inline-flex mt-8 bg-orange text-white px-8 py-3.5 rounded-full text-[.85rem] font-semibold hover:bg-orange2 hover:scale-[1.04] active:scale-95 transition-all duration-200">Contact Michael</a>
+<section class="em-section em-contact">
+  <div aria-hidden="true" class="em-contact-curtain em-curtain"></div>
+  <div aria-hidden="true" class="em-contact-glow"></div>
+  <div class="em-wrap em-cta-band" style="position:relative">
+    <h2 class="em-h2"><span class="em-fade">Need</span> <span class="em-mint">{{ strtolower($service['short_name']) }}?</span></h2>
+    <p>Send a short message with what you want to build, improve, or launch. I will reply with the next practical step.</p>
+    <div class="em-actions">
+      <a href="/#contact" class="em-btn em-btn-mint">Contact Michael</a>
+    </div>
   </div>
 </section>
 

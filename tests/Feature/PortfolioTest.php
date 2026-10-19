@@ -234,9 +234,10 @@ class PortfolioTest extends TestCase
 
         $response->assertNotFound();
         $response->assertSee('This page slipped out of frame.');
-        $response->assertSee('Michael Agbozo<span class="text-orange">.</span>', false);
+        $response->assertSee('class="em-error-code', false);
+        $response->assertSee('aria-label="Michael Agbozo — home"', false);
         $response->assertSee('<meta name="robots" content="noindex, follow"/>', false);
-        $response->assertSee('Back Home');
+        $response->assertSee('Back home');
     }
 
     public function test_contact_form_stores_a_message(): void

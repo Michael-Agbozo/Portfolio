@@ -8,7 +8,7 @@
 <link rel="apple-touch-icon" href="{{ asset('apple-touch-icon.png') }}"/>
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
-<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=DM+Sans:opsz,wght@9..40,400..600&display=swap" rel="stylesheet"/>
 {{-- Paint the correct background immediately, before the stylesheet finishes
      loading — otherwise the browser shows a flash of the wrong colour on
      every dashboard page load/refresh. --}}

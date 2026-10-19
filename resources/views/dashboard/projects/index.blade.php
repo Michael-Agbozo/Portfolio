@@ -40,11 +40,11 @@
       <tbody>
         @foreach($projects as $project)
         <tr>
-          <td data-label="#" style="color:var(--orange);font-size:.72rem;font-family:'Syne',sans-serif;font-weight:700;white-space:nowrap">{{ $project->num }}</td>
+          <td data-label="#" style="color:var(--orange);font-size:.72rem;font-family:'Sora',sans-serif;font-weight:700;white-space:nowrap">{{ $project->num }}</td>
           <td data-label="Title" class="td-main">{{ $project->title }}</td>
           <td data-label="Category">
             @if($project->category === 'design')
-              <span class="tag" style="color:var(--orange);border-color:rgba(232,83,26,.3)">Design</span>
+              <span class="tag" style="color:var(--orange);border-color:rgba(45,227,167,.3)">Design</span>
             @else
               <span class="tag" style="color:#60a5fa;border-color:rgba(96,165,250,.3)">Dev</span>
             @endif

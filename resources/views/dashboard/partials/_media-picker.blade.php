@@ -23,7 +23,7 @@
             <div style="aspect-ratio:1/1;overflow:hidden">
               <img src="{{ $file['url'] }}" alt="{{ $file['name'] }}" loading="lazy" style="width:100%;height:100%;object-fit:cover;display:block"/>
             </div>
-            <div class="media-picker-check" style="display:none;position:absolute;top:.4rem;right:.4rem;width:22px;height:22px;border-radius:50%;background:var(--orange);color:#fff;align-items:center;justify-content:center;font-size:.7rem;font-weight:700">✓</div>
+            <div class="media-picker-check" style="display:none;position:absolute;top:.4rem;right:.4rem;width:22px;height:22px;border-radius:50%;background:var(--orange);color:var(--on-accent);align-items:center;justify-content:center;font-size:.7rem;font-weight:700">✓</div>
           </div>
           @endforeach
         </div>

@@ -48,7 +48,7 @@
     @else
       <div style="display:flex;flex-direction:column;gap:1px;border:1px solid var(--line);border-radius:8px;overflow:hidden">
         @foreach($recentMessages as $msg)
-        <a href="{{ route('dashboard.messages.show', $msg) }}" style="display:grid;grid-template-columns:8px 1fr;gap:.75rem;padding:.85rem 1rem;background:{{ $msg->isUnread() ? 'rgba(232,83,26,.04)' : 'var(--bg3)' }};transition:background .15s;border-bottom:1px solid var(--line)">
+        <a href="{{ route('dashboard.messages.show', $msg) }}" style="display:grid;grid-template-columns:8px 1fr;gap:.75rem;padding:.85rem 1rem;background:{{ $msg->isUnread() ? 'rgba(45,227,167,.04)' : 'var(--bg3)' }};transition:background .15s;border-bottom:1px solid var(--line)">
           <span style="width:7px;height:7px;border-radius:50%;background:{{ $msg->isUnread() ? 'var(--orange)' : 'var(--line)' }};margin-top:.35rem;flex-shrink:0"></span>
           <div>
             <div style="font-size:.8rem;font-weight:600;color:var(--white)">{{ $msg->name }} <span style="font-size:.7rem;font-weight:400;color:var(--dim)">{{ $msg->email }}</span></div>

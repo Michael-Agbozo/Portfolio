@@ -107,25 +107,12 @@
       <p class="em-eyebrow em-status"><span class="em-dot em-glow"></span>Open to work · Ghana &amp; remote</p>
       <h1 class="em-h1">
         <span class="em-word em-fade" style="animation-delay:.1s">Strategic</span>
-        <span class="em-word em-mint" style="animation-delay:.2s">brands</span>
+        <span class="em-word" style="animation-delay:.2s">brands</span>
         <span class="em-word" style="animation-delay:.3s">&amp;</span>
-        <span class="em-word" style="animation-delay:.4s">solid</span>
-        <span class="em-word" style="animation-delay:.5s">systems</span>
-        <span class="em-word" style="animation-delay:.6s">that</span>
-        <span class="em-word em-mint" style="animation-delay:.7s">don’t</span>
-        <span class="em-word" style="animation-delay:.8s">fool</span>
-        <span class="em-word" style="animation-delay:.9s">you.</span>
+        <span class="em-word em-mint" style="animation-delay:.4s">solid</span>
+        <span class="em-word em-mint" style="animation-delay:.5s">systems.</span>
       </h1>
       <p class="em-lede">IT Systems &amp; Web Developer with 9+ years in design and 4+ in development. I build WordPress sites and Laravel apps end to end, keep IT running, and craft brands that last.</p>
-      <div class="em-actions">
-        <a href="#work" class="em-btn em-btn-mint">View my work</a>
-        <a href="/cv/michael-agbozo-cv.pdf" download class="em-btn em-btn-ghost">Download CV ↓</a>
-      </div>
-      <dl class="em-stats">
-        <div class="em-stat em-tilt"><dt>Years design</dt><dd>9<span class="em-mint">+</span></dd></div>
-        <div class="em-stat em-tilt"><dt>Years dev</dt><dd>4<span class="em-mint">+</span></dd></div>
-        <div class="em-stat em-tilt"><dt>Staff supported</dt><dd>370<span class="em-mint">+</span></dd></div>
-      </dl>
     </div>
 
     {{-- 3D scene: tilted dashboard window, orbiting portrait, floating chips --}}
@@ -176,6 +163,19 @@
         <span class="em-chip em-chip-mint em-chip-2 em-bob">Brand Identity</span>
         <span class="em-chip em-chip-3 em-bob">WordPress</span>
       </div>
+    </div>
+
+    {{-- Buttons on the left, stats on the right, on one line --}}
+    <div class="em-hero-bar">
+      <div class="em-actions">
+        <a href="#work" class="em-btn em-btn-mint">View my work</a>
+        <a href="/cv/michael-agbozo-cv.pdf" download class="em-btn em-btn-ghost">Download CV ↓</a>
+      </div>
+      <dl class="em-stats">
+        <div class="em-stat em-tilt"><dt>Years design</dt><dd>9<span class="em-mint">+</span></dd></div>
+        <div class="em-stat em-tilt"><dt>Years dev</dt><dd>4<span class="em-mint">+</span></dd></div>
+        <div class="em-stat em-tilt"><dt>Staff supported</dt><dd>370<span class="em-mint">+</span></dd></div>
+      </dl>
     </div>
   </div>
 </section>

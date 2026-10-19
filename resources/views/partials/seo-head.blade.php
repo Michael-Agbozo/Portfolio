@@ -5,7 +5,7 @@
       'Michael Agbozo is a Ghana-based IT systems professional, Laravel and WordPress developer, and brand designer building strategic websites, dashboards, and identities.'
   ));
   $seoCanonical = trim($__env->yieldContent('canonical', url()->current()));
-  $seoImage = trim($__env->yieldContent('og_image', asset('images/michael-hero.png')));
+  $seoImage = trim($__env->yieldContent('og_image', asset('images/michael-og.jpg')));
   $seoType = trim($__env->yieldContent('og_type', 'website'));
   $seoRobots = trim($__env->yieldContent('meta_robots', 'index, follow, max-image-preview:large'));
 @endphp
