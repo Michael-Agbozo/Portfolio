@@ -1,4 +1,5 @@
 @extends('layouts.emerald')
+@use('App\Support\Thumbnail')
 @section('title', 'Michael Agbozo — IT Professional, Web Developer & Designer')
 @section('meta_description', 'Michael Agbozo offers Laravel development, WordPress website design, brand identity design, print cutline artwork, and IT systems support in Ghana and remotely.')
 @section('canonical', url('/'))
@@ -156,7 +157,7 @@
 
         <div class="em-portrait">
           <div class="em-orbit-ring em-orbit"><span></span></div>
-          <img src="{{ asset('images/michael-portrait.jpg') }}" alt="" width="200" height="200">
+          <img src="{{ Thumbnail::url('/images/michael-portrait.jpg', 400) }}" alt="" width="200" height="200" fetchpriority="high" decoding="async">
         </div>
 
         <span class="em-chip em-chip-1 em-bob">Laravel</span>
@@ -238,7 +239,7 @@
               @foreach($allProjects->concat($allProjects)->take(max(10, $allProjects->count())) as $project)
               @php $thumb = $thumbFor($project); @endphp
               <div class="em-frame {{ $thumb ? 'has-img' : ($loop->index % 3 === 1 ? 'is-mint' : '') }}">
-                @if($thumb)<img src="{{ $thumb }}" alt="" loading="lazy">@endif
+                @if($thumb)<img src="{{ Thumbnail::url($thumb, 480) }}" alt="" width="220" height="300" loading="lazy" decoding="async">@endif
                 <span>{{ $project->title }}</span>
               </div>
               @endforeach
@@ -255,7 +256,7 @@
         <a href="{{ route('project.show', $project) }}" class="em-project em-tilt">
           <div class="em-project-thumb">
             @if($thumb)
-              <img src="{{ $thumb }}" alt="{{ $project->title }}" loading="lazy">
+              <img src="{{ Thumbnail::url($thumb, 640) }}" srcset="{{ Thumbnail::srcset($thumb, [400, 640, 960]) }}" sizes="(max-width: 640px) 92vw, 400px" alt="{{ $project->title }}" width="640" height="400" loading="lazy" decoding="async">
             @else
               <b>{{ str_pad($loop->iteration, 2, '0', STR_PAD_LEFT) }}</b>
             @endif
@@ -289,10 +290,10 @@
     <div class="em-design-grid" id="em-designs-grid">
       @foreach($designs as $design)
       <div class="em-design-cell em-reveal" data-page="{{ intdiv($loop->index, $perPage) + 1 }}">
-        <button type="button" class="em-design em-flip" aria-label="Open {{ $design->alt ?: 'design' }}"
+        <button type="button" class="em-design em-flip"
                 data-src="{{ $design->src }}" data-alt="{{ $design->alt }}">
           <span class="em-face em-face-front">
-            <img src="{{ $design->src }}" alt="" loading="lazy" decoding="async">
+            <img src="{{ Thumbnail::url($design->src, 400) }}" srcset="{{ Thumbnail::srcset($design->src, [400, 640]) }}" sizes="(max-width: 640px) 92vw, 300px" alt="" width="400" height="400" loading="lazy" decoding="async">
             <span class="em-face-title">{{ $design->alt }}</span>
           </span>
           <span class="em-face em-face-back">

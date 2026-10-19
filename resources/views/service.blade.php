@@ -1,4 +1,5 @@
 @extends('layouts.emerald')
+@use('App\Support\Thumbnail')
 @section('title', $service['meta_title'])
 @section('meta_description', $service['meta_description'])
 @section('canonical', route('service.show', $service['slug']))
@@ -190,7 +191,7 @@
           <a href="{{ route('project.show', $project) }}" class="em-project em-tilt">
             <div class="em-project-thumb">
               @if($thumb)
-                <img src="{{ $thumb }}" alt="{{ $project->title }}" loading="lazy" decoding="async">
+                <img src="{{ Thumbnail::url($thumb, 640) }}" srcset="{{ Thumbnail::srcset($thumb, [400, 640, 960]) }}" sizes="(max-width: 640px) 92vw, 400px" alt="{{ $project->title }}" width="640" height="400" loading="lazy" decoding="async">
               @else
                 <b>{{ str_pad($loop->iteration, 2, '0', STR_PAD_LEFT) }}</b>
               @endif

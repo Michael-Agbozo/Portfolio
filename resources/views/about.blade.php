@@ -1,4 +1,5 @@
 @extends('layouts.emerald')
+@use('App\Support\Thumbnail')
 @section('title', 'About Michael Agbozo | Remote Web Developer, Designer and IT Systems Support')
 @section('meta_description', 'About Michael Agbozo: Ghana-based IT Systems and Web Developer offering remote Laravel development, WordPress websites, brand identity design, print cutline artwork, and IT systems support.')
 @section('canonical', route('about'))
@@ -147,7 +148,7 @@
       <div style="flex:0 1 420px;display:flex;flex-direction:column;gap:20px;align-items:center">
         <div class="em-portrait" style="position:relative;left:auto;bottom:auto;transform:none;width:220px;height:220px">
           <div class="em-orbit-ring em-orbit"><span></span></div>
-          <img src="{{ asset('images/michael-portrait.jpg') }}" alt="Portrait of Michael Agbozo" width="220" height="220" style="width:220px;height:220px">
+          <img src="{{ Thumbnail::url('/images/michael-portrait.jpg', 480) }}" alt="Portrait of Michael Agbozo" width="220" height="220" fetchpriority="high" decoding="async" style="width:220px;height:220px">
         </div>
         <dl class="em-stats" style="width:100%;margin-top:28px">
           <div class="em-stat em-tilt"><dt>Years design</dt><dd>9<span class="em-mint">+</span></dd></div>
@@ -229,7 +230,7 @@
           <a href="{{ route('project.show', $project) }}" class="em-project em-tilt">
             <div class="em-project-thumb">
               @if($thumb)
-                <img src="{{ $thumb }}" alt="{{ $project->title }}" loading="lazy" decoding="async">
+                <img src="{{ Thumbnail::url($thumb, 640) }}" srcset="{{ Thumbnail::srcset($thumb, [400, 640, 960]) }}" sizes="(max-width: 640px) 92vw, 600px" alt="{{ $project->title }}" width="640" height="400" loading="lazy" decoding="async">
               @else
                 <b>{{ str_pad($loop->iteration, 2, '0', STR_PAD_LEFT) }}</b>
               @endif

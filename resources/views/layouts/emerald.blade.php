@@ -2,7 +2,8 @@
 <html lang="en">
 <head>
 @include('partials.seo-head')
-<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=DM+Sans:opsz,wght@9..40,400..600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+<link rel="preload" href="/fonts/sora-latin.woff2" as="font" type="font/woff2" crossorigin/>
+<link rel="preload" href="/fonts/dm-sans-latin.woff2" as="font" type="font/woff2" crossorigin/>
 {{-- Paint the dark background immediately so there is no white flash while the stylesheet loads. --}}
 <style>html,body{background:#050B09;color:#E8F2EE}</style>
 @vite(['resources/css/emerald.css'])

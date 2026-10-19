@@ -14,6 +14,7 @@ use App\Http\Controllers\Dashboard\ProjectController;
 use App\Http\Controllers\MemorialBookController;
 use App\Http\Controllers\PortfolioController;
 use App\Http\Controllers\StaleAssetController;
+use App\Http\Controllers\ThumbnailController;
 use Illuminate\Support\Facades\Route;
 
 // Public portfolio
@@ -30,6 +31,11 @@ Route::get('/iet-gh-induction-of-new-members', [MemorialBookController::class, '
 Route::get('/build/assets/{asset}', StaleAssetController::class)
     ->where('asset', '[A-Za-z0-9._-]+\.(css|js)')
     ->name('build.stale-asset');
+
+// Resized WebP copies of site images, made on first request
+Route::get('/storage/thumbs/{width}/{version}/{path}', ThumbnailController::class)
+    ->where(['width' => '[0-9]+', 'version' => '[0-9]+', 'path' => '(storage|images)/.+\.webp'])
+    ->name('thumbnail');
 
 // Public project detail
 Route::get('/projects/{project}', [PortfolioController::class, 'project'])->name('project.show');
