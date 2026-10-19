@@ -27,8 +27,6 @@
 <meta name="twitter:image" content="{{ $seoImage }}"/>
 <link rel="icon" type="image/png" href="{{ asset('favicon.png') }}"/>
 <link rel="apple-touch-icon" href="{{ asset('apple-touch-icon.png') }}"/>
-<link rel="preconnect" href="https://fonts.googleapis.com"/>
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
 <link rel="preconnect" href="https://www.googletagmanager.com"/>
 @if($measurementId = config('services.google_analytics.measurement_id'))
 <script async src="https://www.googletagmanager.com/gtag/js?id={{ $measurementId }}"></script>

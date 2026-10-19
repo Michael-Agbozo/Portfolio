@@ -3,6 +3,13 @@
    Dark green ground, mint accent, 3D motion.
    ───────────────────────────────────────────────────────────── */
 
+/* Fonts are served from this site (no third-party request blocking the first paint).
+   "optional" means: use the font if it arrives almost instantly (it is preloaded),
+   otherwise keep the fallback for this visit — so text never jumps around. */
+@font-face { font-family: 'Sora'; font-style: normal; font-weight: 400 800; font-display: optional; src: url('/fonts/sora-latin.woff2') format('woff2'); }
+@font-face { font-family: 'DM Sans'; font-style: normal; font-weight: 400 600; font-display: optional; src: url('/fonts/dm-sans-latin.woff2') format('woff2'); }
+@font-face { font-family: 'JetBrains Mono'; font-style: normal; font-weight: 400 500; font-display: optional; src: url('/fonts/jetbrains-mono-latin.woff2') format('woff2'); }
+
 :root {
   --em-bg:      #050B09;
   --em-bg2:     #07120E;
@@ -498,7 +505,7 @@ html:has(.em-body) { overflow-x: clip; }
 @keyframes em-floor  { from { background-position: 0 0; } to { background-position: 0 64px; } }
 @keyframes em-breathe{ 0%,100% { transform: rotateX(10deg) rotateY(-12deg); } 50% { transform: rotateX(5deg) rotateY(9deg); } }
 @keyframes em-ring   { from { transform: rotateX(-12deg) rotateY(0deg); } to { transform: rotateX(-12deg) rotateY(-360deg); } }
-@keyframes em-rise   { from { opacity: 0; transform: perspective(900px) rotateX(38deg) translateY(90px) scale(.9); } to { opacity: 1; transform: perspective(900px) rotateX(0) translateY(0) scale(1); } }
+@keyframes em-rise   { from { transform: perspective(900px) rotateX(38deg) translateY(90px) scale(.9); } to { transform: perspective(900px) rotateX(0) translateY(0) scale(1); } }
 
 .em-curtain { animation: em-sway 14s ease-in-out infinite; }
 .em-contact-curtain.em-curtain { animation-direction: reverse; }

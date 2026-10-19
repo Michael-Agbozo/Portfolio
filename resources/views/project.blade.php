@@ -1,4 +1,5 @@
 @extends('layouts.emerald')
+@use('App\Support\Thumbnail')
 @php
   $projectDescription = \Illuminate\Support\Str::limit(
       trim(strip_tags($project->meta ?: $project->body ?: 'A selected web development, design, or systems project by Michael Agbozo.')),
@@ -113,7 +114,8 @@
   @if($project->feature_image)
     <div class="em-monitor-wrap" style="margin-bottom:48px">
       <figure class="em-figure em-monitor em-breathe" style="padding:0">
-        <img src="{{ $project->feature_image }}" alt="{{ $project->title }}">
+        @php [$fw, $fh] = Thumbnail::dimensions($project->feature_image) ?? [1440, 900]; @endphp
+        <img src="{{ Thumbnail::url($project->feature_image, 1280) }}" srcset="{{ Thumbnail::srcset($project->feature_image, [640, 960, 1280]) }}" sizes="(max-width: 1280px) 92vw, 1232px" alt="{{ $project->title }}" width="{{ $fw }}" height="{{ $fh }}" fetchpriority="high" decoding="async">
       </figure>
     </div>
   @endif
@@ -195,7 +197,8 @@
         @foreach($project->images as $img)
           <div class="em-gallery-cell">
             <button type="button" class="em-gallery-item" data-src="{{ $img }}" data-alt="{{ $project->title }} — work sample" aria-label="Open image {{ $loop->iteration }}">
-              <img src="{{ $img }}" alt="{{ $project->title }} — work sample" loading="lazy">
+              @php [$gw, $gh] = Thumbnail::dimensions($img) ?? [1440, 900]; @endphp
+              <img src="{{ Thumbnail::url($img, 640) }}" srcset="{{ Thumbnail::srcset($img, [480, 640, 960]) }}" sizes="(max-width: 700px) 92vw, 400px" alt="{{ $project->title }} — work sample" width="{{ $gw }}" height="{{ $gh }}" loading="lazy" decoding="async">
             </button>
           </div>
         @endforeach
