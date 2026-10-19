@@ -40,7 +40,9 @@ class SecurityHeaders
         $response->headers->set('Permissions-Policy', 'camera=(), microphone=(), geolocation=(), payment=()');
         $response->headers->set('Strict-Transport-Security', 'max-age=31536000; includeSubDomains');
 
-        if (str_starts_with($request->path(), 'build/') || str_starts_with($request->path(), 'images/')) {
+        // Long-term caching only for real files — never for redirects or "not found"
+        // answers, which must stay fresh (see StaleAssetController).
+        if ($response->isSuccessful() && (str_starts_with($request->path(), 'build/') || str_starts_with($request->path(), 'images/'))) {
             $response->headers->set('Cache-Control', 'public, max-age=31536000, immutable');
         }
 

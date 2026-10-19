@@ -13,6 +13,7 @@ use App\Http\Controllers\Dashboard\ProfileController;
 use App\Http\Controllers\Dashboard\ProjectController;
 use App\Http\Controllers\MemorialBookController;
 use App\Http\Controllers\PortfolioController;
+use App\Http\Controllers\StaleAssetController;
 use Illuminate\Support\Facades\Route;
 
 // Public portfolio
@@ -24,6 +25,11 @@ Route::get('/services/{service}', [PortfolioController::class, 'service'])->name
 Route::post('/contact', [PortfolioController::class, 'sendContact'])->middleware('throttle:5,1')->name('contact.send');
 Route::get('/dadaa-kate-dzidzornu-nyamadi-funeral-ebook', [MemorialBookController::class, 'show'])->name('memorial.book');
 Route::get('/iet-gh-induction-of-new-members', [MemorialBookController::class, 'showIetInduction'])->name('iet.induction.book');
+
+// Old built CSS/JS names (from before a deploy) point to the current files
+Route::get('/build/assets/{asset}', StaleAssetController::class)
+    ->where('asset', '[A-Za-z0-9._-]+\.(css|js)')
+    ->name('build.stale-asset');
 
 // Public project detail
 Route::get('/projects/{project}', [PortfolioController::class, 'project'])->name('project.show');
