@@ -27,6 +27,16 @@ Route::post('/contact', [PortfolioController::class, 'sendContact'])->middleware
 Route::get('/dadaa-kate-dzidzornu-nyamadi-funeral-ebook', [MemorialBookController::class, 'show'])->name('memorial.book');
 Route::get('/iet-gh-induction-of-new-members', [MemorialBookController::class, 'showIetInduction'])->name('iet.induction.book');
 
+// Language menu: remember the visitor's choice, then go back to the same page
+Route::get('/language/{locale}', function (string $locale) {
+    abort_unless(array_key_exists($locale, config('app.supported_locales')), 404);
+
+    $back = url()->previous();
+    $target = str_starts_with($back, url('/')) && ! str_contains($back, '/language/') ? $back : url('/');
+
+    return redirect($target)->withCookie(cookie()->forever(\App\Http\Middleware\SetLocale::COOKIE, $locale));
+})->name('language.switch');
+
 // Old built CSS/JS names (from before a deploy) point to the current files
 Route::get('/build/assets/{asset}', StaleAssetController::class)
     ->where('asset', '[A-Za-z0-9._-]+\.(css|js)')

@@ -82,6 +82,18 @@ return [
 
     'fallback_locale' => env('APP_FALLBACK_LOCALE', 'en'),
 
+    /*
+    | Languages the public site is translated into (code => name shown in the
+    | language menu). Visitors get their browser's language when it is listed.
+    */
+    'supported_locales' => [
+        'en' => 'English',
+        'fr' => 'Français',
+        'nl' => 'Nederlands',
+        'es' => 'Español',
+        'de' => 'Deutsch',
+    ],
+
     'faker_locale' => env('APP_FAKER_LOCALE', 'en_US'),
 
     /*
