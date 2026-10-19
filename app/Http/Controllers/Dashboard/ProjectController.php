@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Dashboard;
 
 use App\Http\Controllers\Controller;
 use App\Models\Project;
+use App\Support\HtmlSanitizer;
 use App\Support\ImageCompressor;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
@@ -28,6 +29,7 @@ class ProjectController extends Controller
     {
         $data = $this->validateProject($request);
 
+        $data['body'] = HtmlSanitizer::clean($data['body'] ?? null);
         $data['tags'] = $this->parseTags($data['tags'] ?? '');
         $data['services'] = $this->parseTags($data['services'] ?? '');
         $data['tech_stack'] = $this->parseTags($data['tech_stack'] ?? '');
@@ -53,6 +55,7 @@ class ProjectController extends Controller
     {
         $data = $this->validateProject($request);
 
+        $data['body'] = HtmlSanitizer::clean($data['body'] ?? null);
         $data['tags'] = $this->parseTags($data['tags'] ?? '');
         $data['services'] = $this->parseTags($data['services'] ?? '');
         $data['tech_stack'] = $this->parseTags($data['tech_stack'] ?? '');

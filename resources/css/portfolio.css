@@ -531,7 +531,6 @@ footer{border-top:1px solid var(--line)}
 .project-body pre{background:var(--bg2);border:1px solid var(--line);border-radius:8px;padding:1rem;overflow-x:auto;margin:0 0 1.2rem}
 .project-body pre code{background:none;border:none;padding:0}
 
-
 /* MOBILE */
 @media(max-width:900px){
   .container{padding-left:1.5rem;padding-right:1.5rem}
