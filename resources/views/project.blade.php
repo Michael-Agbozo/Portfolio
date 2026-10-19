@@ -11,15 +11,15 @@
       ? $projectImage
       : url($projectImage);
   $quickFacts = array_filter([
-      'Client' => $project->client_name,
-      'Year' => $project->project_year,
-      'Services' => $project->services ? implode(', ', $project->services) : null,
-      'Tech Stack' => $project->tech_stack ? implode(', ', $project->tech_stack) : null,
+      __('Client') => $project->client_name,
+      __('Year') => $project->project_year,
+      __('Services') => $project->services ? implode(', ', $project->services) : null,
+      __('Tech Stack') => $project->tech_stack ? implode(', ', $project->tech_stack) : null,
   ]);
   $caseStudySections = array_filter([
-      'The Challenge' => $project->challenge,
-      'The Solution' => $project->solution,
-      'Results / Outcome' => $project->results,
+      __('The Challenge') => $project->challenge,
+      __('The Solution') => $project->solution,
+      __('Results / Outcome') => $project->results,
   ]);
   $hasBeforeAfter = $project->before_image || $project->after_image;
 @endphp
@@ -84,14 +84,14 @@
 <section class="em-page-hero">
   @include('partials.em-backdrop', ['floor' => false])
   <div class="em-wrap em-page-hero-inner" style="padding-bottom:64px">
-    <ol class="em-crumbs" aria-label="Breadcrumb">
-      <li><a href="/">Home</a></li>
+    <ol class="em-crumbs" aria-label="{{ __('Breadcrumb') }}">
+      <li><a href="/">{{ __('Home') }}</a></li>
       <li aria-hidden="true">/</li>
-      <li><a href="/#work">Work</a></li>
+      <li><a href="/#work">{{ __('Work') }}</a></li>
       <li aria-hidden="true">/</li>
       <li aria-current="page">{{ $project->title }}</li>
     </ol>
-    <p class="em-eyebrow">{{ $project->num ?: 'Project' }}</p>
+    <p class="em-eyebrow">{{ $project->num ?: __('Project') }}</p>
     <h1 class="em-page-title">{{ $project->title }}</h1>
     @if($project->meta)
       <p class="em-lede" style="max-width:720px">{{ $project->meta }}</p>
@@ -103,9 +103,9 @@
     @endif
     <div class="em-actions">
       @if($project->url)
-        <a href="{{ $project->url }}" target="_blank" rel="noopener" class="em-btn em-btn-mint">View live project ↗</a>
+        <a href="{{ $project->url }}" target="_blank" rel="noopener" class="em-btn em-btn-mint">{{ __('View live project ↗') }}</a>
       @endif
-      <a href="/#work" class="em-btn em-btn-ghost">← Back to portfolio</a>
+      <a href="/#work" class="em-btn em-btn-ghost">{{ __('← Back to portfolio') }}</a>
     </div>
   </div>
 </section>
@@ -115,7 +115,7 @@
     <div class="em-monitor-wrap" style="margin-bottom:48px">
       <figure class="em-figure em-monitor em-breathe" style="padding:0">
         @php [$fw, $fh] = Thumbnail::dimensions($project->feature_image) ?? [1440, 900]; @endphp
-        <img src="{{ Thumbnail::url($project->feature_image, 1280) }}" srcset="{{ Thumbnail::srcset($project->feature_image, [640, 960, 1280]) }}" sizes="(max-width: 1280px) 92vw, 1232px" alt="{{ $project->title }}" width="{{ $fw }}" height="{{ $fh }}" fetchpriority="high" decoding="async">
+        <img src="{{ Thumbnail::url($project->feature_image, 1280) }}" srcset="{{ Thumbnail::srcset($project->feature_image, [640, 800, 1280]) }}" sizes="(max-width: 1280px) 92vw, 1232px" alt="{{ $project->title }}" width="{{ $fw }}" height="{{ $fh }}" fetchpriority="high" decoding="async">
       </figure>
     </div>
   @endif
@@ -135,7 +135,7 @@
     @endif
 
     <div class="em-block">
-      <p class="em-eyebrow">Project overview</p>
+      <p class="em-eyebrow">{{ __('Project overview') }}</p>
       @if($project->body)
         @if(strip_tags($project->body) !== $project->body)
           <div class="em-prose">{!! $project->body !!}</div>
@@ -147,7 +147,7 @@
           </div>
         @endif
       @else
-        <p class="em-muted-note">No detailed write-up yet — check back soon.</p>
+        <p class="em-muted-note">{{ __('No detailed write-up yet — check back soon.') }}</p>
       @endif
     </div>
 
@@ -160,18 +160,18 @@
 
     @if($hasBeforeAfter)
       <div class="em-block">
-        <p class="em-eyebrow">Before / After</p>
+        <p class="em-eyebrow">{{ __('Before / After') }}</p>
         <div class="em-grid-2" style="grid-template-columns:repeat(auto-fill,minmax(min(100%,300px),1fr))">
           @if($project->before_image)
             <figure class="em-figure">
               <img src="{{ $project->before_image }}" alt="{{ $project->title }} before" loading="lazy">
-              <figcaption>Before</figcaption>
+              <figcaption>{{ __('Before') }}</figcaption>
             </figure>
           @endif
           @if($project->after_image)
             <figure class="em-figure">
               <img src="{{ $project->after_image }}" alt="{{ $project->title }} after" loading="lazy">
-              <figcaption>After</figcaption>
+              <figcaption>{{ __('After') }}</figcaption>
             </figure>
           @endif
         </div>
@@ -192,13 +192,13 @@
 
   @if($project->images && count($project->images))
     <div class="em-block">
-      <p class="em-eyebrow">Gallery</p>
+      <p class="em-eyebrow">{{ __('Gallery') }}</p>
       <div class="em-gallery">
         @foreach($project->images as $img)
           <div class="em-gallery-cell">
-            <button type="button" class="em-gallery-item" data-src="{{ $img }}" data-alt="{{ $project->title }} — work sample" aria-label="Open image {{ $loop->iteration }}">
+            <button type="button" class="em-gallery-item" data-src="{{ $img }}" data-alt="{{ __(':project — project image :number', ['project' => $project->title, 'number' => $loop->iteration]) }}" aria-label="{{ __('Open image :number', ['number' => $loop->iteration]) }}">
               @php [$gw, $gh] = Thumbnail::dimensions($img) ?? [1440, 900]; @endphp
-              <img src="{{ Thumbnail::url($img, 640) }}" srcset="{{ Thumbnail::srcset($img, [480, 640, 960]) }}" sizes="(max-width: 700px) 92vw, 400px" alt="{{ $project->title }} — work sample" width="{{ $gw }}" height="{{ $gh }}" loading="lazy" decoding="async">
+              <img src="{{ Thumbnail::url($img, 640) }}" srcset="{{ Thumbnail::srcset($img, [480, 640, 800]) }}" sizes="(max-width: 700px) 92vw, 400px" alt="{{ __(':project — project image :number', ['project' => $project->title, 'number' => $loop->iteration]) }}" width="{{ $gw }}" height="{{ $gh }}" loading="lazy" decoding="async">
             </button>
           </div>
         @endforeach
@@ -208,16 +208,16 @@
 
   <div class="em-actions" style="justify-content:center;margin-top:48px">
     @if($project->url)
-      <a href="{{ $project->url }}" target="_blank" rel="noopener" class="em-btn em-btn-mint">View live project ↗</a>
+      <a href="{{ $project->url }}" target="_blank" rel="noopener" class="em-btn em-btn-mint">{{ __('View live project ↗') }}</a>
     @endif
-    <a href="/#work" class="em-btn em-btn-ghost">← Back to portfolio</a>
+    <a href="/#work" class="em-btn em-btn-ghost">{{ __('← Back to portfolio') }}</a>
   </div>
 </div>
 
-<div class="em-lightbox" id="em-lightbox" role="dialog" aria-modal="true" aria-label="Image preview">
-  <button type="button" class="em-lightbox-close" id="em-lightbox-close" aria-label="Close">✕</button>
+<div class="em-lightbox" id="em-lightbox" role="dialog" aria-modal="true" aria-label="{{ __('Image preview') }}">
+  <button type="button" class="em-lightbox-close" id="em-lightbox-close" aria-label="{{ __('Close') }}">✕</button>
   <figure>
-    <img id="em-lightbox-img" alt="">
+    <img id="em-lightbox-img" alt="{{ __('Enlarged project image') }}">
     <figcaption id="em-lightbox-caption"></figcaption>
   </figure>
 </div>

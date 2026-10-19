@@ -207,7 +207,7 @@ html:has(.em-body) { overflow-x: clip; }
 }
 .em-chip-mint { background: var(--em-mint); color: var(--em-ink); border-color: var(--em-mint); box-shadow: 0 16px 40px rgba(45,227,167,.35); }
 .em-chip-1 { right: 24px; top: 70px; }
-.em-chip-2 { left: -20px; top: 150px; animation-delay: -2s !important; }
+.em-chip-2 { left: 48px; top: 150px; animation-delay: -2s !important; }
 .em-chip-3 { left: 190px; bottom: 0; animation-delay: -3.5s !important; }
 
 @media (max-width: 640px) {
@@ -536,4 +536,25 @@ html:has(.em-body) { overflow-x: clip; }
   .em-curtain, .em-glow, .em-float, .em-bob, .em-orbit, .em-spin, .em-slide, .em-word,
   .em-floor, .em-breathe, .em-ring, .em-reveal { animation: none !important; }
   .em-tilt, .em-flip, .em-window, .em-form { transition: none; }
+}
+
+/* ─── Language menu ───────────────────────────────────── */
+.em-lang { position: relative; }
+.em-lang summary {
+  list-style: none; display: inline-flex; align-items: center; gap: 6px; min-height: 44px; padding: 0 12px;
+  border-radius: 12px; border: 1px solid var(--em-line2); background: var(--em-surface); color: var(--em-soft);
+  font-family: var(--em-mono); font-size: 13px; cursor: pointer;
+}
+.em-lang summary::-webkit-details-marker { display: none; }
+.em-lang[open] summary, .em-lang summary:hover { color: var(--em-mint); border-color: var(--em-mint); }
+.em-lang ul {
+  position: absolute; right: 0; top: calc(100% + 8px); z-index: 60; min-width: 170px; margin: 0; padding: 6px; list-style: none;
+  background: rgba(11,21,18,.98); border: 1px solid var(--em-line2); border-radius: 14px; box-shadow: 0 30px 60px rgba(0,0,0,.6);
+}
+.em-nav .em-lang ul a { display: block; padding: 10px 12px; border-radius: 10px; color: var(--em-soft); text-decoration: none; }
+.em-nav .em-lang ul a:hover, .em-nav .em-lang ul a[aria-current] { background: var(--em-deep); color: var(--em-mint); }
+@media (max-width: 860px) {
+  .em-lang { margin-top: 8px; }
+  .em-lang summary { width: 100%; justify-content: center; }
+  .em-lang ul { position: static; margin-top: 6px; box-shadow: none; }
 }

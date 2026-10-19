@@ -1,7 +1,7 @@
 @extends('layouts.emerald')
 @use('App\Support\Thumbnail')
-@section('title', 'Michael Agbozo — IT Professional, Web Developer & Designer')
-@section('meta_description', 'Michael Agbozo offers Laravel development, WordPress website design, brand identity design, print cutline artwork, and IT systems support in Ghana and remotely.')
+@section('title', __('Michael Agbozo — IT Professional, Web Developer & Designer'))
+@section('meta_description', __('Michael Agbozo offers Laravel development, WordPress website design, brand identity design, print cutline artwork, and IT systems support in Ghana and remotely.'))
 @section('canonical', url('/'))
 @section('og_image', asset('images/michael-og.jpg'))
 @push('head')
@@ -105,15 +105,12 @@
 
   <div class="em-wrap em-hero-grid">
     <div class="em-hero-copy">
-      <p class="em-eyebrow em-status"><span class="em-dot em-glow"></span>Open to work · Ghana &amp; remote</p>
+      <p class="em-eyebrow em-status"><span class="em-dot em-glow"></span>{{ __('Open to work · Ghana & remote') }}</p>
+      @php $hw = explode(' ', __('Strategic brands & solid systems.')); $hn = count($hw); @endphp
       <h1 class="em-h1">
-        <span class="em-word em-fade" style="animation-delay:.1s">Strategic</span>
-        <span class="em-word" style="animation-delay:.2s">brands</span>
-        <span class="em-word" style="animation-delay:.3s">&amp;</span>
-        <span class="em-word em-mint" style="animation-delay:.4s">solid</span>
-        <span class="em-word em-mint" style="animation-delay:.5s">systems.</span>
+        @foreach($hw as $i => $word)<span class="em-word {{ $i === 0 ? 'em-fade' : ($i >= $hn - 2 ? 'em-mint' : '') }}" style="animation-delay:{{ number_format(0.1 + $i * 0.1, 1) }}s">{{ $word }}</span> @endforeach
       </h1>
-      <p class="em-lede">IT Systems &amp; Web Developer with 9+ years in design and 4+ in development. I build WordPress sites and Laravel apps end to end, keep IT running, and craft brands that last.</p>
+      <p class="em-lede">{{ __('IT Systems & Web Developer with 9+ years in design and 4+ in development. I build WordPress sites and Laravel apps end to end, keep IT running, and craft brands that last.') }}</p>
     </div>
 
     {{-- 3D scene: tilted dashboard window, orbiting portrait, floating chips --}}
@@ -157,7 +154,7 @@
 
         <div class="em-portrait">
           <div class="em-orbit-ring em-orbit"><span></span></div>
-          <img src="{{ Thumbnail::url('/images/michael-portrait.jpg', 400) }}" alt="" width="200" height="200" fetchpriority="high" decoding="async">
+          <img src="{{ Thumbnail::url('/images/michael-portrait.jpg', 400) }}" alt="Michael Agbozo" width="200" height="200" fetchpriority="high" decoding="async">
         </div>
 
         <span class="em-chip em-chip-1 em-bob">Laravel</span>
@@ -169,13 +166,13 @@
     {{-- Buttons on the left, stats on the right, on one line --}}
     <div class="em-hero-bar">
       <div class="em-actions">
-        <a href="#work" class="em-btn em-btn-mint">View my work</a>
-        <a href="/cv/michael-agbozo-cv.pdf" download class="em-btn em-btn-ghost">Download CV ↓</a>
+        <a href="#work" class="em-btn em-btn-mint">{{ __('View my work') }}</a>
+        <a href="/cv/michael-agbozo-cv.pdf" download class="em-btn em-btn-ghost">{{ __('Download CV ↓') }}</a>
       </div>
       <dl class="em-stats">
-        <div class="em-stat em-tilt"><dt>Years design</dt><dd>9<span class="em-mint">+</span></dd></div>
-        <div class="em-stat em-tilt"><dt>Years dev</dt><dd>4<span class="em-mint">+</span></dd></div>
-        <div class="em-stat em-tilt"><dt>Staff supported</dt><dd>370<span class="em-mint">+</span></dd></div>
+        <div class="em-stat em-tilt"><dt>{{ __('Years design') }}</dt><dd>9<span class="em-mint">+</span></dd></div>
+        <div class="em-stat em-tilt"><dt>{{ __('Years dev') }}</dt><dd>4<span class="em-mint">+</span></dd></div>
+        <div class="em-stat em-tilt"><dt>{{ __('Staff supported') }}</dt><dd>370<span class="em-mint">+</span></dd></div>
       </dl>
     </div>
   </div>
@@ -183,26 +180,26 @@
 
 {{-- ─── SERVICES ─────────────────────────────────────────── --}}
 <section class="em-wrap em-section-pad" id="services">
-  <p class="em-eyebrow">What I do</p>
-  <h2 class="em-h2" style="margin-bottom:48px;max-width:820px"><span class="em-fade">Services that</span> deliver <span class="em-mint">real results.</span></h2>
+  <p class="em-eyebrow">{{ __('What I do') }}</p>
+  <h2 class="em-h2" style="margin-bottom:48px;max-width:820px"><span class="em-fade">{{ __('Services that') }}</span> {{ __('deliver') }} <span class="em-mint">{{ __('real results.') }}</span></h2>
   <div class="em-tile-grid">
     @foreach($serviceSlugs as $slug)
     @php $service = $services[$slug]; @endphp
     <div class="em-reveal">
       <a href="{{ route('service.show', $slug) }}" class="em-service em-tilt {{ $loop->even ? 'is-dark' : 'is-mint' }}">
         <span class="em-service-num">0{{ $loop->iteration }}</span>
-        <span class="em-service-name">{{ $service['short_name'] }}</span>
-        <span class="em-service-text">{{ $service['summary'] }}</span>
-        <span class="em-pill-cta">Learn more</span>
+        <span class="em-service-name">{{ __($service['short_name']) }}</span>
+        <span class="em-service-text">{{ __($service['summary']) }}</span>
+        <span class="em-pill-cta">{{ __('Learn more') }}</span>
       </a>
     </div>
     @endforeach
     <div class="em-reveal">
       <a href="#contact" class="em-service em-tilt is-dark">
         <span class="em-service-num">06</span>
-        <span class="em-service-name">Something else?</span>
-        <span class="em-service-text">Have an idea that doesn’t fit a box? Tell me about it and we’ll work out the right approach together.</span>
-        <span class="em-pill-cta">Get in touch</span>
+        <span class="em-service-name">{{ __('Something else?') }}</span>
+        <span class="em-service-text">{{ __('Have an idea that doesn’t fit a box? Tell me about it and we’ll work out the right approach together.') }}</span>
+        <span class="em-pill-cta">{{ __('Get in touch') }}</span>
       </a>
     </div>
   </div>
@@ -214,20 +211,20 @@
   <div class="em-wrap em-section-pad" style="position:relative">
     <div class="em-section-head">
       <div>
-        <p class="em-eyebrow">Portfolio</p>
-        <h2 class="em-h2">Selected <span class="em-mint">work.</span></h2>
+        <p class="em-eyebrow">{{ __('Portfolio') }}</p>
+        <h2 class="em-h2">{{ __('Selected') }} <span class="em-mint">{{ __('work.') }}</span></h2>
       </div>
       @if($allProjects->isNotEmpty())
-      <div class="em-filters" role="group" aria-label="Filter projects">
-        <button type="button" class="em-filter" data-filter="all" aria-pressed="true">All</button>
-        <button type="button" class="em-filter" data-filter="design" aria-pressed="false">Design</button>
-        <button type="button" class="em-filter" data-filter="development" aria-pressed="false">Development</button>
+      <div class="em-filters" role="group" aria-label="{{ __('Filter projects') }}">
+        <button type="button" class="em-filter" data-filter="all" aria-pressed="true">{{ __('All') }}</button>
+        <button type="button" class="em-filter" data-filter="design" aria-pressed="false">{{ __('Design') }}</button>
+        <button type="button" class="em-filter" data-filter="development" aria-pressed="false">{{ __('Development') }}</button>
       </div>
       @endif
     </div>
 
     @if($allProjects->isEmpty())
-      <div class="em-empty">New projects are on the way — check back soon.</div>
+      <div class="em-empty">{{ __('New projects are on the way — check back soon.') }}</div>
     @else
     {{-- Tilted monitor showing project frames --}}
     <div class="em-monitor-wrap" aria-hidden="true">
@@ -239,7 +236,7 @@
               @foreach($allProjects->concat($allProjects)->take(max(10, $allProjects->count())) as $project)
               @php $thumb = $thumbFor($project); @endphp
               <div class="em-frame {{ $thumb ? 'has-img' : ($loop->index % 3 === 1 ? 'is-mint' : '') }}">
-                @if($thumb)<img src="{{ Thumbnail::url($thumb, 480) }}" alt="" width="220" height="300" loading="lazy" decoding="async">@endif
+                @if($thumb)<img src="{{ Thumbnail::url($thumb, 480) }}" alt="{{ $project->title }} website" width="220" height="300" loading="lazy" decoding="async">@endif
                 <span>{{ $project->title }}</span>
               </div>
               @endforeach
@@ -278,27 +275,27 @@
 <section class="em-section em-designs" id="designs">
   <div class="em-wrap em-section-pad">
     <div class="em-section-head">
-      <h2 class="em-h2">Design <span class="em-mint">wall.</span></h2>
+      <h2 class="em-h2">{{ __('Design') }} <span class="em-mint">{{ __('wall.') }}</span></h2>
       @if($designs->isNotEmpty())
-      <span class="em-btn em-btn-ghost" style="pointer-events:none">{{ $designs->count() }} designs</span>
+      <span class="em-btn em-btn-ghost" style="pointer-events:none">{{ __(':count designs', ['count' => $designs->count()]) }}</span>
       @endif
     </div>
 
     @if($designs->isEmpty())
-      <div class="em-empty">Designs coming soon — check back shortly.</div>
+      <div class="em-empty">{{ __('Designs coming soon — check back shortly.') }}</div>
     @else
     <div class="em-design-grid" id="em-designs-grid">
       @foreach($designs as $design)
       <div class="em-design-cell em-reveal" data-page="{{ intdiv($loop->index, $perPage) + 1 }}">
         <button type="button" class="em-design em-flip"
-                data-src="{{ $design->src }}" data-alt="{{ $design->alt }}">
+                data-src="{{ $design->src }}" data-alt="{{ $design->alt ?: __('Design by Michael Agbozo') }}">
           <span class="em-face em-face-front">
-            <img src="{{ Thumbnail::url($design->src, 400) }}" srcset="{{ Thumbnail::srcset($design->src, [400, 640]) }}" sizes="(max-width: 640px) 92vw, 300px" alt="" width="400" height="400" loading="lazy" decoding="async">
+            <img src="{{ Thumbnail::url($design->src, 400) }}" srcset="{{ Thumbnail::srcset($design->src, [400, 640]) }}" sizes="(max-width: 640px) 92vw, 300px" alt="{{ $design->alt ?: __('Design by Michael Agbozo') }}" width="400" height="400" loading="lazy" decoding="async">
             <span class="em-face-title">{{ $design->alt }}</span>
           </span>
           <span class="em-face em-face-back">
-            <span class="em-face-kicker">Design</span>
-            <span class="em-face-cta">View design ↗</span>
+            <span class="em-face-kicker">{{ __('Design') }}</span>
+            <span class="em-face-cta">{{ __('View design ↗') }}</span>
             <span style="font-size:13px;opacity:.8">{{ $design->alt }}</span>
           </span>
         </button>
@@ -307,12 +304,12 @@
     </div>
 
     @if($totalPages > 1)
-    <nav class="em-pager" id="em-designs-pager" aria-label="Design pages">
-      <button type="button" data-nav="prev" aria-label="Previous page" disabled>←</button>
+    <nav class="em-pager" id="em-designs-pager" aria-label="{{ __('Design pages') }}">
+      <button type="button" data-nav="prev" aria-label="{{ __('Previous page') }}" disabled>←</button>
       @for($p = 1; $p <= $totalPages; $p++)
       <button type="button" data-page-num="{{ $p }}" aria-current="{{ $p === 1 ? 'true' : 'false' }}">{{ $p }}</button>
       @endfor
-      <button type="button" data-nav="next" aria-label="Next page">→</button>
+      <button type="button" data-nav="next" aria-label="{{ __('Next page') }}">→</button>
     </nav>
     @endif
     @endif
@@ -330,15 +327,15 @@
       </div>
       <div class="em-badge em-spin">
         <div class="em-badge-face em-badge-front">
-          <svg width="130" height="92" viewBox="0 0 34 24"><path d="M4 22V2h6l7 10 7-10h6v20h-6V12l-7 9-7-9v10z" fill="currentColor"/></svg>
+          <svg aria-hidden="true" width="130" height="92" viewBox="0 0 34 24"><path d="M4 22V2h6l7 10 7-10h6v20h-6V12l-7 9-7-9v10z" fill="currentColor"/></svg>
         </div>
         <div class="em-badge-face em-badge-back">9+</div>
       </div>
     </div>
     <div class="em-about-copy">
-      <h2 class="em-h2" style="margin-bottom:24px"><span class="em-fade">Building things that</span> actually <span class="em-mint">work.</span></h2>
-      <p>I lead systems development, web platforms and tech support across Four Corners Community Services and La Necar Logistics. I deliver WordPress sites end to end, contribute Laravel backend features in a three-person dev team, and keep 370+ staff online as the sole IT point of contact.</p>
-      <p>Design is where I started: I launched La Necar Logistics’ brand identity and website from zero, and still make graphics, training materials and brand assets for both companies.</p>
+      <h2 class="em-h2" style="margin-bottom:24px"><span class="em-fade">{{ __('Building things that') }}</span> {{ __('actually') }} <span class="em-mint">{{ __('work.') }}</span></h2>
+      <p>{{ __('I lead systems development, web platforms and tech support across Four Corners Community Services and La Necar Logistics. I deliver WordPress sites end to end, contribute Laravel backend features in a three-person dev team, and keep 370+ staff online as the sole IT point of contact.') }}</p>
+      <p>{{ __('Design is where I started: I launched La Necar Logistics’ brand identity and website from zero, and still make graphics, training materials and brand assets for both companies.') }}</p>
       <ul class="em-tools">
         @foreach($tools as $tool)<li>{{ $tool }}</li>@endforeach
       </ul>
@@ -352,15 +349,15 @@
   <div aria-hidden="true" class="em-contact-glow"></div>
   <div class="em-wrap em-contact-grid" id="em-contact-area">
     <div class="em-contact-copy">
-      <h2 class="em-contact-title"><span class="em-fade">Have a project?</span> Let’s make it <span class="em-mint">real.</span></h2>
-      <p>A solid website, a brand that stands out, or a system that actually works. I’m available for projects in Ghana and remotely worldwide.</p>
+      <h2 class="em-contact-title"><span class="em-fade">{{ __('Have a project?') }}</span> {{ __('Let’s make it') }} <span class="em-mint">{{ __('real.') }}</span></h2>
+      <p>{{ __('A solid website, a brand that stands out, or a system that actually works. I’m available for projects in Ghana and remotely worldwide.') }}</p>
       <ul class="em-contact-list">
         <li><a href="mailto:michaelsogagbozo@gmail.com">michaelsogagbozo@gmail.com</a></li>
         <li><a href="tel:0248581824">0248581824</a></li>
       </ul>
       <a href="{{ $whatsappUrl }}" target="_blank" rel="noopener" class="em-btn em-btn-outline" style="align-self:flex-start">
         <svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.4 8.4 0 0 1-12.3 7.4L3 21l2.1-5.6A8.4 8.4 0 1 1 21 11.5z"/></svg>
-        Chat on WhatsApp
+        {{ __('Chat on WhatsApp') }}
       </a>
     </div>
 
@@ -388,25 +385,25 @@
       </div>
       @endif
 
-      <label class="em-field">Your name
+      <label class="em-field">{{ __('Your name') }}
         <input type="text" name="name" value="{{ old('name') }}" autocomplete="name" required>
       </label>
-      <label class="em-field">Email
+      <label class="em-field">{{ __('Email') }}
         <input type="email" name="email" value="{{ old('email') }}" autocomplete="email" required>
       </label>
-      <label class="em-field">How can I help?
+      <label class="em-field">{{ __('How can I help?') }}
         <textarea name="message" rows="4" required>{{ old('message') }}</textarea>
       </label>
-      <button type="submit" class="em-btn em-btn-mint" style="border:0">Send message</button>
+      <button type="submit" class="em-btn em-btn-mint" style="border:0">{{ __('Send message') }}</button>
     </form>
   </div>
 </section>
 
 {{-- ─── LIGHTBOX ─────────────────────────────────────────── --}}
-<div class="em-lightbox" id="em-lightbox" role="dialog" aria-modal="true" aria-label="Design preview">
-  <button type="button" class="em-lightbox-close" id="em-lightbox-close" aria-label="Close">✕</button>
+<div class="em-lightbox" id="em-lightbox" role="dialog" aria-modal="true" aria-label="{{ __('Design preview') }}">
+  <button type="button" class="em-lightbox-close" id="em-lightbox-close" aria-label="{{ __('Close') }}">✕</button>
   <figure>
-    <img id="em-lightbox-img" alt="">
+    <img id="em-lightbox-img" alt="{{ __('Enlarged design preview') }}">
     <figcaption id="em-lightbox-caption"></figcaption>
   </figure>
 </div>

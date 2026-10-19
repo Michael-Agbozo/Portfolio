@@ -276,7 +276,7 @@ class PortfolioController extends Controller
     public function sendContact(Request $request)
     {
         if ($this->looksLikeSpam($request)) {
-            return back()->with('success', 'Message sent! I\'ll get back to you soon.');
+            return back()->with('success', __('Message sent! I\'ll get back to you soon.'));
         }
 
         $validated = $request->validate([
@@ -298,7 +298,7 @@ class PortfolioController extends Controller
             ]);
         }
 
-        return back()->with('success', 'Message sent! I\'ll get back to you soon.');
+        return back()->with('success', __('Message sent! I\'ll get back to you soon.'));
     }
 
     private function looksLikeSpam(Request $request): bool

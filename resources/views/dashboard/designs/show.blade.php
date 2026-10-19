@@ -17,7 +17,7 @@
 
   {{-- Image --}}
   <div style="background:var(--bg2);border:1px solid var(--line);border-radius:12px;overflow:hidden">
-    <img src="{{ $design->src }}" alt="{{ $design->alt }}" style="width:100%;display:block;max-height:70vh;object-fit:contain;background:var(--bg3)"/>
+    <img src="{{ $design->src }}" alt="{{ $design->alt ?: 'Design' }}" style="width:100%;display:block;max-height:70vh;object-fit:contain;background:var(--bg3)"/>
   </div>
 
   {{-- Details --}}

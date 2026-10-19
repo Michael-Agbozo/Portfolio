@@ -12,7 +12,7 @@ namespace App\Support;
  */
 class Thumbnail
 {
-    public const WIDTHS = [240, 400, 480, 640, 960, 1280];
+    public const WIDTHS = [240, 400, 480, 640, 800, 960, 1280];
 
     private const QUALITY = 72;
 

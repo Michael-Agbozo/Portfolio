@@ -1,7 +1,7 @@
 @extends('layouts.emerald')
 @use('App\Support\Thumbnail')
-@section('title', $service['meta_title'])
-@section('meta_description', $service['meta_description'])
+@section('title', __($service['meta_title']))
+@section('meta_description', __($service['meta_description']))
 @section('canonical', route('service.show', $service['slug']))
 @section('og_image', asset('images/michael-og.jpg'))
 @push('head')
@@ -108,22 +108,22 @@
   @include('partials.em-backdrop')
   <div class="em-wrap em-page-hero-inner">
     <ol class="em-crumbs" aria-label="Breadcrumb">
-      <li><a href="/">Home</a></li>
+      <li><a href="/">{{ __('Home') }}</a></li>
       <li aria-hidden="true">/</li>
-      <li><a href="/#services">Services</a></li>
+      <li><a href="/#services">{{ __('Services') }}</a></li>
       <li aria-hidden="true">/</li>
-      <li aria-current="page">{{ $service['short_name'] }}</li>
+      <li aria-current="page">{{ __($service['short_name']) }}</li>
     </ol>
-    <p class="em-eyebrow em-status"><span class="em-dot em-glow"></span>Based in Ghana · available remotely</p>
+    <p class="em-eyebrow em-status"><span class="em-dot em-glow"></span>{{ __('Based in Ghana · available remotely') }}</p>
     <h1 class="em-page-title">
-      @foreach(explode(' ', $service['name']) as $word)
+      @foreach(explode(' ', __($service['name'])) as $word)
         <span class="em-word {{ $loop->first ? 'em-fade' : ($loop->last ? 'em-mint' : '') }}" style="animation-delay:{{ number_format(0.1 + $loop->index * 0.08, 2) }}s">{{ $word }}</span>
       @endforeach
     </h1>
-    <p class="em-lede" style="max-width:700px">{{ $service['intro'] }}</p>
+    <p class="em-lede" style="max-width:700px">{{ __($service['intro']) }}</p>
     <div class="em-actions">
-      <a href="/#contact" class="em-btn em-btn-mint">Start a project</a>
-      <a href="/#work" class="em-btn em-btn-ghost">View work</a>
+      <a href="/#contact" class="em-btn em-btn-mint">{{ __('Start a project') }}</a>
+      <a href="/#work" class="em-btn em-btn-ghost">{{ __('View work') }}</a>
     </div>
   </div>
 </section>
@@ -131,16 +131,16 @@
 <section class="em-section">
   <div class="em-wrap em-section-pad em-split em-split-wide">
     <div>
-      <p class="em-eyebrow">Who it helps</p>
-      <h2 class="em-h2"><span class="em-fade">Built for practical</span> <span class="em-mint">business outcomes.</span></h2>
-      <p class="em-lede">{{ $service['audience'] }}</p>
+      <p class="em-eyebrow">{{ __('Who it helps') }}</p>
+      <h2 class="em-h2"><span class="em-fade">{{ __('Built for practical') }}</span> <span class="em-mint">{{ __('business outcomes.') }}</span></h2>
+      <p class="em-lede">{{ __($service['audience']) }}</p>
     </div>
     <div class="em-grid-2" style="grid-template-columns:repeat(auto-fill,minmax(min(100%,260px),1fr))">
       @foreach($service['outcomes'] as $outcome)
       <div class="em-reveal">
         <div class="em-card em-tilt {{ $loop->odd ? 'is-mint' : '' }}" style="min-height:180px">
           <span class="em-card-kicker">0{{ $loop->iteration }}</span>
-          <p style="margin:auto 0 0;font-size:17px;font-weight:500">{{ $outcome }}</p>
+          <p style="margin:auto 0 0;font-size:17px;font-weight:500">{{ __($outcome) }}</p>
         </div>
       </div>
       @endforeach
@@ -150,23 +150,23 @@
 
 <section class="em-section">
   <div class="em-wrap em-section-pad">
-    <p class="em-eyebrow">Focus areas</p>
-    <h2 class="em-h2" style="margin-bottom:32px">Clear services, <span class="em-mint">easy to understand.</span></h2>
+    <p class="em-eyebrow">{{ __('Focus areas') }}</p>
+    <h2 class="em-h2" style="margin-bottom:32px">{{ __('Clear services,') }} <span class="em-mint">{{ __('easy to understand.') }}</span></h2>
     <ul class="em-chips">
-      @foreach($service['keywords'] as $keyword)<li>{{ $keyword }}</li>@endforeach
+      @foreach($service['keywords'] as $keyword)<li>{{ __($keyword) }}</li>@endforeach
     </ul>
   </div>
 </section>
 
 <section class="em-section">
   <div class="em-wrap em-section-pad" style="max-width:980px">
-    <p class="em-eyebrow">FAQ</p>
-    <h2 class="em-h2" style="margin-bottom:32px">Questions, <span class="em-mint">answered.</span></h2>
+    <p class="em-eyebrow">{{ __('FAQ') }}</p>
+    <h2 class="em-h2" style="margin-bottom:32px">{{ __('Questions,') }} <span class="em-mint">{{ __('answered.') }}</span></h2>
     <div class="em-faq">
       @foreach($service['faq'] as $item)
       <details>
-        <summary>{{ $item['question'] }}</summary>
-        <p>{{ $item['answer'] }}</p>
+        <summary>{{ __($item['question']) }}</summary>
+        <p>{{ __($item['answer']) }}</p>
       </details>
       @endforeach
     </div>
@@ -179,10 +179,10 @@
   <div class="em-wrap em-section-pad" style="position:relative">
     <div class="em-section-head">
       <div>
-        <p class="em-eyebrow">Proof</p>
-        <h2 class="em-h2">Related <span class="em-mint">work.</span></h2>
+        <p class="em-eyebrow">{{ __('Proof') }}</p>
+        <h2 class="em-h2">{{ __('Related') }} <span class="em-mint">{{ __('work.') }}</span></h2>
       </div>
-      <a href="/#work" class="em-btn em-btn-ghost">View all →</a>
+      <a href="/#work" class="em-btn em-btn-ghost">{{ __('View all →') }}</a>
     </div>
     <div class="em-tile-grid">
       @foreach($relatedProjects as $project)
@@ -212,10 +212,10 @@
   <div aria-hidden="true" class="em-contact-curtain em-curtain"></div>
   <div aria-hidden="true" class="em-contact-glow"></div>
   <div class="em-wrap em-cta-band" style="position:relative">
-    <h2 class="em-h2"><span class="em-fade">Need</span> <span class="em-mint">{{ strtolower($service['short_name']) }}?</span></h2>
-    <p>Send a short message with what you want to build, improve, or launch. I will reply with the next practical step.</p>
+    <h2 class="em-h2"><span class="em-fade">{{ __('Need') }}</span> <span class="em-mint">{{ __($service['short_name']) }}?</span></h2>
+    <p>{{ __('Send a short message with what you want to build, improve, or launch. I will reply with the next practical step.') }}</p>
     <div class="em-actions">
-      <a href="/#contact" class="em-btn em-btn-mint">Contact Michael</a>
+      <a href="/#contact" class="em-btn em-btn-mint">{{ __('Contact Michael') }}</a>
     </div>
   </div>
 </section>
