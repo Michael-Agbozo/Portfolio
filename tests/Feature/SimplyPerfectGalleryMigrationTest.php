@@ -24,7 +24,7 @@ class SimplyPerfectGalleryMigrationTest extends TestCase
         $project = Project::where('slug', 'simply-perfect')->firstOrFail();
 
         $this->assertContains('/storage/projects/simply-perfect-print-shop.jpg', $project->images);
-        $this->assertContains('/storage/projects/simply-perfect-mobile.jpg', $project->images);
+        $this->assertNotContains('/storage/projects/simply-perfect-mobile.jpg', $project->images);
         Storage::disk('public')->assertExists('projects/simply-perfect-product.jpg');
 
         $this->get(route('project.show', $project))
@@ -43,8 +43,28 @@ class SimplyPerfectGalleryMigrationTest extends TestCase
 
         $images = $project->fresh()->images;
         $this->assertSame('/storage/projects/my-own-upload.jpg', $images[0]);
-        $this->assertCount(7, $images);
-        $this->assertCount(7, array_unique($images));
+        $this->assertCount(6, $images);
+        $this->assertCount(6, array_unique($images));
+    }
+
+    public function test_cleanup_removes_an_already_added_phone_screenshot_and_keeps_the_rest(): void
+    {
+        Storage::fake('public');
+        Storage::disk('public')->put('projects/simply-perfect-mobile.jpg', 'x');
+        $project = Project::where('slug', 'simply-perfect')->firstOrFail();
+        $project->update(['images' => [
+            '/storage/projects/simply-perfect-site.jpg',
+            '/storage/projects/simply-perfect-mobile.jpg',
+            '/storage/projects/simply-perfect-about.jpg',
+        ]]);
+
+        (require database_path('migrations/2026_10_19_000002_remove_simply_perfect_mobile_screenshot.php'))->up();
+
+        $this->assertSame([
+            '/storage/projects/simply-perfect-site.jpg',
+            '/storage/projects/simply-perfect-about.jpg',
+        ], $project->fresh()->images);
+        Storage::disk('public')->assertMissing('projects/simply-perfect-mobile.jpg');
     }
 
     public function test_does_nothing_when_the_project_is_missing(): void

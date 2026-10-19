@@ -20,7 +20,6 @@ return new class extends Migration
         'simply-perfect-product.jpg',
         'simply-perfect-cutline.jpg',
         'simply-perfect-contact.jpg',
-        'simply-perfect-mobile.jpg',
     ];
 
     public function up(): void
