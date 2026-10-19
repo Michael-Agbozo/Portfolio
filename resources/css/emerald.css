@@ -29,6 +29,7 @@ html:has(.em-body) { overflow-x: clip; }
 
 .em-body {
   margin: 0;
+  text-rendering: optimizeLegibility;
   background: var(--em-bg);
   color: var(--em-text);
   font-family: var(--em-sans);
