@@ -157,7 +157,7 @@
 
         <div class="em-portrait">
           <div class="em-orbit-ring em-orbit"><span></span></div>
-          <img src="{{ Thumbnail::url('/images/michael-portrait.jpg', 400) }}" alt="" width="200" height="200" fetchpriority="high" decoding="async">
+          <img src="{{ Thumbnail::url('/images/michael-portrait.jpg', 400) }}" alt="Michael Agbozo" width="200" height="200" fetchpriority="high" decoding="async">
         </div>
 
         <span class="em-chip em-chip-1 em-bob">Laravel</span>
@@ -239,7 +239,7 @@
               @foreach($allProjects->concat($allProjects)->take(max(10, $allProjects->count())) as $project)
               @php $thumb = $thumbFor($project); @endphp
               <div class="em-frame {{ $thumb ? 'has-img' : ($loop->index % 3 === 1 ? 'is-mint' : '') }}">
-                @if($thumb)<img src="{{ Thumbnail::url($thumb, 480) }}" alt="" width="220" height="300" loading="lazy" decoding="async">@endif
+                @if($thumb)<img src="{{ Thumbnail::url($thumb, 480) }}" alt="{{ $project->title }} website" width="220" height="300" loading="lazy" decoding="async">@endif
                 <span>{{ $project->title }}</span>
               </div>
               @endforeach
@@ -291,9 +291,9 @@
       @foreach($designs as $design)
       <div class="em-design-cell em-reveal" data-page="{{ intdiv($loop->index, $perPage) + 1 }}">
         <button type="button" class="em-design em-flip"
-                data-src="{{ $design->src }}" data-alt="{{ $design->alt }}">
+                data-src="{{ $design->src }}" data-alt="{{ $design->alt ?: 'Design by Michael Agbozo' }}">
           <span class="em-face em-face-front">
-            <img src="{{ Thumbnail::url($design->src, 400) }}" srcset="{{ Thumbnail::srcset($design->src, [400, 640]) }}" sizes="(max-width: 640px) 92vw, 300px" alt="" width="400" height="400" loading="lazy" decoding="async">
+            <img src="{{ Thumbnail::url($design->src, 400) }}" srcset="{{ Thumbnail::srcset($design->src, [400, 640]) }}" sizes="(max-width: 640px) 92vw, 300px" alt="{{ $design->alt ?: 'Design by Michael Agbozo' }}" width="400" height="400" loading="lazy" decoding="async">
             <span class="em-face-title">{{ $design->alt }}</span>
           </span>
           <span class="em-face em-face-back">
@@ -330,7 +330,7 @@
       </div>
       <div class="em-badge em-spin">
         <div class="em-badge-face em-badge-front">
-          <svg width="130" height="92" viewBox="0 0 34 24"><path d="M4 22V2h6l7 10 7-10h6v20h-6V12l-7 9-7-9v10z" fill="currentColor"/></svg>
+          <svg aria-hidden="true" width="130" height="92" viewBox="0 0 34 24"><path d="M4 22V2h6l7 10 7-10h6v20h-6V12l-7 9-7-9v10z" fill="currentColor"/></svg>
         </div>
         <div class="em-badge-face em-badge-back">9+</div>
       </div>
@@ -406,7 +406,7 @@
 <div class="em-lightbox" id="em-lightbox" role="dialog" aria-modal="true" aria-label="Design preview">
   <button type="button" class="em-lightbox-close" id="em-lightbox-close" aria-label="Close">✕</button>
   <figure>
-    <img id="em-lightbox-img" alt="">
+    <img id="em-lightbox-img" alt="Enlarged design preview">
     <figcaption id="em-lightbox-caption"></figcaption>
   </figure>
 </div>

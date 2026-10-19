@@ -148,7 +148,7 @@
       <div style="flex:0 1 420px;display:flex;flex-direction:column;gap:20px;align-items:center">
         <div class="em-portrait" style="position:relative;left:auto;bottom:auto;transform:none;width:220px;height:220px">
           <div class="em-orbit-ring em-orbit"><span></span></div>
-          <img src="{{ Thumbnail::url('/images/michael-portrait.jpg', 480) }}" alt="Portrait of Michael Agbozo" width="220" height="220" fetchpriority="high" decoding="async" style="width:220px;height:220px">
+          <img src="{{ Thumbnail::url('/images/michael-portrait.jpg', 400) }}" alt="Portrait of Michael Agbozo" width="220" height="220" fetchpriority="high" decoding="async" style="width:220px;height:220px">
         </div>
         <dl class="em-stats" style="width:100%;margin-top:28px">
           <div class="em-stat em-tilt"><dt>Years design</dt><dd>9<span class="em-mint">+</span></dd></div>

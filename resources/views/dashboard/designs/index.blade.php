@@ -28,7 +28,7 @@
       @foreach($designs as $design)
       <div class="design-mgmt-item">
         <a href="{{ route('dashboard.designs.show', $design) }}">
-          <img src="{{ $design->src }}" alt="{{ $design->alt }}" loading="lazy"/>
+          <img src="{{ $design->src }}" alt="{{ $design->alt ?: 'Design' }}" loading="lazy"/>
         </a>
         <div class="design-item-actions">
           <a href="{{ route('dashboard.designs.show', $design) }}" class="btn btn-ghost btn-sm" title="View">View</a>

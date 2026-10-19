@@ -115,7 +115,7 @@
     <div class="em-monitor-wrap" style="margin-bottom:48px">
       <figure class="em-figure em-monitor em-breathe" style="padding:0">
         @php [$fw, $fh] = Thumbnail::dimensions($project->feature_image) ?? [1440, 900]; @endphp
-        <img src="{{ Thumbnail::url($project->feature_image, 1280) }}" srcset="{{ Thumbnail::srcset($project->feature_image, [640, 960, 1280]) }}" sizes="(max-width: 1280px) 92vw, 1232px" alt="{{ $project->title }}" width="{{ $fw }}" height="{{ $fh }}" fetchpriority="high" decoding="async">
+        <img src="{{ Thumbnail::url($project->feature_image, 1280) }}" srcset="{{ Thumbnail::srcset($project->feature_image, [640, 800, 1280]) }}" sizes="(max-width: 1280px) 92vw, 1232px" alt="{{ $project->title }}" width="{{ $fw }}" height="{{ $fh }}" fetchpriority="high" decoding="async">
       </figure>
     </div>
   @endif
@@ -196,9 +196,9 @@
       <div class="em-gallery">
         @foreach($project->images as $img)
           <div class="em-gallery-cell">
-            <button type="button" class="em-gallery-item" data-src="{{ $img }}" data-alt="{{ $project->title }} — work sample" aria-label="Open image {{ $loop->iteration }}">
+            <button type="button" class="em-gallery-item" data-src="{{ $img }}" data-alt="{{ $project->title }} — project image {{ $loop->iteration }}" aria-label="Open image {{ $loop->iteration }}">
               @php [$gw, $gh] = Thumbnail::dimensions($img) ?? [1440, 900]; @endphp
-              <img src="{{ Thumbnail::url($img, 640) }}" srcset="{{ Thumbnail::srcset($img, [480, 640, 960]) }}" sizes="(max-width: 700px) 92vw, 400px" alt="{{ $project->title }} — work sample" width="{{ $gw }}" height="{{ $gh }}" loading="lazy" decoding="async">
+              <img src="{{ Thumbnail::url($img, 640) }}" srcset="{{ Thumbnail::srcset($img, [480, 640, 800]) }}" sizes="(max-width: 700px) 92vw, 400px" alt="{{ $project->title }} — project image {{ $loop->iteration }}" width="{{ $gw }}" height="{{ $gh }}" loading="lazy" decoding="async">
             </button>
           </div>
         @endforeach
@@ -217,7 +217,7 @@
 <div class="em-lightbox" id="em-lightbox" role="dialog" aria-modal="true" aria-label="Image preview">
   <button type="button" class="em-lightbox-close" id="em-lightbox-close" aria-label="Close">✕</button>
   <figure>
-    <img id="em-lightbox-img" alt="">
+    <img id="em-lightbox-img" alt="Enlarged project image">
     <figcaption id="em-lightbox-caption"></figcaption>
   </figure>
 </div>

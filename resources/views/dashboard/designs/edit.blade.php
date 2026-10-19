@@ -22,7 +22,7 @@
     <div style="margin-bottom:1.5rem">
       <div class="f-label" style="margin-bottom:.6rem">Current Image</div>
       <div style="position:relative;display:inline-block">
-        <img id="current-img" src="{{ $design->src }}" alt="{{ $design->alt }}"
+        <img id="current-img" src="{{ $design->src }}" alt="{{ $design->alt ?: 'Design' }}"
           style="max-width:100%;max-height:260px;object-fit:contain;border-radius:8px;border:1px solid var(--line);background:var(--bg3);display:block"/>
       </div>
     </div>
