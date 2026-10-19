@@ -454,8 +454,7 @@
 .em-prose figure { margin: 1.4em 0; }
 .em-quote { margin: 0; padding: 36px; border-radius: 24px; background: var(--em-mint); color: var(--em-ink); font-family: var(--em-display); font-weight: 600; font-size: clamp(20px, 2.4vw, 28px); line-height: 1.4; }
 .em-quote footer { margin-top: 16px; font-family: var(--em-mono); font-size: 13px; letter-spacing: .1em; text-transform: uppercase; opacity: .75; }
-.em-gallery { columns: 2 280px; column-gap: 16px; }
-.em-gallery > * { break-inside: avoid; margin-bottom: 16px; }
+.em-gallery { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 380px), 1fr)); gap: 16px; align-items: start; }
 .em-gallery button { display: block; width: 100%; padding: 0; border: 1px solid var(--em-line2); border-radius: 18px; overflow: hidden; background: var(--em-surface); cursor: zoom-in; }
 .em-gallery img { width: 100%; height: auto; transition: transform .5s; }
 .em-gallery button:hover img { transform: scale(1.04); }

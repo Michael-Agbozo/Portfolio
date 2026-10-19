@@ -29,7 +29,10 @@
   <!-- SIDEBAR -->
   <aside class="sidebar" id="sidebar">
     <div class="sidebar-logo">
-      Michael<span>.</span>
+      <span class="sidebar-logo-mark">
+        <svg aria-hidden="true" width="28" height="20" viewBox="0 0 34 24"><path d="M4 22V2h6l7 10 7-10h6v20h-6V12l-7 9-7-9v10z" fill="currentColor"/></svg>
+        <b>agbozo</b>
+      </span>
       <small>Admin Panel</small>
     </div>
 

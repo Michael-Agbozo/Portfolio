@@ -405,7 +405,7 @@
 <div class="em-lightbox" id="em-lightbox" role="dialog" aria-modal="true" aria-label="Design preview">
   <button type="button" class="em-lightbox-close" id="em-lightbox-close" aria-label="Close">✕</button>
   <figure>
-    <img id="em-lightbox-img" src="" alt="">
+    <img id="em-lightbox-img" alt="">
     <figcaption id="em-lightbox-caption"></figcaption>
   </figure>
 </div>
