@@ -1,11 +1,11 @@
-@extends('layouts.app')
+@extends('layouts.emerald')
 @php
   $projectDescription = \Illuminate\Support\Str::limit(
       trim(strip_tags($project->meta ?: $project->body ?: 'A selected web development, design, or systems project by Michael Agbozo.')),
       155,
       ''
   );
-  $projectImage = $project->feature_image ?: ($project->images[0] ?? asset('images/michael-hero.png'));
+  $projectImage = $project->feature_image ?: ($project->images[0] ?? asset('images/michael-og.jpg'));
   $projectImage = \Illuminate\Support\Str::startsWith($projectImage, ['http://', 'https://'])
       ? $projectImage
       : url($projectImage);
@@ -80,128 +80,168 @@
 @endpush
 @section('content')
 
-<div class="max-w-[800px] mx-auto px-8 pt-32 pb-20">
-
-  <a href="/#work" class="text-muted text-[.75rem] uppercase tracking-widest hover:text-orange transition-colors">← Back to Portfolio</a>
-
-  @if($project->feature_image)
-    <div class="mt-8 rounded-2xl overflow-hidden border border-border">
-      <img src="{{ $project->feature_image }}" alt="{{ $project->title }}" loading="lazy"
-           class="w-full h-auto block"/>
-    </div>
-  @endif
-
-  <div class="mt-10 pb-10 border-b border-border">
-    <div class="inline-flex items-center gap-2 border border-border rounded-full px-3 py-1 text-[.7rem] text-muted uppercase tracking-widest mb-4">
-      <span class="w-[5px] h-[5px] rounded-full bg-orange"></span> Project
-    </div>
-    <div class="font-display text-[.72rem] text-orange uppercase tracking-[.15em] mt-4 mb-3">{{ $project->num }}</div>
-    <h1 class="font-display font-extrabold text-white leading-tight mb-5"
-        style="font-size:clamp(2.4rem,5vw,3.8rem)">{{ $project->title }}</h1>
+<section class="em-page-hero">
+  @include('partials.em-backdrop', ['floor' => false])
+  <div class="em-wrap em-page-hero-inner" style="padding-bottom:64px">
+    <ol class="em-crumbs" aria-label="Breadcrumb">
+      <li><a href="/">Home</a></li>
+      <li aria-hidden="true">/</li>
+      <li><a href="/#work">Work</a></li>
+      <li aria-hidden="true">/</li>
+      <li aria-current="page">{{ $project->title }}</li>
+    </ol>
+    <p class="em-eyebrow">{{ $project->num ?: 'Project' }}</p>
+    <h1 class="em-page-title">{{ $project->title }}</h1>
     @if($project->meta)
-      <p class="text-muted text-[1rem] leading-[1.75] mb-6">{{ $project->meta }}</p>
+      <p class="em-lede" style="max-width:720px">{{ $project->meta }}</p>
     @endif
     @if($project->tags)
-      <div class="flex gap-2 flex-wrap">
-        @foreach($project->tags as $tag)
-          <span class="text-[.7rem] border border-border text-muted px-3 py-1 rounded">{{ $tag }}</span>
-        @endforeach
-      </div>
+      <ul class="em-chips" style="margin-top:24px">
+        @foreach($project->tags as $tag)<li>{{ $tag }}</li>@endforeach
+      </ul>
     @endif
+    <div class="em-actions">
+      @if($project->url)
+        <a href="{{ $project->url }}" target="_blank" rel="noopener" class="em-btn em-btn-mint">View live project ↗</a>
+      @endif
+      <a href="/#work" class="em-btn em-btn-ghost">← Back to portfolio</a>
+    </div>
   </div>
+</section>
 
-  @if(count($quickFacts))
-    <div class="grid sm:grid-cols-2 gap-4 py-10 border-b border-border">
-      @foreach($quickFacts as $label => $value)
-        <div class="border border-border bg-bg2/40 rounded-lg p-5">
-          <div class="text-[.68rem] text-orange uppercase tracking-[.15em] font-semibold mb-2">{{ $label }}</div>
-          <div class="text-white text-[.95rem] leading-relaxed">{{ $value }}</div>
-        </div>
-      @endforeach
+<div class="em-wrap" style="padding-bottom:96px">
+  @if($project->feature_image)
+    <div class="em-monitor-wrap" style="margin-bottom:48px">
+      <figure class="em-figure em-monitor em-breathe" style="padding:0">
+        <img src="{{ $project->feature_image }}" alt="{{ $project->title }}">
+      </figure>
     </div>
   @endif
 
-  <div class="py-10 border-b border-border">
-    <div class="text-[.7rem] text-orange uppercase tracking-[.15em] font-semibold mb-5">Project Overview</div>
-    @if($project->body)
-      @if(strip_tags($project->body) !== $project->body)
-        <div class="project-body">{!! $project->body !!}</div>
-      @else
-        <div class="space-y-5">
-          @foreach(array_filter(explode("\n\n", $project->body)) as $paragraph)
-            <p class="text-[.95rem] text-muted leading-[1.85]">{{ $paragraph }}</p>
+  <div class="em-article" style="margin:0 auto">
+    @if(count($quickFacts))
+      <div class="em-block" style="border-top:0">
+        <div class="em-grid-2" style="grid-template-columns:repeat(auto-fill,minmax(min(100%,240px),1fr))">
+          @foreach($quickFacts as $label => $value)
+            <div class="em-card em-tilt {{ $loop->first ? 'is-mint' : '' }}">
+              <span class="em-card-kicker">{{ $label }}</span>
+              <span style="font-size:17px;font-weight:500">{{ $value }}</span>
+            </div>
           @endforeach
         </div>
-      @endif
-    @else
-      <p class="text-dim italic text-[.9rem]">No detailed write-up yet — check back soon.</p>
-    @endif
-  </div>
-
-  @if(count($caseStudySections))
-    <div class="py-10 border-b border-border space-y-10">
-      @foreach($caseStudySections as $label => $content)
-        <section>
-          <div class="text-[.7rem] text-orange uppercase tracking-[.15em] font-semibold mb-4">{{ $label }}</div>
-          <p class="text-[.95rem] text-muted leading-[1.85] whitespace-pre-line">{{ $content }}</p>
-        </section>
-      @endforeach
-    </div>
-  @endif
-
-  @if($hasBeforeAfter)
-    <div class="py-10 border-b border-border">
-      <div class="text-[.7rem] text-orange uppercase tracking-[.15em] font-semibold mb-5">Before / After</div>
-      <div class="grid sm:grid-cols-2 gap-4">
-        @if($project->before_image)
-          <figure class="border border-border rounded-lg overflow-hidden bg-bg2">
-            <img src="{{ $project->before_image }}" alt="{{ $project->title }} before" loading="lazy" class="w-full h-auto block"/>
-            <figcaption class="px-4 py-3 text-[.72rem] text-muted uppercase tracking-widest border-t border-border">Before</figcaption>
-          </figure>
-        @endif
-        @if($project->after_image)
-          <figure class="border border-border rounded-lg overflow-hidden bg-bg2">
-            <img src="{{ $project->after_image }}" alt="{{ $project->title }} after" loading="lazy" class="w-full h-auto block"/>
-            <figcaption class="px-4 py-3 text-[.72rem] text-muted uppercase tracking-widest border-t border-border">After</figcaption>
-          </figure>
-        @endif
       </div>
-    </div>
-  @endif
+    @endif
 
-  @if($project->testimonial)
-    <blockquote class="my-10 border-l-2 border-orange pl-6 text-white font-display text-[1.35rem] leading-[1.45]">
-      "{{ $project->testimonial }}"
-      @if($project->client_name)
-        <footer class="mt-4 font-sans text-[.75rem] text-muted uppercase tracking-widest">- {{ $project->client_name }}</footer>
+    <div class="em-block">
+      <p class="em-eyebrow">Project overview</p>
+      @if($project->body)
+        @if(strip_tags($project->body) !== $project->body)
+          <div class="em-prose">{!! $project->body !!}</div>
+        @else
+          <div class="em-prose">
+            @foreach(array_filter(explode("\n\n", $project->body)) as $paragraph)
+              <p>{{ $paragraph }}</p>
+            @endforeach
+          </div>
+        @endif
+      @else
+        <p class="em-muted-note">No detailed write-up yet — check back soon.</p>
       @endif
-    </blockquote>
-  @endif
+    </div>
 
-  @if($project->images && count($project->images))
-  <div class="columns-2 gap-4 pt-10 border-t border-border mb-12">
-    @foreach($project->images as $img)
-      <div class="break-inside-avoid mb-4 rounded-lg overflow-hidden border border-border">
-        <img src="{{ $img }}" alt="{{ $project->title }} — work sample" loading="lazy"
-             class="w-full h-auto block hover:scale-[1.03] transition-transform duration-500"/>
+    @foreach($caseStudySections as $label => $content)
+      <div class="em-block">
+        <p class="em-eyebrow">{{ $label }}</p>
+        <p class="em-prose" style="white-space:pre-line;margin:0">{{ $content }}</p>
       </div>
     @endforeach
+
+    @if($hasBeforeAfter)
+      <div class="em-block">
+        <p class="em-eyebrow">Before / After</p>
+        <div class="em-grid-2" style="grid-template-columns:repeat(auto-fill,minmax(min(100%,300px),1fr))">
+          @if($project->before_image)
+            <figure class="em-figure">
+              <img src="{{ $project->before_image }}" alt="{{ $project->title }} before" loading="lazy">
+              <figcaption>Before</figcaption>
+            </figure>
+          @endif
+          @if($project->after_image)
+            <figure class="em-figure">
+              <img src="{{ $project->after_image }}" alt="{{ $project->title }} after" loading="lazy">
+              <figcaption>After</figcaption>
+            </figure>
+          @endif
+        </div>
+      </div>
+    @endif
+
+    @if($project->testimonial)
+      <div class="em-block">
+        <blockquote class="em-quote">
+          “{{ $project->testimonial }}”
+          @if($project->client_name)
+            <footer>— {{ $project->client_name }}</footer>
+          @endif
+        </blockquote>
+      </div>
+    @endif
   </div>
+
+  @if($project->images && count($project->images))
+    <div class="em-block">
+      <p class="em-eyebrow">Gallery</p>
+      <div class="em-gallery">
+        @foreach($project->images as $img)
+          <div class="em-reveal">
+            <button type="button" class="em-gallery-item" data-src="{{ $img }}" data-alt="{{ $project->title }} — work sample" aria-label="Open image {{ $loop->iteration }}">
+              <img src="{{ $img }}" alt="{{ $project->title }} — work sample" loading="lazy">
+            </button>
+          </div>
+        @endforeach
+      </div>
+    </div>
   @endif
 
-  <div class="flex gap-4 items-center flex-wrap pt-10">
+  <div class="em-actions" style="justify-content:center;margin-top:48px">
     @if($project->url)
-      <a href="{{ $project->url }}" target="_blank" rel="noopener"
-         class="bg-orange text-white px-7 py-3 rounded-full text-[.85rem] font-semibold hover:bg-orange2 transition-colors">
-        View Live Project ↗
-      </a>
+      <a href="{{ $project->url }}" target="_blank" rel="noopener" class="em-btn em-btn-mint">View live project ↗</a>
     @endif
-    <a href="/#work"
-       class="border border-border text-muted px-7 py-3 rounded-full text-[.85rem] hover:border-white hover:text-white transition-all">
-      ← Back to Portfolio
-    </a>
+    <a href="/#work" class="em-btn em-btn-ghost">← Back to portfolio</a>
   </div>
+</div>
 
+<div class="em-lightbox" id="em-lightbox" role="dialog" aria-modal="true" aria-label="Image preview">
+  <button type="button" class="em-lightbox-close" id="em-lightbox-close" aria-label="Close">✕</button>
+  <figure>
+    <img id="em-lightbox-img" alt="">
+    <figcaption id="em-lightbox-caption"></figcaption>
+  </figure>
 </div>
 
 @endsection
+
+@push('scripts')
+<script>
+  (function () {
+    const box = document.getElementById('em-lightbox');
+    const img = document.getElementById('em-lightbox-img');
+    const cap = document.getElementById('em-lightbox-caption');
+    const closeBtn = document.getElementById('em-lightbox-close');
+    let opener = null;
+    const close = () => { box.classList.remove('is-open'); document.body.style.overflow = ''; if (opener) opener.focus(); };
+    document.querySelectorAll('.em-gallery-item').forEach(btn => btn.addEventListener('click', () => {
+      opener = btn;
+      img.src = btn.dataset.src;
+      img.alt = btn.dataset.alt || '';
+      cap.textContent = btn.dataset.alt || '';
+      box.classList.add('is-open');
+      document.body.style.overflow = 'hidden';
+      closeBtn.focus();
+    }));
+    closeBtn.addEventListener('click', close);
+    box.addEventListener('click', (e) => { if (e.target === box) close(); });
+    document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && box.classList.contains('is-open')) close(); });
+  })();
+</script>
+@endpush

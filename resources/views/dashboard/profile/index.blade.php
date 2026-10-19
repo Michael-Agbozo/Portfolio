@@ -22,7 +22,7 @@
       @if($user->avatarUrl())
         <img src="{{ $user->avatarUrl() }}" alt="{{ $user->name }}" style="width:72px;height:72px;border-radius:50%;object-fit:cover;border:1px solid var(--line)"/>
       @else
-        <div style="width:72px;height:72px;border-radius:50%;background:var(--orange);display:flex;align-items:center;justify-content:center;font-family:'Syne',sans-serif;font-weight:800;font-size:1.2rem;color:var(--white)">
+        <div style="width:72px;height:72px;border-radius:50%;background:var(--orange);display:flex;align-items:center;justify-content:center;font-family:'Sora',sans-serif;font-weight:800;font-size:1.2rem;color:var(--on-accent)">
           {{ $user->initials() }}
         </div>
       @endif

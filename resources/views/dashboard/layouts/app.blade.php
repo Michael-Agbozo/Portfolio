@@ -8,7 +8,7 @@
 <link rel="apple-touch-icon" href="{{ asset('apple-touch-icon.png') }}"/>
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
-<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=DM+Sans:opsz,wght@9..40,400..600&display=swap" rel="stylesheet"/>
 {{-- Paint the correct background immediately, before the stylesheet finishes
      loading — otherwise the browser shows a flash of the wrong colour on
      every dashboard page load/refresh. --}}
@@ -29,7 +29,10 @@
   <!-- SIDEBAR -->
   <aside class="sidebar" id="sidebar">
     <div class="sidebar-logo">
-      Michael<span>.</span>
+      <span class="sidebar-logo-mark">
+        <svg aria-hidden="true" width="28" height="20" viewBox="0 0 34 24"><path d="M4 22V2h6l7 10 7-10h6v20h-6V12l-7 9-7-9v10z" fill="currentColor"/></svg>
+        <b>agbozo</b>
+      </span>
       <small>Admin Panel</small>
     </div>
 

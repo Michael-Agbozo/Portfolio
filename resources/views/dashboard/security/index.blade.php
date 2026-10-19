@@ -13,7 +13,7 @@
 @include('dashboard.settings._tabs')
 
 <div class="card" style="max-width:640px">
-  <h3 style="font-family:'Syne',sans-serif;font-size:1rem;margin:0 0 .4rem">Two-factor authentication</h3>
+  <h3 style="font-family:'Sora',sans-serif;font-size:1rem;margin:0 0 .4rem">Two-factor authentication</h3>
   <p style="font-size:.82rem;color:var(--muted);line-height:1.6;margin:0 0 1.2rem">
     Adds a second step to your login — after your password, you'll also need a 6-digit code from
     an authenticator app (like Google Authenticator or Authy) on your phone. This means even if
@@ -56,7 +56,7 @@
     </form>
 
   @elseif($qrCode)
-    <div class="alert" style="margin-bottom:1.2rem;background:rgba(232,83,26,.1);border:1px solid rgba(232,83,26,.3);color:var(--orange)">
+    <div class="alert" style="margin-bottom:1.2rem;background:rgba(45,227,167,.1);border:1px solid rgba(45,227,167,.3);color:var(--orange)">
       Setup started — scan the QR code below, then enter the 6-digit code it shows you to finish turning it on.
     </div>
 

@@ -62,7 +62,7 @@ Use `tests/Feature` because the project may not have a `tests/Unit` folder.
 |---|---|
 | Laravel | Backend framework |
 | Blade | Template language for HTML pages |
-| SQLite | Local database at `database/database.sqlite` |
+| MySQL | Local database `portfolio` (set in `.env`) |
 | Vite | Bundles CSS and JavaScript |
 | Composer | PHP package manager |
 | npm | JavaScript package manager |
@@ -204,8 +204,9 @@ The user has **no background in software development or IT**. Always:
 
 ## Database
 
-- Engine: SQLite.
-- File: `database/database.sqlite`.
+- Local engine: MySQL through DBngin, database `portfolio` on `127.0.0.1:3306` by default (see `DB_*` in `.env`).
+- `.env.example` defaults to the local DBngin connection. Start its MySQL server and create the `portfolio` database before running `composer run setup`; adjust `.env` if DBngin uses a different port or password.
+- Tests use their own temporary database, so they never touch real data.
 - Tables include `users`, `projects`, `designs`, `messages`, `media`, `cache`, and `jobs`.
 
 ## Authentication
