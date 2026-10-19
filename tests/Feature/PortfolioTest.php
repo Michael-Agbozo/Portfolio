@@ -34,6 +34,31 @@ class PortfolioTest extends TestCase
         $response->assertSee('"@type": "Person"', false);
     }
 
+    public function test_homepage_uses_emerald_design_and_keeps_contact_features(): void
+    {
+        Project::create([
+            'num' => '01',
+            'title' => 'Emerald Test Project',
+            'slug' => 'emerald-test-project',
+            'meta' => 'A project for the homepage grid.',
+            'tags' => ['Laravel'],
+            'category' => 'development',
+            'active' => true,
+        ]);
+
+        $response = $this->get('/');
+
+        $response->assertOk();
+        $response->assertSee('images/michael-portrait.jpg', false);
+        $response->assertSee('<meta property="og:image" content="http://localhost/images/michael-og.jpg"/>', false);
+        $response->assertSee('Emerald Test Project');
+        $response->assertSee('name="website"', false);
+        $response->assertSee('name="contact_signature"', false);
+        $response->assertSee('name="subject"', false);
+        $response->assertSee('https://wa.me/233248581824', false);
+        $response->assertSee('/cv/michael-agbozo-cv.pdf', false);
+    }
+
     public function test_about_page_includes_experience_seo_and_project_proof(): void
     {
         $project = Project::create([
