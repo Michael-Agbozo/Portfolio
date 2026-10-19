@@ -191,7 +191,7 @@
   @if($project->images && count($project->images))
     <div class="em-block">
       <p class="em-eyebrow">Gallery</p>
-      <div class="em-gallery em-reveal">
+      <div class="em-gallery">
         @foreach($project->images as $img)
           <div class="em-gallery-cell">
             <button type="button" class="em-gallery-item" data-src="{{ $img }}" data-alt="{{ $project->title }} — work sample" aria-label="Open image {{ $loop->iteration }}">

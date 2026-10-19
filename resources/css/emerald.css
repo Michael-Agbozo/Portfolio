@@ -24,6 +24,9 @@
 
 *, *::before, *::after { box-sizing: border-box; }
 
+/* Safety net: nothing (3D motion included) may make the page scroll sideways on phones. */
+html:has(.em-body) { overflow-x: clip; }
+
 .em-body {
   margin: 0;
   background: var(--em-bg);
