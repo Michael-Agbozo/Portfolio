@@ -6,7 +6,7 @@
     "keywords": ["laravel", "framework"],
     "license": "MIT",
     "require": {
-        "php": "^8.3",
+        "php": "^8.4",
         "bacon/bacon-qr-code": "^3.1",
         "laravel/framework": "^13.8",
         "laravel/tinker": "^3.0",
@@ -76,7 +76,7 @@
     },
     "config": {
         "platform": {
-            "php": "8.3.15"
+            "php": "8.4.0"
         },
         "optimize-autoloader": true,
         "preferred-install": "dist",
