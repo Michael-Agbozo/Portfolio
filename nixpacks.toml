@@ -1,8 +1,8 @@
 [phases.setup]
 # The older Nixpacks PHP 8.4 build omits MySQL SHA-2 authentication.
 # This snapshot includes the upstream mysqlnd SSL/authentication build fix.
-nixpkgsArchive = "efa1a8f4f59ceefb266971ce3f06338283cbdbc7"
-cmds = ["mkdir -p /var/log/nginx", "php --ri mysqlnd | grep -q auth_plugin_caching_sha2_password || { echo 'PHP database driver is missing MySQL SHA-2 authentication support'; exit 1; }"]
+nixpkgsArchive = "74068bada3f4efd8c28a368ab604bf639287c8d0"
+cmds = ["mkdir -p /var/log/nginx", "php -v && php --ri mysqlnd > /tmp/mysqlnd-build-check.txt && cat /tmp/mysqlnd-build-check.txt && grep -q auth_plugin_caching_sha2_password /tmp/mysqlnd-build-check.txt || { echo 'PHP database driver is missing MySQL SHA-2 authentication support'; exit 1; }"]
 
 [variables]
 IS_LARAVEL = ""
