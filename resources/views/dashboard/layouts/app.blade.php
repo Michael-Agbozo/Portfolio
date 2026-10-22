@@ -53,8 +53,8 @@
       <a href="{{ route('dashboard.media.index') }}" class="sidebar-link {{ request()->routeIs('dashboard.media.*') ? 'active' : '' }}">
         <span class="s-icon">◨</span> Media
       </a>
-      <a href="{{ route('dashboard.memorial-book.show') }}" class="sidebar-link {{ request()->routeIs('dashboard.memorial-book.*') ? 'active' : '' }}">
-        <span class="s-icon">▤</span> Memorial Book
+      <a href="{{ route('dashboard.books.index') }}" class="sidebar-link {{ request()->routeIs('dashboard.books.*') ? 'active' : '' }}">
+        <span class="s-icon">▤</span> Books
       </a>
 
       <div class="sidebar-section">Inbox</div>

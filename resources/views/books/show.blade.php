@@ -3,10 +3,13 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>{{ $title }}</title>
-<meta name="description" content="{{ $description }}"/>
+<title>{{ $book->title }}</title>
+<meta name="description" content="{{ $book->description ?: $book->title }}"/>
 <meta name="robots" content="noindex, follow"/>
-<link rel="canonical" href="{{ $canonicalUrl }}"/>
+<link rel="canonical" href="{{ $book->readerUrl() }}"/>
+<meta property="og:title" content="{{ $book->title }}"/>
+<meta property="og:description" content="{{ $book->description ?: $book->title }}"/>
+<meta property="og:url" content="{{ $book->readerUrl() }}"/>
 <link rel="icon" type="image/png" href="{{ asset('favicon.png') }}"/>
 <style>
   *{box-sizing:border-box}
@@ -202,7 +205,9 @@
     box-shadow:0 10px 28px rgba(0,0,0,.32);
   }
   .download-btn:hover{background:#ff6a2a}
-  .empty{max-width:560px;padding:24px;border-radius:8px;background:rgba(0,0,0,.5);line-height:1.5;text-align:center}
+  .page-loading{color:rgba(60,48,38,.55);font-size:14px;font-weight:700;letter-spacing:.02em}
+  .reader-status{position:fixed;inset:0;z-index:9;display:flex;align-items:center;justify-content:center;pointer-events:none;color:rgba(255,255,255,.78);font-size:15px;font-weight:700}
+  .reader-status[hidden]{display:none}
   .ebook-frame{display:block;width:100%;height:100%;border:0;background:#fff}
   @media(max-width:700px){
     .ebook-page{padding:12px 10px 76px}
@@ -227,166 +232,20 @@
 </style>
 </head>
 <body>
-<main class="ebook-page">
-  @if(count($pages))
-    <div class="book-shell">
-      <button class="tap-zone prev" type="button" aria-label="Previous page" data-prev>Previous</button>
-      <div class="book" data-book></div>
-      <div class="flip-sheet" data-flip-sheet aria-hidden="true"></div>
-      <button class="tap-zone next" type="button" aria-label="Next page" data-next>Next</button>
-      <button class="corner-turn" type="button" aria-label="Turn page from bottom corner" data-next>Turn page</button>
-    </div>
-    <button class="nav-btn prev" type="button" aria-label="Previous page" data-prev>&larr;</button>
-    <button class="nav-btn next" type="button" aria-label="Next page" data-next>&rarr;</button>
-    <div class="page-count" data-page-count></div>
-  @else
-    <iframe
-      class="ebook-frame"
-      src="{{ $bookUrl }}#toolbar=1&navpanes=0&view=FitH"
-      title="{{ $title }}"
-    ></iframe>
-  @endif
-  <a class="download-btn" href="{{ $bookUrl }}" download>Download</a>
+<main class="ebook-page" data-reader data-pdf="{{ $book->pdfUrl() }}" data-title="{{ $book->title }}">
+  <div class="book-shell" data-shell>
+    <button class="tap-zone prev" type="button" aria-label="Previous page" data-prev>Previous</button>
+    <div class="book is-single" data-book></div>
+    <div class="flip-sheet" data-flip-sheet aria-hidden="true"></div>
+    <button class="tap-zone next" type="button" aria-label="Next page" data-next>Next</button>
+    <button class="corner-turn" type="button" aria-label="Turn page from bottom corner" data-next>Turn page</button>
+  </div>
+  <div class="reader-status" data-status role="status">Opening book…</div>
+  <button class="nav-btn prev" type="button" aria-label="Previous page" data-prev disabled>&larr;</button>
+  <button class="nav-btn next" type="button" aria-label="Next page" data-next disabled>&rarr;</button>
+  <div class="page-count" data-page-count>Loading…</div>
+  <a class="download-btn" href="{{ $book->pdfUrl() }}" download="{{ $book->slug }}.pdf">Download</a>
 </main>
-@if(count($pages))
-<script>
-  const pages = @json($pages);
-  const book = document.querySelector('[data-book]');
-  const counter = document.querySelector('[data-page-count]');
-  const flipSheet = document.querySelector('[data-flip-sheet]');
-  const prevButtons = document.querySelectorAll('[data-prev]');
-  const nextButtons = document.querySelectorAll('[data-next]');
-  const isMobile = () => window.matchMedia('(max-width: 700px)').matches;
-  let index = 0;
-  let locked = false;
-  let audioContext = null;
-
-  function pageMarkup(src, side, number) {
-    return '<div class="page ' + side + '"><img src="' + src + '" alt="Page ' + number + '" loading="' + (number <= 2 ? 'eager' : 'lazy') + '"></div>';
-  }
-
-  function visiblePagesFor(currentIndex = index) {
-    if (isMobile()) return [currentIndex];
-    if (currentIndex === 0) return [0];
-
-    const maxIndex = Math.max(0, pages.length - 2);
-    const safeIndex = Math.max(0, Math.min(currentIndex, maxIndex));
-    return [safeIndex, Math.min(safeIndex + 1, pages.length - 1)];
-  }
-
-  function playTurnSound() {
-    try {
-      audioContext = audioContext || new (window.AudioContext || window.webkitAudioContext)();
-      const now = audioContext.currentTime;
-      const duration = .34;
-      const noiseSize = Math.floor(audioContext.sampleRate * duration);
-      const buffer = audioContext.createBuffer(1, noiseSize, audioContext.sampleRate);
-      const data = buffer.getChannelData(0);
-
-      for (let i = 0; i < noiseSize; i++) {
-        const t = i / noiseSize;
-        data[i] = (Math.random() * 2 - 1) * Math.pow(1 - t, 1.7);
-      }
-
-      const noise = audioContext.createBufferSource();
-      const filter = audioContext.createBiquadFilter();
-      const gain = audioContext.createGain();
-
-      noise.buffer = buffer;
-      filter.type = 'bandpass';
-      filter.frequency.setValueAtTime(1050, now);
-      filter.frequency.exponentialRampToValueAtTime(2600, now + duration);
-      filter.Q.value = .9;
-      gain.gain.setValueAtTime(0.0001, now);
-      gain.gain.exponentialRampToValueAtTime(.16, now + .035);
-      gain.gain.exponentialRampToValueAtTime(0.0001, now + duration);
-
-      noise.connect(filter);
-      filter.connect(gain);
-      gain.connect(audioContext.destination);
-      noise.start(now);
-      noise.stop(now + duration);
-    } catch {
-      // Some browsers block audio until a direct tap/click; the next tap will retry.
-    }
-  }
-
-  function startFlip(direction, fromIndex) {
-    const visible = visiblePagesFor(fromIndex);
-    const sourceIndex = isMobile()
-      ? fromIndex
-      : direction === 'next'
-        ? visible[visible.length - 1]
-        : visible[0];
-
-    flipSheet.className = 'flip-sheet';
-    flipSheet.innerHTML = '<img src="' + pages[sourceIndex] + '" alt="" aria-hidden="true">';
-    void flipSheet.offsetWidth;
-    flipSheet.classList.add(direction, 'is-active');
-  }
-
-  function render() {
-    const mobile = isMobile();
-    const maxIndex = mobile ? pages.length - 1 : Math.max(0, pages.length - 2);
-    index = Math.max(0, Math.min(index, maxIndex));
-
-    book.classList.toggle('is-single', mobile || index === 0 || index === pages.length - 1);
-
-    if (mobile) {
-      book.innerHTML = pageMarkup(pages[index], 'single turn-cue', index + 1);
-      counter.textContent = 'Page ' + (index + 1) + ' / ' + pages.length;
-    } else if (index === 0) {
-      book.innerHTML = pageMarkup(pages[0], 'single turn-cue', 1);
-      counter.textContent = 'Cover / ' + pages.length;
-    } else {
-      const left = index;
-      const right = Math.min(index + 1, pages.length - 1);
-      book.innerHTML = pageMarkup(pages[left], 'left', left + 1) + pageMarkup(pages[right], 'right turn-cue', right + 1);
-      counter.textContent = 'Pages ' + (left + 1) + '-' + (right + 1) + ' / ' + pages.length;
-    }
-
-    prevButtons.forEach(button => button.disabled = index === 0);
-    nextButtons.forEach(button => button.disabled = mobile ? index >= pages.length - 1 : index >= maxIndex);
-  }
-
-  function move(direction) {
-    if (locked) return;
-    const step = isMobile() || index === 0 ? 1 : 2;
-    const nextIndex = direction === 'next' ? index + step : index - step;
-    const mobile = isMobile();
-    const maxIndex = mobile ? pages.length - 1 : Math.max(0, pages.length - 2);
-    const safeNextIndex = Math.max(0, Math.min(nextIndex, maxIndex));
-    if (safeNextIndex === index) return;
-
-    const fromIndex = index;
-    locked = true;
-    prevButtons.forEach(button => button.disabled = true);
-    nextButtons.forEach(button => button.disabled = true);
-    startFlip(direction, fromIndex);
-    playTurnSound();
-
-    setTimeout(() => {
-      index = safeNextIndex;
-      render();
-    }, 640);
-
-    setTimeout(() => {
-      flipSheet.className = 'flip-sheet';
-      flipSheet.innerHTML = '';
-      locked = false;
-      render();
-    }, 1120);
-  }
-
-  prevButtons.forEach(button => button.addEventListener('click', () => move('prev')));
-  nextButtons.forEach(button => button.addEventListener('click', () => move('next')));
-  document.addEventListener('keydown', event => {
-    if (event.key === 'ArrowLeft') move('prev');
-    if (event.key === 'ArrowRight') move('next');
-  });
-  window.addEventListener('resize', () => render());
-  render();
-</script>
-@endif
+@vite('resources/js/book-reader.js')
 </body>
 </html>
