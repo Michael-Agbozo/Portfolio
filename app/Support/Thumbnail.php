@@ -116,8 +116,11 @@ class Thumbnail
             imagesavealpha($image, true);
         }
 
-        if (! is_dir(dirname($target))) {
-            mkdir(dirname($target), 0775, true);
+        // Parallel requests can create the same folder at once, so only fail if it still doesn't exist.
+        if (! is_dir(dirname($target)) && ! @mkdir(dirname($target), 0775, true) && ! is_dir(dirname($target))) {
+            imagedestroy($image);
+
+            return false;
         }
 
         $temp = $target.'.'.uniqid().'.tmp';
