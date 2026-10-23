@@ -2,19 +2,21 @@
 
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\TwoFactorChallengeController;
-use App\Http\Controllers\Dashboard\TwoFactorController;
-use App\Http\Controllers\Dashboard\DashboardController;
+use App\Http\Controllers\BookController;
+use App\Http\Controllers\Dashboard\BookController as DashboardBookController;
 use App\Http\Controllers\Dashboard\CvController;
+use App\Http\Controllers\Dashboard\DashboardController;
 use App\Http\Controllers\Dashboard\DesignController;
 use App\Http\Controllers\Dashboard\LogController;
+use App\Http\Controllers\Dashboard\MediaController;
 use App\Http\Controllers\Dashboard\MessageController;
-use App\Http\Controllers\Dashboard\MemorialBookController as DashboardMemorialBookController;
 use App\Http\Controllers\Dashboard\ProfileController;
 use App\Http\Controllers\Dashboard\ProjectController;
-use App\Http\Controllers\MemorialBookController;
+use App\Http\Controllers\Dashboard\TwoFactorController;
 use App\Http\Controllers\PortfolioController;
 use App\Http\Controllers\StaleAssetController;
 use App\Http\Controllers\ThumbnailController;
+use App\Http\Middleware\SetLocale;
 use Illuminate\Support\Facades\Route;
 
 // Public portfolio
@@ -24,8 +26,11 @@ Route::get('/robots.txt', [PortfolioController::class, 'robots'])->name('robots'
 Route::get('/sitemap.xml', [PortfolioController::class, 'sitemap'])->name('sitemap');
 Route::get('/services/{service}', [PortfolioController::class, 'service'])->name('service.show');
 Route::post('/contact', [PortfolioController::class, 'sendContact'])->middleware('throttle:5,1')->name('contact.send');
-Route::get('/dadaa-kate-dzidzornu-nyamadi-funeral-ebook', [MemorialBookController::class, 'show'])->name('memorial.book');
-Route::get('/iet-gh-induction-of-new-members', [MemorialBookController::class, 'showIetInduction'])->name('iet.induction.book');
+Route::get('/books/{book:slug}', [BookController::class, 'show'])->name('books.show');
+
+// Older book links that are already printed as QR codes
+Route::redirect('/dadaa-kate-dzidzornu-nyamadi-funeral-ebook', '/books/dadaa-kate-dzidzornu-nyamadi-funeral-ebook');
+Route::redirect('/iet-gh-induction-of-new-members', '/books/iet-gh-induction-of-new-members');
 
 // Language menu: remember the visitor's choice, then go back to the same page
 Route::get('/language/{locale}', function (string $locale) {
@@ -34,7 +39,7 @@ Route::get('/language/{locale}', function (string $locale) {
     $back = url()->previous();
     $target = str_starts_with($back, url('/')) && ! str_contains($back, '/language/') ? $back : url('/');
 
-    return redirect($target)->withCookie(cookie()->forever(\App\Http\Middleware\SetLocale::COOKIE, $locale));
+    return redirect($target)->withCookie(cookie()->forever(SetLocale::COOKIE, $locale));
 })->name('language.switch');
 
 // Old built CSS/JS names (from before a deploy) point to the current files
@@ -75,15 +80,16 @@ Route::prefix('dashboard')->name('dashboard.')->middleware('auth')->group(functi
     Route::post('designs/{design}', [DesignController::class, 'update'])->name('designs.update');
     Route::delete('designs/{design}', [DesignController::class, 'destroy'])->name('designs.destroy');
 
-    Route::post('upload-temp', [\App\Http\Controllers\Dashboard\MediaController::class, 'storeTemp'])->name('upload.temp');
+    Route::post('upload-temp', [MediaController::class, 'storeTemp'])->name('upload.temp');
 
-    Route::get('media', [\App\Http\Controllers\Dashboard\MediaController::class, 'index'])->name('media.index');
-    Route::post('media', [\App\Http\Controllers\Dashboard\MediaController::class, 'store'])->name('media.store');
-    Route::patch('media/{filename}', [\App\Http\Controllers\Dashboard\MediaController::class, 'update'])->name('media.update')->where('filename', '.*');
-    Route::delete('media/{filename}', [\App\Http\Controllers\Dashboard\MediaController::class, 'destroy'])->name('media.destroy')->where('filename', '.*');
+    Route::get('media', [MediaController::class, 'index'])->name('media.index');
+    Route::post('media', [MediaController::class, 'store'])->name('media.store');
+    Route::patch('media/{filename}', [MediaController::class, 'update'])->name('media.update')->where('filename', '.*');
+    Route::delete('media/{filename}', [MediaController::class, 'destroy'])->name('media.destroy')->where('filename', '.*');
 
-    Route::get('memorial-book', [DashboardMemorialBookController::class, 'show'])->name('memorial-book.show');
-    Route::post('memorial-book', [DashboardMemorialBookController::class, 'update'])->name('memorial-book.update');
+    Route::resource('books', DashboardBookController::class)->except(['show']);
+    Route::patch('books/{book}/toggle-active', [DashboardBookController::class, 'toggleActive'])->name('books.toggle-active');
+    Route::get('books/{book}/qr.{format}', [DashboardBookController::class, 'qr'])->name('books.qr');
 
     Route::get('messages', [MessageController::class, 'index'])->name('messages.index');
     Route::get('messages/{message}', [MessageController::class, 'show'])->name('messages.show');
