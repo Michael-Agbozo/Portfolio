@@ -22,6 +22,13 @@
       __('Results / Outcome') => $project->results,
   ]);
   $hasBeforeAfter = $project->before_image || $project->after_image;
+  $conferenceGallery = $project->slug === 'the-chronicles-conference';
+  $conferenceLabels = [
+      'the-chronicles-conference-home.jpg' => __('Homepage'),
+      'the-chronicles-conference-about.jpg' => __('About'),
+      'the-chronicles-conference-events.jpg' => __('Events'),
+      'the-chronicles-conference-contact.jpg' => __('Contact'),
+  ];
 @endphp
 @section('title', $project->title . ' — Michael Agbozo')
 @section('meta_description', $projectDescription)
@@ -193,13 +200,16 @@
   @if($project->images && count($project->images))
     <div class="em-block">
       <p class="em-eyebrow">{{ __('Gallery') }}</p>
-      <div class="em-gallery">
+      <div @class(['em-gallery', 'em-gallery--pages' => $conferenceGallery])>
         @foreach($project->images as $img)
           <div class="em-gallery-cell">
             <button type="button" class="em-gallery-item" data-src="{{ $img }}" data-alt="{{ __(':project — project image :number', ['project' => $project->title, 'number' => $loop->iteration]) }}" aria-label="{{ __('Open image :number', ['number' => $loop->iteration]) }}">
               @php [$gw, $gh] = Thumbnail::dimensions($img) ?? [1440, 900]; @endphp
               <img src="{{ Thumbnail::url($img, 640) }}" srcset="{{ Thumbnail::srcset($img, [480, 640, 800]) }}" sizes="(max-width: 700px) 92vw, 400px" alt="{{ __(':project — project image :number', ['project' => $project->title, 'number' => $loop->iteration]) }}" width="{{ $gw }}" height="{{ $gh }}" loading="lazy" decoding="async">
             </button>
+            @if($conferenceGallery && isset($conferenceLabels[basename($img)]))
+              <p class="em-gallery-caption">{{ $conferenceLabels[basename($img)] }}</p>
+            @endif
           </div>
         @endforeach
       </div>
