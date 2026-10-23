@@ -472,6 +472,11 @@ html:has(.em-body) { overflow-x: clip; }
 .em-gallery button { display: block; width: 100%; padding: 0; border: 1px solid var(--em-line2); border-radius: 18px; overflow: hidden; background: var(--em-surface); cursor: zoom-in; }
 .em-gallery img { width: 100%; height: auto; transition: transform .5s; }
 .em-gallery button:hover img { transform: scale(1.04); }
+.em-gallery--pages { columns: auto; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 28px 20px; }
+.em-gallery--pages .em-gallery-cell { margin-bottom: 0; min-width: 0; }
+.em-gallery--pages img { display: block; aspect-ratio: 4 / 3; height: auto; object-fit: cover; object-position: top; }
+.em-gallery-caption { margin: 12px 4px 0; color: var(--em-soft); font-family: var(--em-display); font-size: 15px; }
+@media (max-width: 700px) { .em-gallery--pages { grid-template-columns: 1fr; } }
 .em-muted-note { color: var(--em-faint); font-style: italic; }
 
 .em-error-code { display: block;
