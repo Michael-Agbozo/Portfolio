@@ -7,7 +7,8 @@ php artisan config:cache
 php artisan route:cache
 php artisan storage:link --force 2>/dev/null || true
 
-php-fpm -y /assets/php-fpm.conf -d upload_max_filesize=50M -d post_max_size=50M -D
+# Match Laravel's upload rules: 100 MB per image, 150 MB per multi-file request.
+php-fpm -y /assets/php-fpm.conf -d upload_max_filesize=100M -d post_max_size=150M -D
 
 # php-fpm -D starts PHP in the background and returns immediately, before
 # PHP is actually ready to handle requests. If nginx starts first, every
@@ -22,6 +23,14 @@ for i in $(seq 1 50); do
 done
 
 node /assets/scripts/prestart.mjs /assets/nginx.template.conf /nginx.conf
+
+# Let Nginx accept the same uploads (with headroom for the rest of the form).
+# Replace a smaller generated value if one exists; otherwise add it.
+if grep -q "client_max_body_size" /nginx.conf; then
+    sed -i 's/client_max_body_size[[:space:]][^;]*;/client_max_body_size 170M;/' /nginx.conf
+else
+    sed -i 's|charset utf-8;|charset utf-8;\n        client_max_body_size 170M;|' /nginx.conf
+fi
 
 # Inject Laravel routing if missing
 if ! grep -q "try_files" /nginx.conf; then
