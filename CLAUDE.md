@@ -169,6 +169,7 @@ The user has **no background in software development or IT**. Always:
 - Project, design, and media image uploads allow up to 100 MB each (150 MB total for multi-file uploads).
 - Profile photo upload allows up to 5 MB.
 - CV upload allows PDF files up to 10 MB.
+- Book PDFs allow up to 100 MB. After upload, `PdfCompressor` shrinks them with Ghostscript (installed via `nixpacks.toml`) so the flipbook loads fast; the original is kept if Ghostscript is missing or doesn't help.
 - Image uploads should go through `ImageCompressor` when they are saved.
 - Nginx upload size is handled in `start.sh` with `client_max_body_size 170M;`.
 
