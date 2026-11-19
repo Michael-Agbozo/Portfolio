@@ -4,7 +4,6 @@ namespace Tests\Feature;
 
 use App\Mail\ContactMessageConfirmation;
 use App\Mail\ContactMessageReceived;
-use App\Models\Message;
 use App\Models\Project;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Mail;

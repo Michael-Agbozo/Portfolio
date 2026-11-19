@@ -129,11 +129,7 @@ Do not commit `.env`. It contains private server settings.
 
 ## Database
 
-The project uses SQLite locally:
-
-```text
-database/database.sqlite
-```
+The project uses MySQL locally (through DBngin), in a database called `portfolio`. The connection details are the `DB_*` values in `.env`.
 
 Do not run these commands on live data without clear confirmation:
 

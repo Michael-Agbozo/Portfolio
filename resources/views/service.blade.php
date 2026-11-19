@@ -186,7 +186,7 @@
     </div>
     <div class="em-tile-grid">
       @foreach($relatedProjects as $project)
-        @php $thumb = $project->feature_image ?: ($project->images[0] ?? null); @endphp
+        @php $thumb = $project->thumbnail(); @endphp
         <div class="em-reveal">
           <a href="{{ route('project.show', $project) }}" class="em-project em-tilt">
             <div class="em-project-thumb">

@@ -100,14 +100,20 @@ app/
 
 resources/
   views/
+    layouts/emerald.blade.php
     home.blade.php
+    about.blade.php
+    service.blade.php
     project.blade.php
+    books/
+    errors/
     emails/
     dashboard/
   css/
-    app.css
-    portfolio.css
+    emerald.css
     dashboard.css
+  js/
+    book-reader.js
 
 routes/
   web.php
@@ -155,7 +161,7 @@ The user has **no background in software development or IT**. Always:
 
 ### Changing public styling
 
-- Public styles are mainly in `resources/css/app.css` and `resources/css/portfolio.css`.
+- Public styles are in `resources/css/emerald.css` (used by `layouts/emerald.blade.php`).
 - Dashboard styles are in `resources/css/dashboard.css`.
 
 ## Upload Rules

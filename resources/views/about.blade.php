@@ -223,7 +223,7 @@
     <div class="em-grid-2">
       @foreach($proofProjects as $project)
         @php
-          $thumb = $project->feature_image ?: ($project->images[0] ?? null);
+          $thumb = $project->thumbnail();
           $summary = \Illuminate\Support\Str::limit($project->meta ?: strip_tags($project->body ?: 'A selected project showing Michael Agbozo work across design, web development, and systems delivery.'), 135);
         @endphp
         <div class="em-reveal">

@@ -349,7 +349,6 @@ html:has(.em-body) { overflow-x: clip; }
   transition: transform .35s ease-out;
 }
 .em-form-dots { display: flex; gap: 8px; margin-bottom: 4px; }
-.em-form-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 180px), 1fr)); gap: 16px; }
 .em-field { display: flex; flex-direction: column; gap: 6px; font-size: 14px; color: var(--em-soft); }
 .em-field input, .em-field textarea {
   font-family: var(--em-sans); font-size: 17px; padding: 14px 16px; border-radius: 12px;

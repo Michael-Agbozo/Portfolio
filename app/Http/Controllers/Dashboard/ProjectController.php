@@ -6,8 +6,10 @@ use App\Http\Controllers\Controller;
 use App\Models\Project;
 use App\Support\HtmlSanitizer;
 use App\Support\ImageCompressor;
+use App\Support\ImagePathValidator;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
+use Illuminate\Validation\ValidationException;
 
 class ProjectController extends Controller
 {
@@ -27,14 +29,7 @@ class ProjectController extends Controller
 
     public function store(Request $request)
     {
-        $data = $this->validateProject($request);
-
-        $data['body'] = HtmlSanitizer::clean($data['body'] ?? null);
-        $data['tags'] = $this->parseTags($data['tags'] ?? '');
-        $data['services'] = $this->parseTags($data['services'] ?? '');
-        $data['tech_stack'] = $this->parseTags($data['tech_stack'] ?? '');
-        $data['before_image'] = $this->resolveOptionalImagePath($data['before_image'] ?? null, 'before_image');
-        $data['after_image'] = $this->resolveOptionalImagePath($data['after_image'] ?? null, 'after_image');
+        $data = $this->projectData($request);
         $data['feature_image'] = $this->resolveFeatureImage($request, null);
         $data['images'] = $this->resolveGalleryImages($request, $data['images'] ?? '');
         $data['slug'] = $this->uniqueSlug($data['title'], null);
@@ -53,14 +48,7 @@ class ProjectController extends Controller
 
     public function update(Request $request, Project $project)
     {
-        $data = $this->validateProject($request);
-
-        $data['body'] = HtmlSanitizer::clean($data['body'] ?? null);
-        $data['tags'] = $this->parseTags($data['tags'] ?? '');
-        $data['services'] = $this->parseTags($data['services'] ?? '');
-        $data['tech_stack'] = $this->parseTags($data['tech_stack'] ?? '');
-        $data['before_image'] = $this->resolveOptionalImagePath($data['before_image'] ?? null, 'before_image');
-        $data['after_image'] = $this->resolveOptionalImagePath($data['after_image'] ?? null, 'after_image');
+        $data = $this->projectData($request);
         $data['feature_image'] = $this->resolveFeatureImage($request, $project);
         $data['images'] = $this->resolveGalleryImages($request, $data['images'] ?? '');
 
@@ -84,6 +72,21 @@ class ProjectController extends Controller
     {
         $project->delete();
         return redirect()->route('dashboard.projects.index')->with('success', 'Project deleted.');
+    }
+
+    /** Validated form input, cleaned up the same way for create and edit. */
+    private function projectData(Request $request): array
+    {
+        $data = $this->validateProject($request);
+
+        $data['body'] = HtmlSanitizer::clean($data['body'] ?? null);
+        $data['tags'] = $this->parseTags($data['tags'] ?? '');
+        $data['services'] = $this->parseTags($data['services'] ?? '');
+        $data['tech_stack'] = $this->parseTags($data['tech_stack'] ?? '');
+        $data['before_image'] = $this->resolveOptionalImagePath($data['before_image'] ?? null, 'before_image');
+        $data['after_image'] = $this->resolveOptionalImagePath($data['after_image'] ?? null, 'after_image');
+
+        return $data;
     }
 
     private function validateProject(Request $request): array
@@ -135,7 +138,7 @@ class ProjectController extends Controller
      */
     private function uniqueSlug(string $title, ?Project $ignore): string
     {
-        $base = \Illuminate\Support\Str::slug($title) ?: 'project';
+        $base = Str::slug($title) ?: 'project';
         $slug = $base;
         $suffix = 2;
 
@@ -162,9 +165,7 @@ class ProjectController extends Controller
     private function resolveFeatureImage(Request $request, ?Project $existing): ?string
     {
         if ($request->hasFile('feature_image_file')) {
-            $path = $request->file('feature_image_file')->store('projects', 'public');
-            ImageCompressor::compress(Storage::disk('public')->path($path));
-            return '/storage/' . $path;
+            return ImageCompressor::storeUpload($request->file('feature_image_file'), 'projects');
         }
 
         $path = trim((string) $request->input('feature_image_path'));
@@ -186,9 +187,7 @@ class ProjectController extends Controller
     {
         $uploaded = [];
         foreach ($request->file('gallery_files', []) as $file) {
-            $path = $file->store('projects', 'public');
-            ImageCompressor::compress(Storage::disk('public')->path($path));
-            $uploaded[] = '/storage/' . $path;
+            $uploaded[] = ImageCompressor::storeUpload($file, 'projects');
         }
 
         $pasted = $this->parseImages($raw);
@@ -222,8 +221,8 @@ class ProjectController extends Controller
 
     private function assertValidImagePath(string $field, string $value): void
     {
-        if (! \App\Support\ImagePathValidator::isValid($value)) {
-            throw \Illuminate\Validation\ValidationException::withMessages([
+        if (! ImagePathValidator::isValid($value)) {
+            throw ValidationException::withMessages([
                 $field => "Invalid image entry: \"{$value}\" — each must be a full image URL or a /storage/ path.",
             ]);
         }

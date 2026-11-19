@@ -49,4 +49,10 @@ class Project extends Model
     {
         return 'slug';
     }
+
+    /** The cover image: the feature image, or else the first gallery image. */
+    public function thumbnail(): ?string
+    {
+        return $this->feature_image ?: ($this->images[0] ?? null);
+    }
 }

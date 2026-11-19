@@ -1,12 +1,10 @@
 import { defineConfig } from 'vite';
 import laravel    from 'laravel-vite-plugin';
-import tailwindcss from '@tailwindcss/vite';
 
 export default defineConfig({
     plugins: [
-        tailwindcss(),
         laravel({
-            input: ['resources/css/app.css', 'resources/css/dashboard.css', 'resources/css/emerald.css', 'resources/js/app.js', 'resources/js/book-reader.js'],
+            input: ['resources/css/dashboard.css', 'resources/css/emerald.css', 'resources/js/book-reader.js'],
             refresh: true,
         }),
     ],

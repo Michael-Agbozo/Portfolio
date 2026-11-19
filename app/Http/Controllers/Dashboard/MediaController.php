@@ -47,9 +47,7 @@ class MediaController extends Controller
     public function storeTemp(Request $request): \Illuminate\Http\JsonResponse
     {
         $request->validate(['file' => 'required|mimes:jpg,jpeg,png,webp,gif|max:102400']);
-        $path = $request->file('file')->store('media', 'public');
-        ImageCompressor::compress(Storage::disk('public')->path($path));
-        return response()->json(['path' => '/storage/' . $path]);
+        return response()->json(['path' => ImageCompressor::storeUpload($request->file('file'), 'media')]);
     }
 
     public function store(Request $request)
@@ -60,8 +58,7 @@ class MediaController extends Controller
         ]);
 
         foreach ($request->file('files') as $file) {
-            $path = $file->store('media', 'public');
-            ImageCompressor::compress(Storage::disk('public')->path($path));
+            ImageCompressor::storeUpload($file, 'media');
         }
 
         $count = count($request->file('files'));
@@ -123,11 +120,7 @@ class MediaController extends Controller
 
     public function update(Request $request, string $filename)
     {
-        $path = ltrim($filename, '/');
-
-        if (str_contains($path, '..') || !preg_match('#^(media|designs|projects)/[A-Za-z0-9._-]+$#', $path)) {
-            abort(403);
-        }
+        $path = $this->libraryPath($filename);
 
         $data = $request->validate([
             'name' => 'nullable|string|max:200',
@@ -144,11 +137,7 @@ class MediaController extends Controller
 
     public function destroy(string $filename)
     {
-        $path = ltrim($filename, '/');
-
-        if (str_contains($path, '..') || !preg_match('#^(media|designs|projects)/[A-Za-z0-9._-]+$#', $path)) {
-            abort(403);
-        }
+        $path = $this->libraryPath($filename);
 
         $url = '/storage/' . $path;
 
@@ -164,5 +153,17 @@ class MediaController extends Controller
         Media::where('path', $path)->delete();
 
         return back()->with('success', 'File deleted.');
+    }
+
+    /** A library file path from the URL, or 403 if it points outside the library folders. */
+    private function libraryPath(string $filename): string
+    {
+        $path = ltrim($filename, '/');
+
+        if (str_contains($path, '..') || !preg_match('#^(media|designs|projects)/[A-Za-z0-9._-]+$#', $path)) {
+            abort(403);
+        }
+
+        return $path;
     }
 }
