@@ -15,7 +15,7 @@ return new class extends Migration
             'tags' => ['Web Design', 'Web Development', 'E-commerce'],
             'tech_stack' => ['WordPress', 'Elementor', 'WooCommerce', 'TranslatePress'],
             'body' => 'Kingdom Life Mentorship has guided ministries, businesses, and individuals since 2018. The website presents the yearly mentorship programme and masterclasses, lets visitors register for upcoming sessions, sells study materials through an online shop, and shares testimonials from past mentees, in both English and Dutch.',
-            'pages' => ['home', 'about', 'mentorship', 'masterclass', 'contact'],
+            'pages' => ['home', 'about', 'mentorship', 'session', 'masterclass', 'masterclass-detail', 'shop', 'product', 'cart', 'checkout', 'testimonials', 'account', 'contact'],
         ],
         [
             'slug' => 'kingdom-arts-academy',
@@ -25,7 +25,7 @@ return new class extends Migration
             'tags' => ['Web Design', 'Web Development', 'Education'],
             'tech_stack' => ['WordPress', 'Elementor'],
             'body' => 'Kingdom Arts Academy trains dancers in praise, worship, prophetic, and apostolic dance ministry in the Netherlands and Belgium. The website introduces the academy and its history, explains each class, lists upcoming and past events, and lets new students enrol online, in both English and Dutch.',
-            'pages' => ['home', 'about', 'classes', 'events', 'contact'],
+            'pages' => ['home', 'about', 'classes', 'events', 'enrolment', 'class-registration', 'register', 'contact'],
         ],
     ];
 

@@ -19,7 +19,9 @@ class KingdomProjectsMigrationTest extends TestCase
         $this->assertSame('https://thekingdomartsacademy.com/', $academy->url);
         $this->assertSame('/storage/projects/kingdom-life-mentorship-site.jpg', $mentorship->feature_image);
         $this->assertSame('/storage/projects/kingdom-arts-academy-home.jpg', $academy->images[0]);
-        $this->assertCount(5, $mentorship->images);
+        $this->assertCount(13, $mentorship->images);
+        $this->assertContains('/storage/projects/kingdom-life-mentorship-checkout.jpg', $mentorship->images);
+        $this->assertCount(8, $academy->images);
         $this->assertTrue($academy->active);
         $this->assertNotSame($mentorship->num, $academy->num);
 
@@ -35,6 +37,6 @@ class KingdomProjectsMigrationTest extends TestCase
 
         $this->assertSame(1, Project::where('slug', 'kingdom-arts-academy')->count());
         $this->assertSame('/storage/projects/custom.jpg', Project::where('slug', 'kingdom-arts-academy')->value('feature_image'));
-        $this->assertCount(5, Project::where('slug', 'kingdom-life-mentorship')->firstOrFail()->images);
+        $this->assertCount(13, Project::where('slug', 'kingdom-life-mentorship')->firstOrFail()->images);
     }
 }
