@@ -39,4 +39,14 @@ class KingdomProjectsMigrationTest extends TestCase
         $this->assertSame('/storage/projects/custom.jpg', Project::where('slug', 'kingdom-arts-academy')->value('feature_image'));
         $this->assertCount(13, Project::where('slug', 'kingdom-life-mentorship')->firstOrFail()->images);
     }
+
+    public function test_retaken_screenshots_replace_the_published_ones(): void
+    {
+        $path = storage_path('app/public/projects/kingdom-life-mentorship-site.jpg');
+        file_put_contents($path, 'old brown screenshot');
+
+        (require database_path('migrations/2026_11_27_000002_refresh_kingdom_life_mentorship_screenshots.php'))->up();
+
+        $this->assertFileEquals(resource_path('project-images/kingdom-life-mentorship-site.jpg'), $path);
+    }
 }
