@@ -77,7 +77,7 @@ Route::prefix('dashboard')->name('dashboard.')->middleware('auth')->group(functi
     Route::post('designs', [DesignController::class, 'store'])->name('designs.store');
     Route::get('designs/{design}', [DesignController::class, 'show'])->name('designs.show');
     Route::get('designs/{design}/edit', [DesignController::class, 'edit'])->name('designs.edit');
-    Route::post('designs/{design}', [DesignController::class, 'update'])->name('designs.update');
+    Route::put('designs/{design}', [DesignController::class, 'update'])->name('designs.update');
     Route::delete('designs/{design}', [DesignController::class, 'destroy'])->name('designs.destroy');
 
     Route::post('upload-temp', [MediaController::class, 'storeTemp'])->name('upload.temp');

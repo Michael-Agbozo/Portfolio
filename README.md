@@ -166,14 +166,20 @@ app/
 
 resources/
   views/
+    layouts/emerald.blade.php
     home.blade.php
+    about.blade.php
+    service.blade.php
     project.blade.php
+    books/
+    errors/
     emails/
     dashboard/
   css/
-    app.css
-    portfolio.css
+    emerald.css
     dashboard.css
+  js/
+    book-reader.js
 
 routes/
   web.php

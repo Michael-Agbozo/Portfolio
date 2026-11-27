@@ -81,7 +81,6 @@
 @php
   $allProjects = $designProjects->concat($devProjects);
   $latestProjects = $allProjects->sortByDesc('id')->take(3);
-  $thumbFor = fn ($project) => $project->feature_image ?: ($project->images[0] ?? null);
   $whatsappUrl = 'https://wa.me/233248581824?text='.rawurlencode("Hi Michael, I found your portfolio and I'd like to reach out.\n\nName:\nEmail:\nHow can you help me:");
   $serviceSlugs = [
       'laravel-development-ghana',
@@ -234,7 +233,7 @@
           <div class="em-slide-track em-slide">
             @foreach([1, 2] as $copy)
               @foreach($allProjects->concat($allProjects)->take(max(10, $allProjects->count())) as $project)
-              @php $thumb = $thumbFor($project); @endphp
+              @php $thumb = $project->thumbnail(); @endphp
               <div class="em-frame {{ $thumb ? 'has-img' : ($loop->index % 3 === 1 ? 'is-mint' : '') }}">
                 @if($thumb)<img src="{{ Thumbnail::url($thumb, 480) }}" alt="{{ $project->title }} website" width="220" height="300" loading="lazy" decoding="async">@endif
                 <span>{{ $project->title }}</span>
@@ -248,7 +247,7 @@
 
     <div class="em-tile-grid" id="em-work-grid">
       @foreach($allProjects as $project)
-      @php $thumb = $thumbFor($project); @endphp
+      @php $thumb = $project->thumbnail(); @endphp
       <div class="em-reveal em-work-item" data-category="{{ $project->category }}">
         <a href="{{ route('project.show', $project) }}" class="em-project em-tilt">
           <div class="em-project-thumb">

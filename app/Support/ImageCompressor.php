@@ -2,6 +2,9 @@
 
 namespace App\Support;
 
+use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Storage;
+
 /**
  * Shrinks large uploaded images down to a reasonable size and re-encodes
  * them at a slightly lower quality, so big photos don't eat up storage
@@ -10,6 +13,15 @@ namespace App\Support;
  */
 class ImageCompressor
 {
+    /** Save an uploaded image to the public disk, compress it, and return its /storage/... URL. */
+    public static function storeUpload(UploadedFile $file, string $folder): string
+    {
+        $path = $file->store($folder, 'public');
+        self::compress(Storage::disk('public')->path($path));
+
+        return '/storage/'.$path;
+    }
+
     public static function compress(string $absolutePath, int $maxWidth = 1920, int $quality = 75, int $skipBelowBytes = 512000): void
     {
         if (!is_file($absolutePath)) {

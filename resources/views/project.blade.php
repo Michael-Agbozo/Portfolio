@@ -6,7 +6,7 @@
       155,
       ''
   );
-  $projectImage = $project->feature_image ?: ($project->images[0] ?? asset('images/michael-og.jpg'));
+  $projectImage = $project->thumbnail() ?? asset('images/michael-og.jpg');
   $projectImage = \Illuminate\Support\Str::startsWith($projectImage, ['http://', 'https://'])
       ? $projectImage
       : url($projectImage);

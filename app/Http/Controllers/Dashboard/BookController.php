@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Dashboard;
 use App\Http\Controllers\Controller;
 use App\Models\Book;
 use App\Support\BookQrCode;
+use App\Support\PdfCompressor;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
@@ -27,7 +28,7 @@ class BookController extends Controller
     public function store(Request $request)
     {
         $data = $this->validated($request, null);
-        $data['pdf_path'] = $request->file('pdf')->store('books', 'public');
+        $data['pdf_path'] = $this->storePdf($request);
 
         $book = Book::create($data);
 
@@ -45,7 +46,7 @@ class BookController extends Controller
 
         if ($request->hasFile('pdf')) {
             Storage::disk('public')->delete($book->pdf_path);
-            $data['pdf_path'] = $request->file('pdf')->store('books', 'public');
+            $data['pdf_path'] = $this->storePdf($request);
         }
 
         $book->update($data);
@@ -81,6 +82,20 @@ class BookController extends Controller
         }
 
         return $response;
+    }
+
+    /**
+     * Save the uploaded PDF, then shrink it once the page has been sent back,
+     * so a big book doesn't keep the upload screen waiting.
+     */
+    private function storePdf(Request $request): string
+    {
+        $path = $request->file('pdf')->store('books', 'public');
+        $absolutePath = Storage::disk('public')->path($path);
+
+        dispatch(fn () => PdfCompressor::compress($absolutePath))->afterResponse();
+
+        return $path;
     }
 
     private function validated(Request $request, ?Book $book): array

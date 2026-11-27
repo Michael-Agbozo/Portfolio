@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Dashboard;
 use App\Http\Controllers\Controller;
 use App\Models\Design;
 use App\Support\ImageCompressor;
+use App\Support\ImagePathValidator;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
@@ -24,11 +25,7 @@ class DesignController extends Controller
 
     public function store(Request $request)
     {
-        $request->validate([
-            'image' => 'nullable|mimes:jpg,jpeg,png,webp,gif|max:102400',
-            'src'   => ['nullable', 'string', 'max:500', $this->validImageSrc()],
-            'alt'   => 'required|string|max:200',
-        ]);
+        $request->validate($this->rules());
 
         if (!$request->hasFile('image') && !$request->filled('src')) {
             return back()->withErrors(['src' => 'Please upload an image file or paste an image URL.'])->withInput();
@@ -57,11 +54,7 @@ class DesignController extends Controller
 
     public function update(Request $request, Design $design)
     {
-        $request->validate([
-            'image' => 'nullable|mimes:jpg,jpeg,png,webp,gif|max:102400',
-            'src'   => ['nullable', 'string', 'max:500', $this->validImageSrc()],
-            'alt'   => 'required|string|max:200',
-        ]);
+        $request->validate($this->rules());
 
         $src = $this->resolveImageSrc($request, $design);
 
@@ -86,9 +79,7 @@ class DesignController extends Controller
             if ($existing) {
                 $this->deleteLocalFile($existing->src);
             }
-            $path = $request->file('image')->store('designs', 'public');
-            ImageCompressor::compress(Storage::disk('public')->path($path));
-            return '/storage/' . $path;
+            return ImageCompressor::storeUpload($request->file('image'), 'designs');
         }
 
         if ($request->filled('src')) {
@@ -98,6 +89,15 @@ class DesignController extends Controller
         return $existing?->src ?? '';
     }
 
+    private function rules(): array
+    {
+        return [
+            'image' => 'nullable|mimes:jpg,jpeg,png,webp,gif|max:102400',
+            'src'   => ['nullable', 'string', 'max:500', $this->validImageSrc()],
+            'alt'   => 'required|string|max:200',
+        ];
+    }
+
     /**
      * "Choose from Library" fills the URL field with a /storage/... path
      * rather than a full https:// link, so accept either form here.
@@ -105,7 +105,7 @@ class DesignController extends Controller
     private function validImageSrc(): \Closure
     {
         return function (string $attribute, mixed $value, \Closure $fail) {
-            if (! \App\Support\ImagePathValidator::isValid($value)) {
+            if (! ImagePathValidator::isValid($value)) {
                 $fail('Please enter a full image URL or pick one from the library.');
             }
         };

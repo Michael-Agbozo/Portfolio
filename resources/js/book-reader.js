@@ -206,7 +206,9 @@ window.addEventListener('resize', () => {
   if (pdf) render();
 });
 
-pdfjsLib.getDocument({ url: reader.dataset.pdf }).promise
+// Fetch only the parts of the PDF needed for the pages being shown (the server
+// supports byte ranges), instead of downloading the whole file before page 1.
+pdfjsLib.getDocument({ url: reader.dataset.pdf, disableStream: true, disableAutoFetch: true }).promise
   .then(doc => {
     pdf = doc;
     total = doc.numPages;
